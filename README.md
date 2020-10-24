@@ -7,7 +7,7 @@ Have a look at https://ei23.com/diy-smarthome/ or https://ei23.de/diy-smarthome/
 You can get the script via the newsletter.
 
 [English Playlist]
-<iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?list=PLA4hcTFeulZcGNxLxbJdqPaHvpPjgBwHp" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+[![English Playlist](https://img.youtube.com/vi/ENOUR6umXkY/0.jpg)](https://www.youtube.com/playlist?list=PLA4hcTFeulZcGNxLxbJdqPaHvpPjgBwHp)
 
 [German Playlist]
-<iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?list=PLA4hcTFeulZdEGwWtHhla-Xd_b8BMH5Rp" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+[![English Playlist](https://img.youtube.com/vi/ENOUR6umXkY/0.jpg)](https://www.youtube.com/playlist?list=PLA4hcTFeulZdEGwWtHhla-Xd_b8BMH5Rp)
