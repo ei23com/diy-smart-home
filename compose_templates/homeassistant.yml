@@ -1,0 +1,15 @@
+  homeassistant:
+    container_name: homeassistant
+    image: homeassistant/home-assistant:stable
+    restart: unless-stopped
+    network_mode: host
+    ports:
+      - "8123:8123"
+    volumes:
+      - ./volumes/homeassistant/config:/config
+    # environment:
+    #   - "TZ=Europe/Berlin"
+    logging:
+      options:
+        max-size: "5m"
+        max-file: "3"

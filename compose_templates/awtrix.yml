@@ -1,0 +1,16 @@
+  awtrix:
+    image: whyet/awtrix2
+    container_name: awtrix
+    restart: unless-stopped
+    ports:
+      - "7000:7000"
+      - "7001:7001"
+      - "5568:5568"
+    environment:
+      - TZ=Europe/Berlin
+      - JAVA_TOOL_OPTIONS="-Duser.language=de -Duser.country=DE"
+      - AWTRIX_BETA=false
+      - AUTOUPDATE=true
+    volumes:
+      - ./volumes/awtrix/data:/data
+      # - /sys/class/net/<your interface>/address:/data/hostmac

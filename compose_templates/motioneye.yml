@@ -1,0 +1,15 @@
+  motioneye:
+    container_name: motioneye
+    hostname: HomePi
+    image: ccrisan/motioneye:master-armhf
+    restart: unless-stopped
+    ports:
+      - "8765:8765"
+      # - "18081:8081" # additional camera ports
+      # - "18082:8082"
+    # devices:
+    #  - /dev/video0:/dev/video0
+    volumes:
+      - ./volumes/motioneye/data:/etc/motioneye 
+      - ./volumes/motioneye/lib:/var/lib/motioneye 
+      - /etc/localtime:/etc/localtime:ro

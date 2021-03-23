@@ -1,0 +1,14 @@
+  gotify:
+    image: gotify/server-arm7
+    container_name: gotify
+    ports:
+      - "2224:80"
+    volumes:
+      - ./volumes/gotify:/app/data
+    environment:
+      - TZ="Europe/Berlin"
+    restart: unless-stopped
+    logging:
+      options:
+        max-size: "5m"
+        max-file: "3"

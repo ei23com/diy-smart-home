@@ -1,0 +1,17 @@
+  teamspeak:
+    image: ertagh/teamspeak3-server:arm32v7-latest-box86
+    container_name: teamspeak
+    restart: always
+    environment:
+    - "TS_UPDATE=1"
+    - "TIME_ZONE=Europe/Berlin"
+    ports:
+      - "9987:9987/udp"
+      - "10011:10011/tcp"
+      - "30033:30033/tcp"
+    volumes:
+      - ./volumes/teamspeak/:/teamspeak/save/
+    logging:
+      options:
+        max-size: "5m"
+        max-file: "3"

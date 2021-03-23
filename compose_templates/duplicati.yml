@@ -1,0 +1,16 @@
+  duplicati:
+    image: ghcr.io/linuxserver/duplicati
+    container_name: duplicati
+    hostname: HomePi
+    ports:
+      - "8200:8200"
+    restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Berlin
+      # - CLI_ARGS= #optional
+    volumes:
+      - ./volumes/duplicati/appdata/config:/config
+      - ./volumes/duplicati/backups:/backups
+      - ./volumes/duplicati/source:/source

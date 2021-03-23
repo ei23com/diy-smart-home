@@ -1,0 +1,12 @@
+  zigbee2mqtt:
+    container_name: zigbee2mqtt
+    image: koenkk/zigbee2mqtt
+    volumes:
+      - ./volumes/zigbee2mqtt/data:/app/data
+      - /run/udev:/run/udev:ro
+    devices:
+      - /dev/ttyACM0:/dev/ttyACM0
+    restart: always
+    privileged: true
+    environment:
+      - TZ=Europe/Berlin

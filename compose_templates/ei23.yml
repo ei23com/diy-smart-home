@@ -1,0 +1,16 @@
+  # startpage for ei23-SmartHomeServer
+  ei23:
+    image: nginx:alpine
+    container_name: ei23
+    volumes:
+      - ./volumes/ei23/conf:/etc/nginx/conf.d
+      - ./volumes/ei23/web:/www
+      - ./volumes/ei23/docs/site:/www/docs
+    ports:
+      - "80:80"
+    # labels:
+    #   - traefik.enable=true
+    #   - traefik.http.routers.ei23-lan.rule=(Host(`192.168.178.2`) || Host(`raspberrypi`))
+    #   - traefik.http.routers.ei23-lan.priority=1
+    #   - traefik.http.routers.ei23-lan.entrypoints=lan
+    restart: unless-stopped
