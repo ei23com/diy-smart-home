@@ -1,0 +1,16 @@
+  mosquitto:
+    container_name: mosquitto
+    image: eclipse-mosquitto
+    restart: unless-stopped
+    user: "1883"
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./volumes/mosquitto/data:/mosquitto/data
+      - ./volumes/mosquitto/log:/mosquitto/log
+      - ./volumes/mosquitto/config:/mosquitto/config
+    logging:
+      options:
+        max-size: "5m"
+        max-file: "3"

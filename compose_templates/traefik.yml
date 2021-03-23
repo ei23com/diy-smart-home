@@ -1,0 +1,17 @@
+  traefik:
+    image: traefik:v2.4
+    container_name: traefik
+    restart: unless-stopped
+    ports:
+      # - "80:80" # as internal http
+      - "591:591" # as external http
+      - "2280:8080" # config port
+      # - "443:443" # external https
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./volumes/traefik/traefik/:/etc/traefik/
+      - ./volumes/traefik/letsencrypt:/letsencrypt
+    logging:
+      options:
+        max-size: "5m"
+        max-file: "3"

@@ -1,0 +1,17 @@
+  fhem:
+    container_name: fhem
+    image: fhem/fhem:latest
+    restart: always
+    ports:
+      - "8093:8083"
+    volumes:
+      - ./volumes//fhem/:/opt/fhem/
+    # devices: # uncomment if needed
+      # - /dev/ttyUSB0:/dev/ttyUSB0
+    environment:
+      FHEM_UID: 6061
+      FHEM_GID: 6061
+      TIMEOUT: 10
+      RESTART: 1
+      TELNETPORT: 7072
+      TZ: Europe/Berlin
