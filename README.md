@@ -1,4 +1,4 @@
-# The ei23.com DIY Smart Home
+# The ei23 DIY Smart Home
 Easy installation script for great open source home automation software
 
 This Repository is work in progress, the script never the less is allready production ready.
