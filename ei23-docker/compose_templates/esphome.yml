@@ -1,0 +1,18 @@
+  esphome:
+    container_name: esphome
+    image: ghcr.io/esphome/esphome
+    # ports:
+    #   - 6052:6052
+    #   - 6053:6053
+    #   - 6123:6123
+    volumes:
+      - ./volumes/esphome:/config:rw
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/dbus:/var/run/dbus
+      - /var/run/avahi-daemon/socket:/var/run/avahi-daemon/socket
+    restart: unless-stopped
+    network_mode: host
+    # environment:
+    #   - ESPHOME_DASHBOARD_USE_PING="true"
+    privileged: true
+    # command: config/ dashboard

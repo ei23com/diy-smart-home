@@ -1,0 +1,31 @@
+  wireguard:
+    image: ghcr.io/wg-easy/wg-easy
+    container_name: wireguard
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    environment:
+      - LANG=de
+      - WG_HOST=your-domain-or-ip.org
+      - PASSWORD=yourpassword
+      - PORT=51821
+      - WG_PORT=51820
+      - WG_DEFAULT_ADDRESS=10.8.8.x
+      - WG_DEFAULT_DNS= # left empty on purpose
+      - WG_ALLOWED_IPS=0.0.0.0/1, 128.0.0.0/1, ::/1 # Full VPN
+      # - WG_ALLOWED_IPS=10.8.8.0/24, 172.18.0.0/24 # only local VPN
+      # - WG_MTU=1420
+      # - WG_PERSISTENT_KEEPALIVE=25
+      # - WG_PRE_UP=echo "Pre Up" > /etc/wireguard/pre-up.txt
+      # - WG_POST_UP=echo "Post Up" > /etc/wireguard/post-up.txt
+      # - WG_PRE_DOWN=echo "Pre Down" > /etc/wireguard/pre-down.txt
+      # - WG_POST_DOWN=echo "Post Down" > /etc/wireguard/post-down.txt
+    volumes:
+      - ./volumes/wireguard:/etc/wireguard
+    ports:
+      - "51820:51820/udp"
+      - "51821:51821/tcp"
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+      # - net.ipv4.ip_forward=1

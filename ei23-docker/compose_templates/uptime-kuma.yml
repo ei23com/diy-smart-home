@@ -1,0 +1,21 @@
+  uptime-kuma:
+    image: louislam/uptime-kuma
+    container_name: uptime-kuma
+    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./volumes/uptime-kuma:/app/data
+    # ports:
+    #   - "3001:2231"
+    # labels:
+    #   - "traefik.enable=true"
+    #   - "traefik.http.routers.uptime.entrypoints=websecure"
+    #   - "traefik.http.routers.uptime.rule=Host(`uptime.euredomain.de`)"
+    #   - "traefik.http.routers.uptime.tls=true"
+    #   - "traefik.http.routers.uptime.tls.certresolver=http_resolver"
+    #   - "traefik.http.routers.uptime.service=uptime"
+    #   - "traefik.http.services.uptime.loadbalancer.server.port=3001"
+    #   - "traefik.docker.network=proxy"
+    #   - "traefik.http.routers.uptime.middlewares=default@file"

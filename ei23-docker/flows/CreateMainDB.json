@@ -1,0 +1,60 @@
+[
+    {
+        "id": "b3105df5.259aa",
+        "type": "inject",
+        "z": "6515547.81a452c",
+        "name": "Create Main DB",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 260,
+        "y": 120,
+        "wires": [
+            [
+                "ed820093.9b0fa8"
+            ]
+        ]
+    },
+    {
+        "id": "ed820093.9b0fa8",
+        "type": "influxdb in",
+        "z": "6515547.81a452c",
+        "influxdb": "87f98227.1edcd8",
+        "name": "Create MAIN DB",
+        "query": "CREATE DATABASE MAIN",
+        "rawOutput": false,
+        "precision": "",
+        "retentionPolicy": "",
+        "x": 450,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3ed4214e.047c76",
+        "type": "comment",
+        "z": "6515547.81a452c",
+        "name": "CMD for InfluxDB",
+        "info": "If you want manual control over InfluxDB type \n\ndocker exec -it influxdb influx\n\nin your console or SSH (Putty)",
+        "x": 350,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "87f98227.1edcd8",
+        "type": "influxdb",
+        "z": "",
+        "hostname": "127.0.0.1",
+        "port": "8086",
+        "protocol": "http",
+        "database": "MAIN",
+        "name": "MainDB",
+        "usetls": false,
+        "tls": ""
+    }
+]

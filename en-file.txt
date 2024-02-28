@@ -1,0 +1,60 @@
+# --------------------
+#
+# Smart Home Installer Script by ei23.com
+#
+# Terms of Use:
+# You are not alowed to share or copy this script nor your link to this script from the newsletter without a permission by ei23.com. Sharing ei23.com is encouraged!
+# Commercial use, for example sale to customers, is not permitted.
+# There is no guarantee of functionality and availability.
+# Liability for damage or loss of data is excluded.
+# The script can be adapted by the user for his individual needs.
+#
+# !!! Please support Open Source projects - https://ei23.com/opensource !!!
+#
+# --------------------
+
+# LANGUAGE EN
+L_ALREADYINSTALLED="already installed"
+L_AND="and"
+L_BACKUPDATA="Backup Data "
+L_BACKUPDATATEXT="Among others, a backup of:\nInfluxDB, NodeRED, Grafana, Motioneye, HomeAssistant, Nextcloud, Traefik, Bitwarden and ei23-data will be created.\n\nCAUTION!\nTo keep the backup file small, not all programs and all files are included, best check it yourself.\n\nThe backup file will be stored in /home/$IAM/Backup, make sure to also save it externally!"
+L_CHOOSESERVERNAME="Choose a name for your SmartHome-Server\n(no whitespaces or special chars)"
+L_COMPOSE_ERROR="Docker-Compose caused errors... (see above here)\n\nCheck \"ei23-docker/docker-compose.yml\" for errors or remove the docker-image that causes the error.\nIt is possible that a Docker image is outdated and need to be fixed.\nRun \"ei23 dc\" after fixing the docker-compose.yml.\nIf this is an initial installation, passwords must be set again with the ei23 script\n\nIt is NOT necessary, to run a full installation again!!!" 
+L_CONFIGURE="Configuring"
+L_CONFIRMPASSWORD="Confirm the password"
+L_DOCKERDELETE="deleted unused Docker images"
+L_DOCKERSUCCESS="Docker-Compose run successfully!!!"
+L_HELP="List Shortcuts "
+L_INSTALL="Install"
+L_INSTALLAPPS="Install new programs"
+L_INSTALLAPPSTEXT="You can add, edit or remove new programs by editing the file /home/$IAM/ei23-docker/docker-compose.yml and add templates from /home/$IAM/ei23-docker/compose_templates.\nTo apply the changes run docker compose\n(\"ei23 dc\" in the terminal).\n\nYou can edit the ei23 dashboard in /home/$IAM/ei23-docker/volumes/ei23/web/programs.json.\nI showed how to do it in the script version 1 video.\n\nSome parts of this, will be automated in future versions..."
+L_INSTALLCOMPLETE="INSTALLATION COMPLETE!\n\"ei23\" serves now for updates and backups etc..."
+L_INSTALLING="installing"
+L_MENUMANUAL="[SPACEBAR] to select / deselect, [ENTER] to start"
+L_MQTTADMIN="Set admin name for MQTT"
+L_NEWROOTANDPI="Set new Root & User password"
+L_NODEREDSETTINGS="Copy the following into the password section \n//// in /home/$IAM/.node-red/settings.js"
+L_NOINTERNET="No internet connection available, please check!"
+L_NONAMEABORT="No name given - aborting"
+L_NOPASSWD="No password given - aborting"
+L_OTHERAPPSINFO="The following is a basic selection of programs.\nMore programs like:\n\n- IOBroker\n- FHEM\n- OpenHAB \n- Octoprint\n- Zigbee2MQTT\n- etc...\ncan be installed after the main installation\n with the terminal command \"ei23\"!"
+L_PASSWDMATCH="Passwords don't match - aborting"
+L_PASSWORDFOR="Set a password for"
+L_PASSWORDFORALL="Set new passwords"
+L_PLEASEWAIT="(this will take some time)"
+L_REBOOT="Please Reboot"
+L_REBOOTTEXT="Now a reboot is needed.\nAfter reboot, run this script with \"ei23\" again.\n\nfirst and second reboot can take longer!"
+L_REMOVEAPPS="Remove programs"
+L_RESTOREDATA="Restore backup"
+L_RESTOREDATATEXT="Backup files are stored in /home/$IAM/Backup, you should regularly save them externally.\n\nTo restore simply copy the data back to the original folder, most programs will work this way. Nextcloud and InfluxDB for example are more complicated, check the documentation of the respective programs if necessary."
+L_TERMSOFUSE1="Terms Of Use Part 1"
+L_TERMSOFUSE1OK="OK"
+L_TERMSOFUSE1TEXT="Terms of Use:\n\nYou are not alowed to share or copy this script nor your link to this script from the newsletter without a permission by ei23.com.\nSharing ei23.com is encouraged!\n\nCommercial use, for example sale to customers, is not permitted."
+L_TERMSOFUSE2="Terms Of Use Part 2"
+L_TERMSOFUSE2ACCEPT="I accept"
+L_TERMSOFUSE2DECLINE="I decline"
+L_TERMSOFUSE2TEXT="There is no guarantee of functionality and availability.\n\nLiability for damage or loss of data is excluded.\n\nThe script can be adapted by the user for his individual needs.\n\n\nPlease support Open Source projects\nYou will find a list on ei23.com/opensource"
+L_UPDATE="Full Update      "
+L_UPDATEEI="Update ei23 data only "
+L_UPDATING="updating"
+L_USERNAMEFOR="Username for"

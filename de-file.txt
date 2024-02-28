@@ -1,0 +1,60 @@
+# --------------------
+#
+# Smart Home Installationsskript von ei23.de
+#
+# Nutzungsbedingungen:
+# Die Weitergabe oder Verbreitung des Skriptes oder des Link aus dem Newsletter, ist ohne Erlaubnis von ei23.de nicht gestattet. Eine Weiterempfehlung von ei23.de ist jedoch erwünscht!
+# Eine kommerzielle Nutzung, beispielsweise eine Installation bei Kunden, ist nicht gestattet.
+# Es gibt keine Garantie auf Funktionalität, Fehlerfreiheit und Verfügbarkeit.
+# Eine Haftung für entstandene Schäden oder Datenverlust ist ausgeschlossen.
+# Das Skript darf durch den Nutzer für seine individuellen Bedürfnisse angepasst werden.
+#
+# !!! Bitte unterstütze Open Source Projekte - https://ei23.de/opensource !!!
+#
+# --------------------
+
+# LANGUAGE DE
+L_ALREADYINSTALLED="bereits installiert"
+L_AND="und"
+L_BACKUPDATA="Daten Backup"
+L_BACKUPDATATEXT="Es wird unter anderem ein Backup von:\nInfluxDB, NodeRED, Grafana, Motioneye, HomeAssistant, Nextcloud, Traefik, Bitwarden und ei23-Daten angelegt.\n\nACHTUNG!\nUm die Backupdatei klein zu halten sind nicht alle Programme und Dateien enthalten - Überprüfe das Backup am besten nochmal selbst.\n\nDie Backupdatei wird in /home/$IAM/Backup abgelegt, du solltest sie auch nochmal extern speichern!"
+L_CHOOSESERVERNAME="Gib einen Namen für deinen SmartHome-Server ein\n(ohne Leer oder Sonderzeichen)"
+L_COMPOSE_ERROR="Docker-Compose verursacht Fehler... (siehe oben)\n\nÜberprüfe die \"ei23-docker/docker-compose.yml\" auf Fehler,\noder entferne ggf. das Docker-Image welches den Fehler verursacht.\nEs ist möglich das ein Docker-Image veraltet ist.\nFühre nach dem Anpassen der docker-compose.yml \"ei23 dc\" aus.\nIst dies eine Erstinstallation, müssen mit dem ei23 Skript nochmals Passwörter gesetzt werden\n\nEine komplette Neuinstallation durch das Skript ist NICHT notwendig!!!"
+L_CONFIGURE="Konfiguriere"
+L_CONFIRMPASSWORD="Gebe das Passwort erneut ein"
+L_DOCKERDELETE="Ungenutzte Docker Images wurden gelöscht"
+L_DOCKERSUCCESS="Docker-Compose wurde erfolgreich ausgeführt!!!"
+L_HELP="Zeige Shortcuts"
+L_INSTALL="Installiere"
+L_INSTALLAPPS="Neue Programme installieren"
+L_INSTALLAPPSTEXT="Du kannst Programme hinzfügen, anpassen oder entfernen in dem du die Datei /home/$IAM/ei23-docker/docker-compose.yml bearbeitest und z.B. die Templates einfügst (zu finden in /home/$IAM/ei23-docker/compose_templates).\nZum Anwenden der Änderungen führe anschließend Docker Compose aus\n(\"ei23 dc\" im Terminal).\n\nDas ei23 Dashboard bearbeitest du in der /home/$IAM/ei23-docker/volumes/ei23/web/programs.json.\nIch habe im Video zu Skript Version 1 gezeigt wie es geht.\n\nDemnächst wird dies teilautomatisiert ablaufen..."
+L_INSTALLCOMPLETE="INSTALLATION ABGESCHLOSSEN!\n\"ei23\" dient nun für Updates und Backups etc..."
+L_INSTALLING="Installiere"
+L_MENUMANUAL="[LEERTASTE] zum auswählen / abwählen, [ENTER] um zu starten"
+L_MQTTADMIN="Setze den Admin namen für MQTT"
+L_NEWROOTANDUSER="Setze Root & User Passwörter"
+L_NODEREDSETTINGS="Kopiere das Folgende in das entsprechende Feld \n//// in /home/$IAM/.node-red/settings.js"
+L_NOINTERNET="Keine Internetverbindung, bitte prüfen!"
+L_NONAMEABORT="Kein Name eingegeben - breche ab"
+L_NOPASSWD="Kein Passwort - breche ab"
+L_OTHERAPPSINFO="Es folgt eine ist eine Basisauswahl an Programmen.\nWeitere Programme wie:\n\n- IOBroker\n- FHEM\n- OpenHAB \n- Octoprint\n- Zigbee2MQTT\n- etc...\n\nkönnen nach der Hauptinstallation\nmit dem Terminal-Befehl \"ei23\" installiert werden!"
+L_PASSWDMATCH="Passwörter passen nicht - breche ab"
+L_PASSWORDFOR="Setze Passwort für"
+L_PASSWORDFORALL="Neue Passwörter setzen"
+L_PLEASEWAIT="(das kann eine Weile dauern)"
+L_REBOOT="Bitte neu starten"
+L_REBOOTTEXT="Ein Neustart des Servers ist nötig.\nStarte anschließend das Script mit \"ei23\" erneut.\n\nDer erste und zweite Neustart dauert länger!"
+L_REMOVEAPPS="Programme deinstallieren"
+L_RESTOREDATA="Backup wiederherstellen"
+L_RESTOREDATATEXT="Backupdateien werden in /home/$IAM/Backup abgelegt, du solltest sie regelmäßig extern speichern.\n\nZur Wiederherstellung genügt es bei den meisten Programmen, Daten wieder in den ursprünglichen Ordner zu kopieren. Nextcloud und InfluxDB sind aber beispielsweise etwas komplitzierter. Schau dazu am besten in die Dokumentation der jeweiligen Programme."
+L_TERMSOFUSE1="Nutzungsbedingungen Teil 1"
+L_TERMSOFUSE1OK="ok, weiter"
+L_TERMSOFUSE1TEXT="Nutzungsbedingungen:\n\nDie Weitergabe oder Verbreitung des Skriptes oder des Link aus dem Newsletter, ist ohne Erlaubnis von ei23.de nicht gestattet.\nWeiterempfehlung von ei23.de ist jedoch erwünscht\n\nEine kommerzielle Nutzung, beispielsweise eine Installation bei Kunden, ist nicht gestattet."
+L_TERMSOFUSE2="Nutzungsbedingungen Teil 2"
+L_TERMSOFUSE2ACCEPT="Ich akzeptiere"
+L_TERMSOFUSE2DECLINE="Ich lehne ab"
+L_TERMSOFUSE2TEXT="Es gibt keine Garantie auf Funktionalität, Fehlerfreiheit und Verfügbarkeit.\n\nEine Haftung für entstandene Schäden oder Datenverlust ist ausgeschlossen.\n\nDas Skript darf durch den Nutzer für seine individuellen Bedürfnisse angepasst werden.\n\n\nBitte unterstütze Open Source Projekte\nEine Auflistung gibt es auf ei23.de/opensource"
+L_UPDATE="Komplettes Update"
+L_UPDATEEI="Nur ei23 Daten updaten"
+L_UPDATING="update"
+L_USERNAMEFOR="Nutzername für"

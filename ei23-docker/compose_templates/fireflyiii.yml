@@ -1,0 +1,58 @@
+# Dieses Netzwerk wird benoetigt- Add this Network if not existing
+
+# networks:
+#   fireflyiii:
+#     driver: bridge
+#     internal: true
+
+
+  fireflyiii:
+    image: jc5x/firefly-iii:latest
+    container_name: fireflyiii
+    volumes:
+      - ./volumes/firefly_iii/upload:/var/www/html/storage/upload
+    environment:
+      # - APP_KEY=CHANGE_ME_32CHARS
+      - APP_KEY=ei23password1_placeholderpassword_placeholderei23
+      - DB_HOST=fireflyiiidb
+      - DB_PORT=3306
+      - DB_CONNECTION=mysql 
+      - DB_DATABASE=firefly
+      - DB_USERNAME=firefly
+      - DB_PASSWORD=password_placeholder
+    ports:
+      - 2225:8080
+    # labels:
+    #   - traefik.enable=true
+    #   - traefik.http.routers.fireflyiii.middlewares=fireflyiii,fireflyiii_redirect
+    #   - traefik.http.routers.fireflyiii.tls.certresolver=letsEncrypt
+    #   - traefik.http.routers.fireflyiii.rule=Host(`example.com`)
+    #   - traefik.http.routers.fireflyiii.entrypoints=web, web-secured
+    #   - traefik.http.routers.fireflyiii.tls=true
+    #   - traefik.http.middlewares.fireflyiii_redirect.redirectregex.permanent=true
+    depends_on:
+      - fireflyiiidb
+    networks:
+      - default
+      - fireflyiii
+    logging:
+      options:
+        max-size: "5m"
+        max-file: "3"
+
+  fireflyiiidb:
+    image: yobasystems/alpine-mariadb
+    container_name: fireflyiiidb
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_USER=firefly
+      - MYSQL_PASSWORD=password_placeholder
+      - MYSQL_DATABASE=firefly
+    volumes:
+      - ./volumes/firefly_iii/db:/var/lib/mysql
+    networks:
+      - fireflyiii
+    logging:
+      options:
+        max-size: "5m"
+        max-file: "3"

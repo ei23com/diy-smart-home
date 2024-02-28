@@ -1,0 +1,16 @@
+  logitechmediaserver:
+    container_name: logitechmediaserver
+    hostname: ei23
+    image: lmscommunity/logitechmediaserver:stable
+    volumes:
+      - ./volumes/logitechmediaserver/config:/config:rw
+      - /home/pi/media/Playlist:/playlist:rw
+      - /home/pi/media/Musik:/music:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    ports:
+      - 9000:9000/tcp
+      - 9090:9090/tcp
+      - 3483:3483/tcp
+      - 3483:3483/udp
+    restart: always

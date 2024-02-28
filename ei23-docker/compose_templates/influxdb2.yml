@@ -1,0 +1,17 @@
+  influxdb2:
+    container_name: influxdb2
+    image: influxdb:2.7
+    restart: unless-stopped
+    ports:
+    - "8087:8086"
+    environment:
+    # - "DOCKER_INFLUXDB_INIT_MODE=upgrade" # use this for upgrade
+    - "DOCKER_INFLUXDB_INIT_USERNAME=ei23"
+    - "DOCKER_INFLUXDB_INIT_PASSWORD=ei23password"
+    - "DOCKER_INFLUXDB_INIT_ORG=ei23"
+    - "DOCKER_INFLUXDB_INIT_BUCKET=myBucket"
+    volumes:
+    - ./volumes/influxdb2/data:/var/lib/influxdb2
+    - ./volumes/influxdb2/config:/etc/influxdb2
+    - ./volumes/influxdb2/v1/data:/var/lib/influxdb
+    - ./volumes/influxdb2/v1/config:/etc/influxdb

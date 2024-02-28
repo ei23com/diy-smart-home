@@ -1,0 +1,23 @@
+  theengs-gateway:
+    image: theengs/gateway:latest
+    container_name: theengs-gateway
+    environment:
+      - MQTT_HOST=172.18.0.1
+      - MQTT_USERNAME=admin
+      - MQTT_PASSWORD=password
+      - MQTT_PUB_TOPIC=home/TheengsGateway/BTtoMQTT
+      - MQTT_SUB_TOPIC=home/+/BTtoMQTT/undecoded
+      - PUBLISH_ALL=true
+      - TIME_BETWEEN=60
+      - SCAN_TIME=60
+      - LOG_LEVEL=DEBUG
+      - HAAS_DISCOVERY=true
+      - DISCOVERY=true
+      - DISCOVERY_TOPIC=homeassistant
+      - DISCOVERY_DEVICE_NAME=TheengsGateway
+      - DISCOVERY_FILTER="[IBEACON,GAEN,MS-CDP,APPLE_CONT,APPLE_CONTAT]"
+      - SCANNING_MODE=active
+      - ADAPTER=hci0
+    volumes:
+      - /var/run/dbus:/var/run/dbus:rw
+      - ./volumes/ei23/theengs/theengsgw.conf:/root/theengsgw.conf:rw

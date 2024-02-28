@@ -1,0 +1,14 @@
+  vscode:
+    image: lscr.io/linuxserver/code-server
+    container_name: vscode
+    restart: unless-stopped
+    ports:
+      - 2222:8443
+    environment:
+      - PUID=0
+      - GUID=0
+      - TZ=Europe/Berlin
+      # - PASSWORD=password_placeholder
+    volumes:
+      - ./volumes/vscode/config:/config
+      - ./:/ei23-docker

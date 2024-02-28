@@ -1,0 +1,41 @@
+[
+    {
+        "id": "8fbb6ed.aad6f1",
+        "type": "exec",
+        "z": "9270d882.c669a",
+        "command": "bash ~/ei23-docker/update.sh",
+        "addpay": false,
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "oldrc": false,
+        "name": "TutorialUpdate",
+        "x": 360,
+        "y": 340,
+        "wires": [
+            [],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "aa04f08f.51211",
+        "type": "inject",
+        "z": "9270d882.c669a",
+        "name": "Update",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 190,
+        "y": 340,
+        "wires": [
+            [
+                "8fbb6ed.aad6f1"
+            ]
+        ]
+    }
+]

@@ -1,0 +1,13 @@
+http:
+  routers:
+    home-assistant:
+      rule: Host(`ha.example.com`)
+      service: home-assistant
+      tls:
+        certresolver: letsEncrypt
+
+  services:
+    home-assistant:
+      loadBalancer:
+        servers:
+          - url: http://172.17.0.1:8123 # 172.17.0.1 is default docker gateway

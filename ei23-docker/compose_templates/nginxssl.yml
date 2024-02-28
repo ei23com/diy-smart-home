@@ -1,0 +1,20 @@
+  nginx-ssl:
+    image: linuxserver/swag
+    container_name: nginx-ssl
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Berlin
+      - URL=example.com
+      - SUBDOMAINS=www,xyz,
+      - VALIDATION=http
+      # - EMAIL=mail@example.com
+      - STAGING=true
+    volumes:
+      - ./volumes/nginxssl:/config
+    ports:
+      - "8084:80" # external http port
+      - "4433:443" # external ssl port
+    restart: unless-stopped

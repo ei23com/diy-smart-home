@@ -1,0 +1,16 @@
+  nextcloudpi:
+    container_name: nextcloudpi
+    image: ownyourbits/nextcloudpi
+    restart: unless-stopped
+    ports:
+      - "4443:4443"
+      - "443:443"
+      - "8080:80"
+    volumes:
+      - ./volumes/nextcloudpi/data:/data
+    # environment: # Enter your Pi Ip here
+    #   - DOMAIN=10.1.1.10
+    logging:
+      options:
+        max-size: "5m"
+        max-file: "3"

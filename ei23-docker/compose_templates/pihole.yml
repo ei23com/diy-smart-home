@@ -1,0 +1,32 @@
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    hostname: HomePi
+    restart: unless-stopped
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "67:67/udp"
+      - "8008:80/tcp"
+      # - "443:443/tcp"
+    environment:
+      TZ: 'Europe/Berlin'
+      WEBPASSWORD: 'password_placeholder'
+      # ServerIP: REPLACEME
+      # ServerIPv6: REPLACEME
+      # IPv6: 'true'
+    volumes:
+      - ./volumes/pihole/etc-pihole/:/etc/pihole/
+      - ./volumes/pihole/etc-dnsmasq.d/:/etc/dnsmasq.d/
+      - ./volumes/pihole/hosts:/etc/hosts
+    dns:
+      - 127.0.0.1
+      - 1.1.1.1
+    # Recommended but not required (DHCP needs NET_ADMIN)
+    #   https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
+    cap_add:
+      - NET_ADMIN
+    logging:
+      options:
+        max-size: "5m"
+        max-file: "3"

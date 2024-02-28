@@ -1,0 +1,15 @@
+  wyoming-whisper:
+    container_name: wyoming-whisper
+    command: --model tiny --language de # https://github.com/openai/whisper
+    # command: --model base --language de
+    # command: --model small --language de
+    # command: --model medium --language de
+    # command: --model large --language de
+    image: rhasspy/wyoming-whisper
+    volumes:
+      - ./volumes/wyoming/whisper:/data
+    environment:
+      - TZ=Europe/Berlin
+    restart: unless-stopped
+    ports:
+      - 10300:10300

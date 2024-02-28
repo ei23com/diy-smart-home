@@ -1,0 +1,93 @@
+[
+    {
+        "id": "9d4bb9b6.21d82",
+        "type": "speedtest",
+        "z": "c0e8886b.174808",
+        "name": "",
+        "maxTime": 5000,
+        "x": 490,
+        "y": 2540,
+        "wires": [
+            [
+                "2c5e374f.b18e58"
+            ]
+        ]
+    },
+    {
+        "id": "b99cf5a0.c34b98",
+        "type": "inject",
+        "z": "c0e8886b.174808",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "1800",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 330,
+        "y": 2540,
+        "wires": [
+            [
+                "9d4bb9b6.21d82"
+            ]
+        ]
+    },
+    {
+        "id": "2c5e374f.b18e58",
+        "type": "function",
+        "z": "c0e8886b.174808",
+        "name": "Influx-Formatierung",
+        "func": "return {\npayload: \n    {\n        ip: msg.payload.client.ip,\n        download: msg.payload.speeds.download,\n        upload: msg.payload.speeds.upload,\n        ping: msg.payload.server.ping\n    }\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 670,
+        "y": 2540,
+        "wires": [
+            [
+                "cb50232c.a5e948",
+                "4b6305b1.ff58dc"
+            ]
+        ]
+    },
+    {
+        "id": "cb50232c.a5e948",
+        "type": "debug",
+        "z": "c0e8886b.174808",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 870,
+        "y": 2520,
+        "wires": []
+    },
+    {
+        "id": "4b6305b1.ff58dc",
+        "type": "influxdb out",
+        "z": "c0e8886b.174808",
+        "influxdb": "",
+        "name": "",
+        "measurement": "speedtest",
+        "precision": "",
+        "retentionPolicy": "",
+        "x": 860,
+        "y": 2560,
+        "wires": []
+    }
+]

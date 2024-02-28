@@ -1,0 +1,42 @@
+site_name: Docs | SmartHome-Server ei23.com
+nav:
+  - Start:
+    - Startseite: index.md
+    - Beispiel Seite: sample.md
+  - Weitere Anleitungen:
+    - Beispiel Seite 1: sample.md
+    - Beispiel Seite 2: sample.md
+    - Beispiel Seite 3: sample.md
+
+theme:
+  name: material
+  language: en
+  logo: media/ei23.svg
+  favicon: media/favicon.png
+  palette:
+    primary: grey
+    accent: light blue
+  features:
+    - navigation.tabs
+    - navigation.instant
+    - navigation.tabs.sticky
+  font:
+    text: Karla
+    code: Roboto Mono
+
+extra_css:
+  - stylesheets/dark_theme.css
+  - stylesheets/codehilite.css
+
+extra:
+  social:
+    - icon: fontawesome/solid/globe
+      link: 'https://ei23.com'
+    - icon: fontawesome/brands/youtube
+      link: 'https://youtube.com/ei23-de'
+    - icon: fontawesome/brands/github
+      link: 'https://github.com/ei23-fxg/ei23-diy-smart-home'
+    - icon: fontawesome/brands/discord
+      link: 'https://discord.gg/g88dNZq2'
+    - icon: fontawesome/brands/telegram
+      link: 'https://t.me/ei23de'

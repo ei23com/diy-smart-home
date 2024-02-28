@@ -1,0 +1,45 @@
+  paperless_broker:
+    image: redis:6.0
+    container_name: paperless_broker
+    restart: unless-stopped
+
+  paperless_db:
+    image: postgres:13
+    container_name: paperless_db
+    restart: unless-stopped
+    volumes:
+      - ./volumes/paperlessngx/db/pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: paperless
+      POSTGRES_USER: paperless
+      POSTGRES_PASSWORD: paperless
+
+  paperless_web:
+    image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    container_name: paperless_web
+    restart: unless-stopped
+    depends_on:
+      - paperless_db
+      - paperless_broker
+    ports:
+      - 2226:8000
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - ./volumes/paperlessngx/data:/usr/src/paperless/data
+      - ./volumes/paperlessngx/media:/usr/src/paperless/media
+      - ./volumes/paperlessngx/export:/usr/src/paperless/export
+      - ./volumes/paperlessngx/consume:/usr/src/paperless/consume
+    environment:
+      PAPERLESS_REDIS: redis://paperless_broker:6379
+      PAPERLESS_DBHOST: paperless_db
+      USERMAP_UID: 1000
+      USERMAP_GID: 1000
+      PAPERLESS_OCR_LANGUAGE: deu+eng
+      PAPERLESS_TIME_ZONE: Europe/Berlin
+      # PAPERLESS_SECRET_KEY: SuperS4FE!123456
+      # PAPERLESS_ADMIN_USER: bitteaendern
+      # PAPERLESS_ADMIN_PASSWORD: p4sswort

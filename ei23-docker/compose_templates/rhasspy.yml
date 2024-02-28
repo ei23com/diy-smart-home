@@ -1,0 +1,13 @@
+  rhasspy:
+    container_name: rhasspy
+    image: rhasspy/rhasspy
+    restart: unless-stopped
+    volumes:
+        - ./volumes/rhasspy/profiles:/profiles
+        - /etc/localtime:/etc/localtime:ro
+    ports:
+        - "12101:12101"
+        - "12333:12333/udp"
+    devices:
+        - /dev/snd:/dev/snd
+    command: --user-profiles /profiles --profile de

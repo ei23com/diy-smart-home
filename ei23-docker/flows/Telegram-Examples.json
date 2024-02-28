@@ -1,0 +1,663 @@
+[
+    {
+        "id": "14c27189.2b4b0e",
+        "type": "telegram sender",
+        "z": "ebd35200.909828",
+        "name": "",
+        "bot": "dde7575a.8506a",
+        "x": 910,
+        "y": 360,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e17765bc.e15fe",
+        "type": "change",
+        "z": "ebd35200.909828",
+        "name": "Set TelegramID",
+        "rules": [
+            {
+                "t": "set",
+                "p": "#:(HDD)::telegramID",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 340,
+        "y": 100,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1195004e.d8b8d8",
+        "type": "inject",
+        "z": "ebd35200.909828",
+        "name": "ID Here",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "13371337",
+        "payloadType": "num",
+        "x": 190,
+        "y": 100,
+        "wires": [
+            [
+                "e17765bc.e15fe"
+            ]
+        ]
+    },
+    {
+        "id": "39b3d4a7.85e264",
+        "type": "group",
+        "z": "ebd35200.909828",
+        "name": "Send Text",
+        "style": {
+            "label": true,
+            "color": "#777777",
+            "fill": "#92d04f",
+            "fill-opacity": "0.4"
+        },
+        "nodes": [
+            "5ed74d6d.1c2a84",
+            "96e697c4.107628",
+            "85750465.deef4"
+        ],
+        "x": 114,
+        "y": 139,
+        "w": 632,
+        "h": 122
+    },
+    {
+        "id": "5ed74d6d.1c2a84",
+        "type": "function",
+        "z": "ebd35200.909828",
+        "g": "39b3d4a7.85e264",
+        "name": "prepare message",
+        "func": "var myChatId = flow.get(\"telegramID\", \"HDD\");\nmsg.payload = {chatId : myChatId, type : 'message', content : msg.payload};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 630,
+        "y": 220,
+        "wires": [
+            [
+                "14c27189.2b4b0e"
+            ]
+        ]
+    },
+    {
+        "id": "96e697c4.107628",
+        "type": "inject",
+        "z": "ebd35200.909828",
+        "g": "39b3d4a7.85e264",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "Hi!",
+        "payloadType": "str",
+        "x": 210,
+        "y": 220,
+        "wires": [
+            [
+                "5ed74d6d.1c2a84"
+            ]
+        ]
+    },
+    {
+        "id": "85750465.deef4",
+        "type": "comment",
+        "z": "ebd35200.909828",
+        "g": "39b3d4a7.85e264",
+        "name": "Send Text",
+        "info": "",
+        "x": 200,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "4c8a9596.e05eb4",
+        "type": "group",
+        "z": "ebd35200.909828",
+        "name": "Simple Answer",
+        "style": {
+            "fill": "#0070c0",
+            "fill-opacity": "0.4",
+            "label": true
+        },
+        "nodes": [
+            "2eb376a9.831cba",
+            "b92fee20.81a5c8",
+            "d85fb2b6.ae7dd8",
+            "30a38844.5ae0c8",
+            "c1263013.8ca8e"
+        ],
+        "x": 114,
+        "y": 419,
+        "w": 632,
+        "h": 122
+    },
+    {
+        "id": "2eb376a9.831cba",
+        "type": "telegram receiver",
+        "z": "ebd35200.909828",
+        "g": "4c8a9596.e05eb4",
+        "name": "",
+        "bot": "dde7575a.8506a",
+        "saveDataDir": "",
+        "filterCommands": false,
+        "x": 230,
+        "y": 500,
+        "wires": [
+            [
+                "30a38844.5ae0c8",
+                "c1263013.8ca8e"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "b92fee20.81a5c8",
+        "type": "function",
+        "z": "ebd35200.909828",
+        "g": "4c8a9596.e05eb4",
+        "name": "prepare answer",
+        "func": "msg.payload = {\n    chatId : msg.originalMessage.from.id, \n    type : 'message', \n    content : \"Hi \"+msg.originalMessage.from.first_name + \n    \"!\\nWhy did you text me: \\\"\"+msg.originalMessage.text + \n    \"\\\" ?\\nAnd why do I know your name?\"\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 640,
+        "y": 500,
+        "wires": [
+            [
+                "14c27189.2b4b0e"
+            ]
+        ]
+    },
+    {
+        "id": "d85fb2b6.ae7dd8",
+        "type": "comment",
+        "z": "ebd35200.909828",
+        "g": "4c8a9596.e05eb4",
+        "name": "Simple Answer",
+        "info": "",
+        "x": 220,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "30a38844.5ae0c8",
+        "type": "debug",
+        "z": "ebd35200.909828",
+        "g": "4c8a9596.e05eb4",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 390,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "c1263013.8ca8e",
+        "type": "switch",
+        "z": "ebd35200.909828",
+        "g": "4c8a9596.e05eb4",
+        "name": "received menu?",
+        "property": "payload.content",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "menu",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 420,
+        "y": 500,
+        "wires": [
+            [
+                "8b7dadc7.e25fc"
+            ],
+            [
+                "b92fee20.81a5c8"
+            ]
+        ]
+    },
+    {
+        "id": "b8b478d.5012088",
+        "type": "group",
+        "z": "ebd35200.909828",
+        "name": "Send Photo",
+        "style": {
+            "label": true,
+            "stroke": "#ffC000",
+            "fill": "#ffff00",
+            "fill-opacity": "0.4"
+        },
+        "nodes": [
+            "77b63687.6e56e",
+            "282c5288.4ce08e",
+            "6927b8d6.fc80b",
+            "7d220dd.4ae4af4"
+        ],
+        "x": 114,
+        "y": 279,
+        "w": 632,
+        "h": 122
+    },
+    {
+        "id": "77b63687.6e56e",
+        "type": "comment",
+        "z": "ebd35200.909828",
+        "g": "b8b478d.5012088",
+        "name": "Send Photo",
+        "info": "",
+        "x": 210,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "282c5288.4ce08e",
+        "type": "exec",
+        "z": "ebd35200.909828",
+        "g": "b8b478d.5012088",
+        "command": "curl https://ei23.de/bilder/ei23.jpg --output ",
+        "addpay": true,
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "oldrc": false,
+        "name": "Download Image",
+        "x": 410,
+        "y": 340,
+        "wires": [
+            [
+                "6927b8d6.fc80b"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "6927b8d6.fc80b",
+        "type": "function",
+        "z": "ebd35200.909828",
+        "g": "b8b478d.5012088",
+        "name": "prepare message",
+        "func": "var myChatId = flow.get(\"telegramID\", \"HDD\");\n\n// change photo to video if you want to send videos\nmsg.payload = {\n    chatId : myChatId, \n    type : 'photo', \n    caption:\"cool picture\", \n    content : msg.photo\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 630,
+        "y": 360,
+        "wires": [
+            [
+                "14c27189.2b4b0e"
+            ]
+        ]
+    },
+    {
+        "id": "7d220dd.4ae4af4",
+        "type": "inject",
+        "z": "ebd35200.909828",
+        "g": "b8b478d.5012088",
+        "name": "Send Photo",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "photo",
+                "v": "/home/pi/telegramtest.jpg",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "/home/pi/telegramtest.jpg",
+        "payloadType": "str",
+        "x": 230,
+        "y": 360,
+        "wires": [
+            [
+                "282c5288.4ce08e"
+            ]
+        ]
+    },
+    {
+        "id": "f1612b28.25503",
+        "type": "group",
+        "z": "ebd35200.909828",
+        "name": "Menu",
+        "style": {
+            "label": true,
+            "fill": "#bfdbef",
+            "fill-opacity": "0.4"
+        },
+        "nodes": [
+            "29ab4860.013e9",
+            "8655a19c.6bc16",
+            "8b7dadc7.e25fc",
+            "d38e39c9.f538b8",
+            "2f1f52de.76b2ee",
+            "51f425c0.3c9d5c",
+            "9397606c.ad2ca8",
+            "a1c63f44.42031",
+            "d572ecbe.d04c2",
+            "dfd811b2.774b9",
+            "e6c53b82.ab713",
+            "5f715514.d7a6ec"
+        ],
+        "x": 114,
+        "y": 559,
+        "w": 1272,
+        "h": 242
+    },
+    {
+        "id": "29ab4860.013e9",
+        "type": "telegram event",
+        "z": "ebd35200.909828",
+        "g": "f1612b28.25503",
+        "name": "",
+        "bot": "dde7575a.8506a",
+        "event": "callback_query",
+        "autoanswer": false,
+        "x": 420,
+        "y": 740,
+        "wires": [
+            [
+                "d38e39c9.f538b8"
+            ]
+        ]
+    },
+    {
+        "id": "8655a19c.6bc16",
+        "type": "telegram sender",
+        "z": "ebd35200.909828",
+        "g": "f1612b28.25503",
+        "name": "",
+        "bot": "dde7575a.8506a",
+        "x": 750,
+        "y": 640,
+        "wires": [
+            [
+                "9397606c.ad2ca8",
+                "a1c63f44.42031"
+            ]
+        ]
+    },
+    {
+        "id": "8b7dadc7.e25fc",
+        "type": "function",
+        "z": "ebd35200.909828",
+        "g": "f1612b28.25503",
+        "name": "Your Options",
+        "func": "msg.payload = {chatId : msg.payload.chatId, type : 'message', content : msg.payload};\n\nvar opts = {\n  reply_to_message_id: msg.payload.messageId,\n  reply_markup: JSON.stringify({\n    \"inline_keyboard\": [[\n                {\n                    \"text\": \"Option 1\",\n                    \"callback_data\": \"op1\"            \n                }, \n                {\n                    \"text\": \"Option 2\",\n                    \"callback_data\": \"op2\"             \n                }],\n                [{\n                    \"text\": \"Option 3\",\n                    \"callback_data\": \"op3\"           \n                }]\n            ]\n  })\n};\n\nmsg.payload.content = 'Choose wisely?';\nmsg.payload.options = opts;\n\nreturn [ msg ];\n",
+        "outputs": "1",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 570,
+        "y": 640,
+        "wires": [
+            [
+                "8655a19c.6bc16"
+            ]
+        ]
+    },
+    {
+        "id": "d38e39c9.f538b8",
+        "type": "function",
+        "z": "ebd35200.909828",
+        "g": "f1612b28.25503",
+        "name": "Evaluate Callback Query",
+        "func": "// This is a sample switch to demonstrate the handling of the user input.\n// This is the message id of the initial keyboard that is simply exchanged by a new one.\nvar messageId = flow.get(\"msgid\");\n// This is a sample of how to send a second inline keyboard with modified buttons\nif(msg.payload.content === \"op1\"){\n    var reply_markup = JSON.stringify({\n        \"inline_keyboard\": [[\n                    {\n                        \"text\": \"Option 1.1\",\n                        \"callback_data\": \"op11\"            \n                    }],\n                    [ {\n                        \"text\": \"Option 1.2\",\n                        \"callback_data\": \"op12\"               \n                    }]\n                ]\n      });\n    \n    var options = {\n        chat_id : msg.payload.chatId,\n        reply_markup : reply_markup,\n        message_id : messageId\n    };\n    msg.payload.type = 'editMessageText';\n    msg.payload.content = \"You now have these options!\\nHurry up, this message destroys itself in 5s!\";\n    msg.payload.options = options;\n\n    return [msg, {payload: \"Option 1 was chosen\"}];\n}\n\nif(msg.payload.content === \"op2\"){\n    var options1 = {\n        chat_id : msg.payload.chatId,\n        parse_mode : \"html\",\n        message_id : messageId\n    };\n    msg.payload.type = 'editMessageText';\n    msg.payload.content = '<b>OK - Option 2</b>';\n    msg.payload.options = options1;\n    // Remove message ID, so this message won't be deleted\n    flow.set(\"msgid\", undefined);\n    \n    return [msg, null ,{payload: \"Option 2 was chosen\"}];\n}\n\n// If message is not op1 or op2 no return is called, so we got here.\n\nvar show_alert = false; // you can set this to true to open a dialog with the answer in the client.\n// msg.payload.content contains the callback data from the keyboard.\n// You may change this value here.\nmsg.payload.options = show_alert;\nreturn msg;",
+        "outputs": 3,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 710,
+        "y": 740,
+        "wires": [
+            [
+                "2f1f52de.76b2ee",
+                "a1c63f44.42031"
+            ],
+            [
+                "dfd811b2.774b9"
+            ],
+            [
+                "dfd811b2.774b9"
+            ]
+        ]
+    },
+    {
+        "id": "2f1f52de.76b2ee",
+        "type": "telegram sender",
+        "z": "ebd35200.909828",
+        "g": "f1612b28.25503",
+        "name": "answer callback query",
+        "bot": "dde7575a.8506a",
+        "x": 1260,
+        "y": 720,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "51f425c0.3c9d5c",
+        "type": "function",
+        "z": "ebd35200.909828",
+        "g": "f1612b28.25503",
+        "name": "delete",
+        "func": "// This is a sample switch to demonstrate the handling of the user input.\n// Hide the keyboard and forget the messageId\nmsg.payload.type = 'deleteMessage';\nmsg.payload.content = flow.get(\"msgid\");\nflow.set(\"msgid\", undefined);\n\n// You could also send a editMessageReplyMarkup with an empty reply_markup here\nreturn [ msg ];",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 1090,
+        "y": 680,
+        "wires": [
+            [
+                "2f1f52de.76b2ee"
+            ]
+        ]
+    },
+    {
+        "id": "9397606c.ad2ca8",
+        "type": "change",
+        "z": "ebd35200.909828",
+        "g": "f1612b28.25503",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "msgid",
+                "pt": "flow",
+                "to": "payload.sentMessageId",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 960,
+        "y": 640,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a1c63f44.42031",
+        "type": "trigger",
+        "z": "ebd35200.909828",
+        "g": "f1612b28.25503",
+        "name": "",
+        "op1": "",
+        "op2": "",
+        "op1type": "nul",
+        "op2type": "pay",
+        "duration": "5",
+        "extend": true,
+        "units": "s",
+        "reset": "",
+        "bytopic": "all",
+        "topic": "topic",
+        "outputs": 1,
+        "x": 950,
+        "y": 680,
+        "wires": [
+            [
+                "51f425c0.3c9d5c"
+            ]
+        ]
+    },
+    {
+        "id": "d572ecbe.d04c2",
+        "type": "comment",
+        "z": "ebd35200.909828",
+        "g": "f1612b28.25503",
+        "name": "Menu",
+        "info": "Send the Bot \"menu\"",
+        "x": 190,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "dfd811b2.774b9",
+        "type": "debug",
+        "z": "ebd35200.909828",
+        "g": "f1612b28.25503",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 970,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "e6c53b82.ab713",
+        "type": "inject",
+        "z": "ebd35200.909828",
+        "g": "f1612b28.25503",
+        "name": "Send Menu",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"chatId\":0}",
+        "payloadType": "json",
+        "x": 230,
+        "y": 640,
+        "wires": [
+            [
+                "5f715514.d7a6ec"
+            ]
+        ]
+    },
+    {
+        "id": "5f715514.d7a6ec",
+        "type": "change",
+        "z": "ebd35200.909828",
+        "g": "f1612b28.25503",
+        "name": "SetID",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload.chatId",
+                "pt": "msg",
+                "to": "#:(HDD)::telegramID",
+                "tot": "flow"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 390,
+        "y": 640,
+        "wires": [
+            [
+                "8b7dadc7.e25fc"
+            ]
+        ]
+    },
+    {
+        "id": "dde7575a.8506a",
+        "type": "telegram bot",
+        "z": "",
+        "botname": "ei23",
+        "usernames": "",
+        "chatids": "",
+        "baseapiurl": "",
+        "updatemode": "polling",
+        "pollinterval": "300",
+        "usesocks": false,
+        "sockshost": "",
+        "socksport": "6667",
+        "socksusername": "anonymous",
+        "sockspassword": "",
+        "bothost": "",
+        "localbotport": "8443",
+        "publicbotport": "8443",
+        "privatekey": "",
+        "certificate": "",
+        "useselfsignedcertificate": false,
+        "sslterminated": false,
+        "verboselogging": false
+    }
+]
