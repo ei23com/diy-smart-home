@@ -1,0 +1,15 @@
+  adguardhome:
+    image: adguard/adguardhome
+    container_name: adguardhome
+    ports:
+      - 53:53/tcp
+      - 53:53/udp
+      - 784:784/udp
+      - 853:853/tcp
+      - 3001:3000/tcp # Check for conflicting Ports!
+      - 2229:80/tcp # Check for conflicting Ports!
+      # - 443:443/tcp # Check for conflicting Ports!
+    volumes:
+      - ./volumes/adguardhome/workdir:/opt/adguardhome/work
+      - ./volumes/adguardhome/confdir:/opt/adguardhome/conf
+    restart: unless-stopped

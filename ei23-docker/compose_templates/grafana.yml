@@ -1,0 +1,30 @@
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:latest
+    restart: unless-stopped
+    user: "0"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./volumes/grafana/data:/var/lib/grafana
+      - ./volumes/grafana/log:/var/log/grafana
+      - ./volumes/grafana/provisioning:/etc/grafana/provisioning
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.grafana.rule=Host(`grafana.example.com`)
+      - traefik.http.services.grafana.loadbalancer.server.port=3000
+      - traefik.http.routers.grafana.entrypoints=web-secured
+      - traefik.http.routers.grafana.tls=true
+      - traefik.http.routers.grafana.tls.certresolver=letsEncrypt
+    environment:
+      - GF_PATHS_DATA=/var/lib/grafana
+      - GF_PATHS_LOGS=/var/log/grafana
+    # Uncomment this if open access is wanted
+      # - GF_AUTH_ANONYMOUS_ENABLED=true
+      # - GF_AUTH_ANONYMOUS_ORG_NAME=org
+      # - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
+      # - GF_SECURITY_ALLOW_EMBEDDING=true
+    logging:
+      options:
+        max-size: "5m"
+        max-file: "3"

@@ -1,0 +1,346 @@
+[
+    {
+        "id": "8b5d08a1074f8398",
+        "type": "inject",
+        "z": "5e697133.dca328",
+        "name": "Pi Resource Statistics",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "60",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "",
+        "topic": "",
+        "payloadType": "date",
+        "x": 1330,
+        "y": 400,
+        "wires": [
+            [
+                "f84b78e64eee9304",
+                "3630b14de9d87a49",
+                "b0e9aef26bb2fb84",
+                "0d7b42c4b0cba9e7",
+                "ba1d807c44de78a9",
+                "4f41aa03a32bc781"
+            ]
+        ]
+    },
+    {
+        "id": "f84b78e64eee9304",
+        "type": "exec",
+        "z": "5e697133.dca328",
+        "command": "vcgencmd measure_temp",
+        "addpay": false,
+        "append": "",
+        "useSpawn": "",
+        "timer": "",
+        "name": "RPi Temp.",
+        "x": 1590,
+        "y": 400,
+        "wires": [
+            [
+                "53caf420cffa1392"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "3630b14de9d87a49",
+        "type": "exec",
+        "z": "5e697133.dca328",
+        "command": "top -d 1 -b -n2 | grep \"CPU(s)\"|tail -n 1 | awk '{print 100-$8}'",
+        "addpay": false,
+        "append": "",
+        "useSpawn": "",
+        "timer": "",
+        "name": "CPU Load",
+        "x": 1590,
+        "y": 460,
+        "wires": [
+            [
+                "609f1c10fe243204"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "b0e9aef26bb2fb84",
+        "type": "exec",
+        "z": "5e697133.dca328",
+        "command": "free | grep Speicher | awk '{print 100*($3)/$2}'",
+        "addpay": false,
+        "append": "",
+        "useSpawn": "",
+        "timer": "",
+        "name": "RAM Usage",
+        "x": 1590,
+        "y": 520,
+        "wires": [
+            [
+                "07b6f4ad50bd2596"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "0d7b42c4b0cba9e7",
+        "type": "exec",
+        "z": "5e697133.dca328",
+        "command": "df -h",
+        "addpay": false,
+        "append": "",
+        "useSpawn": "",
+        "timer": "",
+        "name": "Disk Usage",
+        "x": 1590,
+        "y": 580,
+        "wires": [
+            [
+                "3cc19aee966c0e97"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "ba1d807c44de78a9",
+        "type": "exec",
+        "z": "5e697133.dca328",
+        "command": "sudo vcgencmd measure_volts",
+        "addpay": false,
+        "append": "",
+        "useSpawn": "",
+        "timer": "",
+        "name": "RaspPi Volt",
+        "x": 1590,
+        "y": 640,
+        "wires": [
+            [
+                "9342eaf4f262886f"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "4f41aa03a32bc781",
+        "type": "vcgencmd",
+        "z": "5e697133.dca328",
+        "name": "",
+        "fullPath": "/usr/bin/vcgencmd",
+        "command": "get_throttled",
+        "codec": "H264",
+        "clock": "core",
+        "voltage": "core",
+        "memory": "gpu",
+        "videoOutput": "0",
+        "separateMsg": false,
+        "x": 1600,
+        "y": 700,
+        "wires": [
+            [
+                "b845e333638ac325"
+            ]
+        ]
+    },
+    {
+        "id": "53caf420cffa1392",
+        "type": "function",
+        "z": "5e697133.dca328",
+        "name": "CPU Temp",
+        "func": "var temp = parseFloat(msg.payload.substring(5,9))\nnode.status({text: temp});\nflow.set(\"CPUTemp\", temp);\nreturn {payload: temp};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 1770,
+        "y": 400,
+        "wires": [
+            [
+                "c06be3c35dc7c0a7"
+            ]
+        ]
+    },
+    {
+        "id": "609f1c10fe243204",
+        "type": "function",
+        "z": "5e697133.dca328",
+        "name": "CPU Load",
+        "func": "var cpu = parseFloat(msg.payload);\nnode.status({text: cpu});\nflow.set(\"CPULoad\", cpu);\nreturn {payload: cpu};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 1770,
+        "y": 460,
+        "wires": [
+            [
+                "f8cf24d37b392bba"
+            ]
+        ]
+    },
+    {
+        "id": "07b6f4ad50bd2596",
+        "type": "function",
+        "z": "5e697133.dca328",
+        "name": "RAM",
+        "func": "var ram = parseFloat(parseFloat(msg.payload).toFixed(1));\nnode.status({text: ram});\nflow.set(\"RAM\", ram);\nreturn {payload: ram};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 1750,
+        "y": 520,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3cc19aee966c0e97",
+        "type": "function",
+        "z": "5e697133.dca328",
+        "name": "Disk",
+        "func": "var idx = msg.payload.search(\"% /\");\nvar str = msg.payload;\nif (idx >=0) {\n    str = msg.payload.substring(idx - 3, idx);\n}\nvar disk = parseFloat(str);\nnode.status({text: disk});\nmsg.payload = disk;\nflow.set(\"DISK\", disk);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 1750,
+        "y": 580,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9342eaf4f262886f",
+        "type": "function",
+        "z": "5e697133.dca328",
+        "name": "Pi Voltage",
+        "func": "var volt = parseFloat(msg.payload.substring(5,11))\nnode.status({text: volt});\nflow.set(\"PiVolt\", volt);\nreturn {payload: volt};",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1760,
+        "y": 640,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b845e333638ac325",
+        "type": "change",
+        "z": "5e697133.dca328",
+        "name": "Throttling",
+        "rules": [
+            {
+                "t": "set",
+                "p": "throttling",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1760,
+        "y": 700,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c06be3c35dc7c0a7",
+        "type": "function",
+        "z": "5e697133.dca328",
+        "name": "FAN",
+        "func": "if(msg.payload > 48) return {payload: 1};\nif(msg.payload < 44) return {payload: 0};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1910,
+        "y": 400,
+        "wires": [
+            [
+                "6f667ce78b816998"
+            ]
+        ]
+    },
+    {
+        "id": "f8cf24d37b392bba",
+        "type": "function",
+        "z": "5e697133.dca328",
+        "name": "Database",
+        "func": "msg.payload = {\n    cpu_temp: flow.get(\"CPUTemp\"), \n    cpu_load: flow.get(\"CPULoad\"), \n    ram: flow.get(\"RAM\"), \n    disk_usage: flow.get(\"DISK\"), \n    cpu_volt: flow.get(\"PiVolt\"),\n    cpu_tempLimit: (flow.get(\"throttling\").softTempLimit ? 1:0),\n    cpu_throttled: (flow.get(\"throttling\").throttled ? 1:0),\n    cpu_voltLimit: (flow.get(\"throttling\").underVoltage ? 1:0),\n    cpu_tempLimitOccured: (flow.get(\"throttling\").softTempLimitOccurred ? 1:0),\n    cpu_throttledOccured: (flow.get(\"throttling\").throttledOccurred ? 1:0),\n    cpu_voltLimitOccured: (flow.get(\"throttling\").underVoltageOccurred ? 1:0)\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1920,
+        "y": 460,
+        "wires": [
+            [
+                "047cf8dfd98d5d8d"
+            ]
+        ]
+    },
+    {
+        "id": "6f667ce78b816998",
+        "type": "rpi-gpio out",
+        "z": "5e697133.dca328",
+        "name": "",
+        "pin": "17",
+        "set": "",
+        "level": "0",
+        "freq": "",
+        "out": "out",
+        "bcm": true,
+        "x": 2040,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "047cf8dfd98d5d8d",
+        "type": "influxdb out",
+        "z": "5e697133.dca328",
+        "influxdb": "46f37806.e370b8",
+        "name": "Pi Statistics",
+        "measurement": "pi_hardware_stats",
+        "precision": "s",
+        "retentionPolicy": "",
+        "database": "",
+        "retentionPolicyV18Flux": "",
+        "org": "",
+        "bucket": "",
+        "x": 2070,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "46f37806.e370b8",
+        "type": "influxdb",
+        "hostname": "127.0.0.1",
+        "port": "8086",
+        "protocol": "http",
+        "database": "MAIN",
+        "name": "MainDB",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "1.x",
+        "credentials": {}
+    }
+]

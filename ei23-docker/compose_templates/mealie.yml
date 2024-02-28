@@ -1,0 +1,18 @@
+  mealie:
+    image: ghcr.io/mealie-recipes/mealie:nightly
+    container_name: mealie
+    ports:
+      - "9925:9000"
+    deploy:
+      resources:
+        limits:
+          memory: 1000M
+    volumes:
+      - ./volumes/mealie-data:/app/data/
+    environment:
+      - ALLOW_SIGNUP=true
+      - PUID=1000
+      - PGID=1000
+      - MAX_WORKERS=1
+      - WEB_CONCURRENCY=1
+    restart: always

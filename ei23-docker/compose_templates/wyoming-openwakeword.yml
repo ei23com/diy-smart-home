@@ -1,0 +1,9 @@
+  wyoming-openwakeword:
+    container_name: wyoming-openwakeword
+    command: --preload-model 'ok_nabu'
+    image: rhasspy/wyoming-openwakeword
+    volumes:
+      - ./volumes/wyoming/openwakeword/models:/custom
+    restart: unless-stopped
+    ports:
+      - 10400:10400

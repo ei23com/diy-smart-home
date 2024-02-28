@@ -1,0 +1,49 @@
+# /etc/traefik/traefik.yml
+
+entryPoints:
+  lan:
+    address: :80
+  web:
+    address: :591
+    http:
+      redirections:
+        entrypoint:
+          to: web-secured
+          scheme: https
+  web-secured:
+    address: :443
+
+# certificatesResolvers:
+#   letsEncrypt:
+#     acme:
+#       email: certbot@example.com
+#       storage: /letsencrypt/acme.json
+#       caserver: https://acme-staging-v02.api.letsencrypt.org/directory # this is for testing
+#       # caserver: https://acme-v02.api.letsencrypt.org/directory
+#       httpChallenge:
+#         entryPoint: web
+
+providers:
+  docker:
+    endpoint: unix:///var/run/docker.sock
+    exposedByDefault: false
+  file:
+    directory: /etc/traefik/dynamic/
+
+api:
+  insecure: true
+
+# metrics:
+#   influxDB:
+#     address: influxdb:8089
+#     protocol: udp
+#     database: traefik
+#     pushInterval: 30s
+#     addServicesLabels: false
+
+# accessLog:
+#   filePath: /etc/traefik/access.log
+#   bufferingSize: 100
+
+# log:
+#   level: DEBUG # this is for testing

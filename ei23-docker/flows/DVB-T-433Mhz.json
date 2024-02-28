@@ -1,0 +1,403 @@
+[
+    {
+        "id": "27afd0cc.1a061",
+        "type": "mqtt in",
+        "z": "b0533536.273878",
+        "name": "",
+        "topic": "home/rtl_433",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "",
+        "x": 190,
+        "y": 560,
+        "wires": [
+            [
+                "bea541c5.48b39",
+                "77fbb47d.321f8c"
+            ]
+        ]
+    },
+    {
+        "id": "bea541c5.48b39",
+        "type": "json",
+        "z": "b0533536.273878",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 350,
+        "y": 560,
+        "wires": [
+            [
+                "9b46f67a.92cf18",
+                "bf0b9159.5aa598",
+                "a561c6bf.2ee338"
+            ]
+        ]
+    },
+    {
+        "id": "77fbb47d.321f8c",
+        "type": "trigger",
+        "z": "b0533536.273878",
+        "op1": "",
+        "op2": "0",
+        "op1type": "nul",
+        "op2type": "str",
+        "duration": "2",
+        "extend": true,
+        "units": "min",
+        "reset": "",
+        "bytopic": "all",
+        "name": "wait...",
+        "x": 350,
+        "y": 660,
+        "wires": [
+            [
+                "ef324999.6414d8",
+                "17e5c45c.1df8dc"
+            ]
+        ],
+        "info": "Wenn 5 Minuten kein Signal kommt, wird der SDR Stick neu gestartet"
+    },
+    {
+        "id": "9b46f67a.92cf18",
+        "type": "rbe",
+        "z": "b0533536.273878",
+        "name": "",
+        "func": "rbe",
+        "gap": "",
+        "start": "",
+        "inout": "out",
+        "property": "payload.tristate",
+        "x": 510,
+        "y": 440,
+        "wires": [
+            [
+                "8e709d36.261988",
+                "14742af2.918d9d"
+            ]
+        ]
+    },
+    {
+        "id": "ef324999.6414d8",
+        "type": "exec",
+        "z": "b0533536.273878",
+        "command": "pidof rtl_433",
+        "addpay": false,
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "oldrc": false,
+        "name": "find",
+        "x": 490,
+        "y": 660,
+        "wires": [
+            [
+                "86443d5.8b3e5c"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "17e5c45c.1df8dc",
+        "type": "delay",
+        "z": "b0533536.273878",
+        "name": "5s",
+        "pauseType": "delay",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 490,
+        "y": 720,
+        "wires": [
+            [
+                "d20e1d92.1ef8f8"
+            ]
+        ]
+    },
+    {
+        "id": "ed1abcbe.4e5598",
+        "type": "inject",
+        "z": "b0533536.273878",
+        "name": "Start ",
+        "topic": "",
+        "payload": "",
+        "payloadType": "str",
+        "repeat": "300",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "",
+        "x": 210,
+        "y": 660,
+        "wires": [
+            [
+                "77fbb47d.321f8c"
+            ]
+        ]
+    },
+    {
+        "id": "8e709d36.261988",
+        "type": "trigger",
+        "z": "b0533536.273878",
+        "op1": "",
+        "op2": "{\"tristate\":0}",
+        "op1type": "nul",
+        "op2type": "json",
+        "duration": "2",
+        "extend": false,
+        "units": "s",
+        "reset": "",
+        "bytopic": "all",
+        "name": "reset",
+        "x": 510,
+        "y": 400,
+        "wires": [
+            [
+                "9b46f67a.92cf18"
+            ]
+        ]
+    },
+    {
+        "id": "86443d5.8b3e5c",
+        "type": "exec",
+        "z": "b0533536.273878",
+        "command": "sudo kill ",
+        "addpay": true,
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "oldrc": false,
+        "name": "kill",
+        "x": 610,
+        "y": 660,
+        "wires": [
+            [],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "d20e1d92.1ef8f8",
+        "type": "exec",
+        "z": "b0533536.273878",
+        "command": "sudo rtl_433 -F json | mosquitto_pub -u admin -P passwort -t home/rtl_433 -l",
+        "addpay": false,
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "oldrc": false,
+        "name": "Start SDR Stick",
+        "x": 640,
+        "y": 720,
+        "wires": [
+            [],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "bf0b9159.5aa598",
+        "type": "debug",
+        "z": "b0533536.273878",
+        "name": "All-433",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 540,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "a561c6bf.2ee338",
+        "type": "switch",
+        "z": "b0533536.273878",
+        "name": "",
+        "property": "payload.model",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "Fineoffset-WH0530",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 530,
+        "y": 580,
+        "wires": [
+            [
+                "7755c33a.57a67c"
+            ]
+        ]
+    },
+    {
+        "id": "bcad6796.b85ba",
+        "type": "influxdb out",
+        "z": "b0533536.273878",
+        "influxdb": "",
+        "name": "InfluxDB",
+        "measurement": "sensor",
+        "precision": "s",
+        "retentionPolicy": "",
+        "x": 840,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "7755c33a.57a67c",
+        "type": "function",
+        "z": "b0533536.273878",
+        "name": "WeatherStation",
+        "func": "msg.payload = {\n    temp: parseFloat(msg.payload.temperature_C),\n    rain: parseFloat(msg.payload.rain_mm)\n}\nflow.set(\"rain\", parseFloat(msg.payload.rain));\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 680,
+        "y": 580,
+        "wires": [
+            [
+                "bcad6796.b85ba"
+            ]
+        ]
+    },
+    {
+        "id": "14742af2.918d9d",
+        "type": "function",
+        "z": "b0533536.273878",
+        "name": "WindowContact",
+        "func": "\n// Example Data of WindowSensor\n// {\"time\":\"2020-06-10 11:48:55\",\"model\":\"Generic-Remote\",\"id\":22690,\"cmd\":10,\"tristate\":\"ZZX0XX0X00XX\"}\n// cmd:10 >> Open\n// cmd:14 >> Close\n// cmd:6 >> Battery Low\n\nconst reedArray = {\n//  433-ID:  OutputNr, Name\n    23170: {number:0, name:\"Office\"},\n    22690: {number:1, name:\"Example\"}\n  };\n    \nvar cur = reedArray[msg.payload.id];\n\nif(cur!==undefined){ // known device?\n    var outputArray = [];\n    \n    var number = cur.number;\n    var name = cur.name;\n    \n    // Empty\n    var device = {}\n    \n    // Read batteryState\n    if(flow.get(\"reed\"+number,\"HDD\")===undefined){ // If first occurance set initial state\n        device.lowbattery = false;\n    }\n    else device.lowbattery = flow.get(\"reed\"+number,\"HDD\").lowbattery\n    \n    \n    device.id = number;\n    device.name = name;\n    device.time = Date.now();\n    if(msg.payload.cmd == 10){\n        device.open = true;\n    } \n    else if (msg.payload.cmd == 14){\n        device.open = false;\n    } \n    else if (msg.payload.cmd == 6){ // Battery low\n        device.lowbattery = true;\n    }\n\n    flow.set(\"reed\"+number, device, \"HDD\");\n    outputArray[number] = {payload : device};\n    return outputArray;\n}",
+        "outputs": 2,
+        "noerr": 0,
+        "x": 680,
+        "y": 440,
+        "wires": [
+            [
+                "ba242e4.8ce03d"
+            ],
+            [
+                "72024736.fc0158"
+            ]
+        ]
+    },
+    {
+        "id": "ba242e4.8ce03d",
+        "type": "debug",
+        "z": "b0533536.273878",
+        "name": "Reed0",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 830,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "72024736.fc0158",
+        "type": "debug",
+        "z": "b0533536.273878",
+        "name": "Reed1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 830,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "153be4ed.8061d3",
+        "type": "inject",
+        "z": "b0533536.273878",
+        "name": "Example Close",
+        "topic": "",
+        "payload": "{\"time\":\"2020-06-10 11:48:55\",\"model\":\"Generic-Remote\",\"id\":22690,\"cmd\":14,\"tristate\":\"ZZX0XX0X00XX\"}",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 180,
+        "y": 380,
+        "wires": [
+            [
+                "9b46f67a.92cf18"
+            ]
+        ]
+    },
+    {
+        "id": "1c09c005.8f2888",
+        "type": "inject",
+        "z": "b0533536.273878",
+        "name": "Example Open",
+        "topic": "",
+        "payload": "{\"time\":\"2020-06-10 11:48:55\",\"model\":\"Generic-Remote\",\"id\":22690,\"cmd\":10,\"tristate\":\"ZZX0XX0X00XX\"}",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 180,
+        "y": 420,
+        "wires": [
+            [
+                "9b46f67a.92cf18"
+            ]
+        ]
+    },
+    {
+        "id": "cb91ba95.b2b55",
+        "type": "inject",
+        "z": "b0533536.273878",
+        "name": "Office Close",
+        "topic": "",
+        "payload": "{\"time\":\"2020-06-10 11:48:55\",\"model\":\"Generic-Remote\",\"id\":23170,\"cmd\":14,\"tristate\":\"ZZX0XX0X00XX\"}",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 190,
+        "y": 460,
+        "wires": [
+            [
+                "9b46f67a.92cf18"
+            ]
+        ]
+    },
+    {
+        "id": "b0babf7e.1a01c",
+        "type": "inject",
+        "z": "b0533536.273878",
+        "name": "Office Open",
+        "topic": "",
+        "payload": "{\"time\":\"2020-06-10 11:48:55\",\"model\":\"Generic-Remote\",\"id\":23170,\"cmd\":10,\"tristate\":\"ZZX0XX0X00XX\"}",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 190,
+        "y": 500,
+        "wires": [
+            [
+                "9b46f67a.92cf18"
+            ]
+        ]
+    }
+]

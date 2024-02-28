@@ -1,0 +1,36 @@
+module.exports = {
+    flowFile: "flows.json",
+    flowFilePretty: true,
+    httpStatic: '/home/pi/.node-red/public',
+    //adminAuth: { type: "credentials", users: [{ username: "NRUSERNAMEA", password: "NRPASSWORDA", permissions: "*" }] },
+    //httpNodeAuth: {user:"NRUSERNAMEU", pass:"NRPASSWORDU"},
+    uiPort: process.env.PORT || 1880,
+    logging: {
+         console: {
+             level: "info",
+             metrics: false,
+             audit: false
+         }
+     },
+    exportGlobalContextKeys: false,
+    externalModules: {
+
+    },
+    editorTheme: { projects: { enabled: false }},
+    contextStorage: {
+        default: "RAM",
+        RAM: { module: 'memory' },
+        HDD: { module: 'localfilesystem',
+                config: {
+                    flushInterval: 60
+                } 
+            }
+    },
+    functionExternalModules: true,
+    functionGlobalContext: {
+        
+    },
+    debugMaxLength: 1000,
+    mqttReconnectTime: 15000,
+    serialReconnectTime: 15000,
+}

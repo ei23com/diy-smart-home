@@ -1,0 +1,24 @@
+  plex:
+    image: linuxserver/plex:latest
+    container_name: plex
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - VERSION=docker
+      - PLEX_CLAIM= #optional
+     # - ADVERTISE_IP="https://plex.DOMAIN.de:443" # wichtig für das Https
+    # labels:
+    #   - traefik.enable=true
+    #   - traefik.http.routers.plex.rule=Host(`plex.DOMAIN.de`)
+    #   - traefik.http.routers.plex.entrypoints=web-secured
+    #   - traefik.http.routers.plex.tls.certresolver=letsEncrypt
+    #   - traefik.http.services.plex.loadbalancer.server.port=32400
+    volumes:
+      - ./volumes/plex/config:/config
+      - ./volumes/plex/tv:/tv # Ordner wo die Serien eingefügt werden
+      - ./volumes/plex/filme:/Filme #Ordner wo die Filme eingefügt werden
+      - ./volumes/plex/transcode:/trasncode
+      - ./volumes/plex/musik:/musik
+      - ./volumes/plex/fotos:/fotos
+    restart: unless-stopped

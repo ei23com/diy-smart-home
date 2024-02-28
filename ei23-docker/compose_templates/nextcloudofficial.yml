@@ -1,0 +1,65 @@
+  # Dieses Netzwerk wird benoetigt- Add this Network if not existing
+
+# networks:
+#   nextcloud:
+#     driver: bridge
+#     internal: true
+
+  # Aendere die Passwoerter - change the passwords (P4ssw0rt1 & P4ssw0rt2)
+  nextcloud:
+    image: nextcloud
+    container_name: nextcloud
+    ports:
+      - "8080:80"
+    # labels:
+    #   - traefik.enable=true
+    #   - traefik.http.routers.nextcloud.middlewares=nextcloud,nextcloud_redirect
+    #   - traefik.http.routers.nextcloud.tls.certresolver=letsEncrypt
+    #   - traefik.http.routers.nextcloud.rule=Host(`example.com`)
+    #   - traefik.http.routers.nextcloud.entrypoints=web, web-secured
+    #   - traefik.http.routers.nextcloud.tls=true
+    #   - traefik.http.middlewares.nextcloud.headers.stsSeconds=15552000
+    #   - traefik.http.middlewares.nextcloud.headers.stsPreload=true
+    #   - traefik.http.middlewares.nextcloud_redirect.redirectregex.permanent=true
+    #   - traefik.http.middlewares.nextcloud_redirect.redirectregex.regex=^https://(.*)/.well-known/(card|cal)dav
+    #   - traefik.http.middlewares.nextcloud_redirect.redirectregex.replacement=https://$${1}/remote.php/dav/
+    volumes:
+      - ./volumes/nextcloud/html:/var/www/html
+    restart: unless-stopped
+    depends_on: 
+      - nextcloud_db
+    links:
+      - nextcloud_db
+    networks:
+      - default
+      - nextcloud
+    environment:
+      - MYSQL_HOST=nextcloud_db
+      - MYSQL_PASSWORD=password1_placeholder
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - TRUSTED_PROXIES=172.18.0.0/16
+      # - OVERWRITEPROTOCOL=https
+      # - OVERWRITEHOST=example.com
+    logging:
+      options:
+        max-size: "5m"
+        max-file: "3"
+
+  nextcloud_db:
+    image: yobasystems/alpine-mariadb:10.4.17
+    container_name: nextcloud_db
+    volumes:
+      - ./volumes/nextcloud/db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=password_placeholder
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_PASSWORD=password1_placeholder
+    restart: unless-stopped
+    networks:
+      - nextcloud
+    logging:
+      options:
+        max-size: "5m"
+        max-file: "3"

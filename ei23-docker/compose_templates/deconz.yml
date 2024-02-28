@@ -1,0 +1,20 @@
+  deconz:
+    image: marthoc/deconz
+    container_name: deconz
+    restart: unless-stopped
+    ports: # Ports sind möglicherweise bereits belegt / Ports are maybe in use
+      - "8090:80"
+      # - "443:443"
+      - "5901:5900"
+    volumes:
+      - ./volumes/deconz/:/root/.local/share/dresden-elektronik/deCONZ
+    devices: # Hier können Geräte hinzugefügt werden / You can add devices here
+      - /dev/null
+    environment:
+      - DECONZ_VNC_MODE=1
+      - DECONZ_VNC_PASSWORD=password_placeholder
+      - DEBUG_INFO=1
+      - DEBUG_APS=0
+      - DEBUG_ZCL=0
+      - DEBUG_ZDP=0
+      - DEBUG_OTAU=0

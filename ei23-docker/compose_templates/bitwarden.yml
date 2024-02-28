@@ -1,0 +1,18 @@
+  bitwarden:
+    image: vaultwarden/server:latest
+    container_name: bitwarden
+    restart: unless-stopped
+    ports:
+      - 2223:80
+    # labels:
+      # - traefik.enable=true
+      # - traefik.http.routers.bitwarden.rule=Host(`example.com`)
+      # - traefik.http.routers.bitwarden.entrypoints=web-secured
+      # - traefik.http.routers.bitwarden.tls=true
+      # - traefik.http.routers.bitwarden.tls.certresolver=letsEncrypt
+    volumes:
+      - ./volumes/bitwarden:/data
+    logging:
+      options:
+        max-size: "5m"
+        max-file: "3"

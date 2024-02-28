@@ -1,0 +1,3 @@
+  nextcloud:
+    driver: bridge
+    internal: true

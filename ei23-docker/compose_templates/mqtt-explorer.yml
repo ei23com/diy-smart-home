@@ -1,0 +1,10 @@
+  mqtt-explorer:
+    container_name: mqtt-explorer
+    image: smeagolworms4/mqtt-explorer
+    restart: unless-stopped
+    ports:
+      - 4000:4000
+    volumes:
+      - ./volumes/mqtt-explorer/data:/mosquitto/data
+      - ./volumes/mqtt-explorer/log:/mqtt-explorer/log
+      - ./volumes/mqtt-explorer/config:/mqtt-explorer/config
