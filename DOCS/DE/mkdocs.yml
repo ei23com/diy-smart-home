@@ -1,0 +1,80 @@
+site_name: Docs | Smart Home Server by ei23.de
+nav:
+  - Smart Home Server:
+    - Los gehts: index.md
+    - Installation & erster Start: install.md
+    - Programme installieren & anpassen (Docker-Compose): docker-compose.md
+    - ei23 Dashboard anpassen: ei23-dashboard.md
+    - Backup & Restore: backuprestore.md
+    - Häufige Fragen (FAQ): faq.md
+    - Weitere Fragen?: 'https://ei23.de/donate'
+  - Programme:
+    - Home Assinstant: homeassistant.md
+    - NodeRED: nodered.md
+    - Traefik: traefik.md
+    - WireguardVPN: wireguard.md
+    - Nextcloud: nextcloud.md
+    - Vaultwarden/Bitwarden: vaultwarden.md
+    - ESPHome: ESPHome.md
+    - PaperlessNGX: paperlessngx.md
+  - Hardware:
+    - Struktur: structure.md
+    - Server: server.md
+    - Edge Devices: edge-devices.md
+  - Best Practise:
+    - Akzeptanz der Mitbewohner: acceptance.md
+    - Absicherung: security.md
+    - Fernzugriff: remote-access.md
+
+
+theme:
+  name: material
+  language: de
+  logo: media/ei23.svg
+  favicon: media/favicon.png
+  palette:
+
+    # Light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: grey
+      accent: light blue
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+
+    # Dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: grey
+      accent: light blue
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+
+  features:
+    - navigation.tabs
+    - navigation.instant
+    - navigation.tabs.sticky
+  font:
+    text: Barlow
+    code: Roboto Mono
+
+extra_css:
+  - stylesheets/extra.css
+#   - stylesheets/codehilite.css
+
+extra:
+  social:
+    - icon: fontawesome/solid/globe
+      link: 'https://ei23.de'
+    - icon: fontawesome/brands/youtube
+      link: 'https://youtube.com/ei23-de'
+    - icon: fontawesome/brands/github
+      link: 'https://github.com/ei23-fxg/ei23-diy-smart-home'
+    - icon: fontawesome/brands/reddit
+      link: 'https://www.reddit.com/r/ei23/'
+    - icon: fontawesome/brands/discord
+      link: 'https://discord.gg/g88dNZq2'
+    - icon: fontawesome/brands/telegram
+      link: 'https://t.me/ei23de'
