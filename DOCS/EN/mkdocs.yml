@@ -1,0 +1,87 @@
+site_name: Docs | Smart Home Server by ei23.com
+nav:
+- Smart Home Server:
+  - Getting Started: index.md
+  - Installation & Initial Setup: start/install.md
+  - Installing and Customizing Programs (Docker-Compose): start/docker-compose.md
+  - Customize ei23 Dashboard: start/ei23-dashboard.md
+  - Backup & Restore: start/backuprestore.md
+  - Frequently Asked Questions (FAQ): start/faq.md
+  - More Questions?: 'https://ei23.com/donate'
+- Programs:
+  - Home Assistant: software/homeassistant.md
+  - NodeRED: software/nodered.md
+  - Traefik: software/traefik.md
+  - Wireguard VPN: software/wireguard.md
+  - Nextcloud: software/nextcloud.md
+  - Vaultwarden/Bitwarden: software/vaultwarden.md
+  - ESPHome: software/esphome.md
+  - PaperlessNGX: software/paperlessngx.md
+  - MQTT Explorer: software/mqttexplorer.md
+  - Logitech Media Server: software/lms.md
+  - Grafana: software/grafana.md
+  - InfluxDB: software/influx.md
+  - VSCode: software/vscode.md
+- Hardware:
+  - Structure: hardware/structure.md
+  - Server: hardware/server.md
+  - Edge Devices: hardware/edge-devices.md
+- Recommendations:
+  - Family Acceptance: recommendations/acceptance.md
+  - Security Measures: recommendations/security.md
+  - Remote Access: recommendations/remote-access.md
+
+theme:
+  name: material
+  language: de
+  logo: media/ei23.svg
+  favicon: media/favicon.png
+  palette:
+
+    # Light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: grey
+      accent: light blue
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+
+    # Dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: grey
+      accent: light blue
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+
+  features:
+    - navigation.tabs
+    - navigation.instant
+    - navigation.tabs.sticky
+  font:
+    text: Barlow
+    code: Roboto Mono
+
+extra_css:
+  - stylesheets/extra.css
+#   - stylesheets/codehilite.css
+
+extra_javascript:
+  - js/matomo.js
+
+extra:
+  social:
+    - icon: fontawesome/solid/globe
+      link: 'https://ei23.de'
+    - icon: fontawesome/brands/youtube
+      link: 'https://youtube.com/ei23-de'
+    - icon: fontawesome/brands/github
+      link: 'https://github.com/ei23-fxg/ei23-diy-smart-home'
+    - icon: fontawesome/brands/reddit
+      link: 'https://www.reddit.com/r/ei23/'
+    - icon: fontawesome/brands/discord
+      link: 'https://discord.gg/g88dNZq2'
+    - icon: fontawesome/brands/telegram
+      link: 'https://t.me/ei23de'
