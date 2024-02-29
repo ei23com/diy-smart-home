@@ -20,6 +20,7 @@ This is just a Github README.
 
 ## Introduction
 In 2017, I planned to install a self-built smart home system that would control some retrofit devices. There were various options to choose from, and I was unsure about which program was right for me. It was also clear that I would be running a computer 24/7, in this case a Raspberry Pi. It would have been a shame if only a single application ran on it. At that time, I had already conducted some experiments with NodeRED and appreciated the advantages of the Raspberry Pi's GPIOs.
+
 [You can watch a video about my journey back then](https://www.youtube.com/watch?v=6FkINyLcLnU)
 [![YT](https://ei23.de/bilder/YTthumbs/6FkINyLcLnU.webp)](https://www.youtube.com/watch?v=6FkINyLcLnU)
 
