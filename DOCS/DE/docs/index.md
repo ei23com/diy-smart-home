@@ -1,6 +1,6 @@
 # ei23 Smart Home Installationsskript
 
-<span style="color:red">**Die Dokumentation befindet sich gerade um Auf- und Umbau**</span>
+<span style="color:red">**Die Dokumentation befindet sich gerade um Aufbau**</span>
 
 Hi und danke für dein Interesse an der Dokumentation!
 Damit du dir schnell einen Überblick verschaffen kannst, habe ich den bisherigen Stand von meinem Smart Home Skript in einem Video:
@@ -10,7 +10,7 @@ Damit du dir schnell einen Überblick verschaffen kannst, habe ich den bisherige
 
 Zuerst zur Motivation hinter meinem Skript und seiner Veröffentlichung:
 
-Um das Jahr 2018 herum plante ich die Installation eines Smart Home Systems. Es gab verschiedene Optionen zur Auswahl, und ich war unsicher, welches Programm das Richtige für mich war. Es war auch klar, dass ich einen Computer, in diesem Fall einen Raspberry Pi, dauerhaft betreiben würde. Es wäre schade gewesen, wenn darauf nur eine einzige Anwendung laufen würde. Zu diesem Zeitpunkt hatte ich bereits einige Experimente mit NodeRED durchgeführt und die Vorteile der GPIOs des Raspberry Pi geschätzt.
+Um das Jahr 2017 herum plante ich die Installation eines Smart Home Systems. Es gab verschiedene Optionen zur Auswahl, und ich war unsicher, welches Programm das Richtige für mich war. Es war auch klar, dass ich einen Computer, in diesem Fall einen Raspberry Pi, dauerhaft betreiben würde. Es wäre schade gewesen, wenn darauf nur eine einzige Anwendung laufen würde. Zu diesem Zeitpunkt hatte ich bereits einige Experimente mit NodeRED durchgeführt und die Vorteile der GPIOs des Raspberry Pi geschätzt.
 
 Obwohl mir das [Home Assistant System](https://home-assistant.io) insgesamt gut gefiel, bedeutete die Verwendung davon, dass ich die Flexibilität eines herkömmlichen Linux-Systems aufgeben musste. Deshalb habe ich einen Kompromiss gefunden: Mein Installations-Skript übernimmt die Installation und Einrichtung aller erforderlichen Programme und Einstellungen, und wenn möglich, werden alle Programme in Docker-Containern betrieben. Dies erleichtert die Wartung und Experimente am System erheblich und bietet mehr Komfort.
 

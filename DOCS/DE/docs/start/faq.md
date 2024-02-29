@@ -1,4 +1,4 @@
-
+docker-compose.md
 ##  Wie passe ich die Startseite mit den Programmen an, kann ich eigene Programme hinzufügen?</strong>
 Ja, du kannst eigene Programme oder Netzwerkgeräte zur Startseite hinzufügen.
 Dazu musst du die Datei `/home/pi/ei23-docker/volumes/ei23/web/programs.json` zeilenweise anpassen:
@@ -13,7 +13,7 @@ Im Video erkläre ich es auch kurz: [Video zu Skript v0.9](https://www.youtube.c
 Im SSH-Terminal `bash ei23.sh` und dann "Komplettes Update" auswählen und Enter drücken. Ganz einfach.
 
 ##  Ich möchte Programme nachträglich installieren oder entfernen</strong>
-siehe [Programme Installieren](/docker-compose)
+siehe [Programme Installieren](docker-compose.md)
 
 
 ##  Programm XY funktioniert nicht, wie setze ich es ohne Neuinstallation zurück?</strong>
@@ -26,9 +26,9 @@ Home Assistant wird wie folgt zurückgesetzt:
 Sollte beispielsweise NodeRED nicht funktionieren liegt wahrscheinlich ein anderes Problem vor. Siehe "Welche Geräte und Betriebssysteme werde unterstützt?"
 
 ##  Wie kann ich einen Zigbee / ConBee 2 Stick ingegrieren oder einen USB-Stick mounten</strong>
-Da der großteil der Programme als Docker Container installiert sind, muss dafür die docker-compose.yml (unter `/home/[user]/ei23-docker/docker-compose.yml` ) bearbeitet werden.
+Da der großteil der Programme als Docker Container installiert sind, muss dafür die docker-compose.yml (unter `/home/[user]/ei23-dockerdocker-compose.md.yml` ) bearbeitet werden.
 
-Eine Beschreibung wie man Geräte (Devices) und Ordner (Volumes) des Host-Systems in einen Docker-Container einbindet, findest du hier [Programme Installieren](/docker-compose) 
+Eine Beschreibung wie man Geräte (Devices) und Ordner (Volumes) des Host-Systems in einen Docker-Container einbindet, findest du hier [Programme Installieren](docker-compose.md) 
 
 ##  Welche Geräte und Betriebssysteme werden unterstützt?</strong>
 Offiziell teste und entwickle ich mit einem Raspberry Pi 4 (min 2GB) mit einem frisch installiertem Raspberry Pi OS und dazu noch einer Virtuellem Maschine mit Debian 12 64Bit.
@@ -37,7 +37,7 @@ Dafür biete ich keine kostenlose Hilfe und Lösungen an, denn es ist und bleibt
 
 ##  Ich habe selbst ein Programm installiert, jetzt geht ein anderes nicht mehr!</strong>
 Es kann zu Portüberlagerungen kommen - beispielsweise dazu mal die docker-compose.yml (in home/pi/ei23-docker) untersuchen.
-siehe [Programme Installieren](/docker-compose)
+siehe [Programme Installieren](docker-compose.md)
 Grundsätzlich kann alles, was nicht über das Skript oder nach einer ei23 Anleitung installiert wird, zu Problemen führen und selbst dann kann es zu Problemen kommen. Hier gilt DIY!
 
 ##  Es gibt den Befehl grafana-cli nicht! / Ich finde den apache / nginx nicht im / var/www/Verzeichnis ( Befehle in Docker Containern ausführen )</strong>
@@ -82,7 +82,7 @@ Wenn Home Assistant nicht richtig startet weil beispielsweise die "automations.y
 Zunächst muss zwischen Integrationen / Frontend-Addons und Drittanbieter Programm-Addons (wie NodeRED, InfluxDB, Grafana etc.) unterscheiden werden: 
 Integrationen / Frontend-Addons können wie auch in HassIO über den [Community Store (HACS)](https://hacs.xyz/) oder manuell in den `/home/pi/ei23-docker/volumes/homeassistant/config` installiert werden.
 Wie bereits erwähnt: Das Skript ist aus der Notwendigkeit entstanden mehr Flexibilität und Anpassungsmöglichkeiten als das HassIO Betriebssystem zu bieten. HassIO nutzt für die Installation von Drittanbieter Programm-Addons den Home Assistant Supervisor. Diese Art von Addons werden auch in HassIO in der Regel als Docker Container installiert.
-Da das Skript in großen Teilen die von Funktion vom Home Assistant Supervisor übernimmt, ist dieser aus Redudanz- und Kompatiblitätsgrunden nicht enthalten, stattdessen installiert das Skript Home Assistant Core und als Supervisor dienen hier die Funktionen des Skriptes. Siehe auch [Programme Installieren](/docker-compose)
+Da das Skript in großen Teilen die von Funktion vom Home Assistant Supervisor übernimmt, ist dieser aus Redudanz- und Kompatiblitätsgrunden nicht enthalten, stattdessen installiert das Skript Home Assistant Core und als Supervisor dienen hier die Funktionen des Skriptes. Siehe auch [Programme Installieren](docker-compose.md)
 
 ##  Wie verbinde ich Home Assistant mit NodeRED?</strong>
 Das vorinstallierte Home Assistant Addon für NodeRED muss lediglich konfiguriert werden.

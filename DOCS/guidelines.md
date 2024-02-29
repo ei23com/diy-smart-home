@@ -16,8 +16,6 @@
 ## Struktur der Dokumentation
 Die aktuelle Struktur findet sich in der [mkdocs.yml](DE/mkdocs.yml) der jeweiligen Dokumentation
 
-![mkdocs.yml](DE/mkdocs.yml#nav)
-
 ---
 
 # ENG
