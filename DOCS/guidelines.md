@@ -1,21 +1,3 @@
-# ENG
-## General
-- The documentation is curated and moderated; not everything can or will be included.
-- Please create pull requests not only as outlines but in complete form.
-- Keep it simple and short, stupid. Wait, KIS ASS? ([KISS](https://en.wikipedia.org/wiki/KISS_principle))
-- Please use [Markdown](https://en.wikipedia.org/wiki/Markdown).
-- Avoid descriptions and instructions for programs that already have official documentation. If possible, provide appropriate links and keep them up to date.
-- No links to commercial websites such as Heise, CT, etc. (It seems this project is perceived as competitor. Understandable, as I usually offer partially paid instructions for free.)
-
-## Desired
-- Usecases for the script.
-- Best practices - approaches to specific requirements and issues.
-- Examples missing in program docs.
-- Suggestions for an organized documentation structure.
-
-## Documentation Structure
-The current structure can be found in the [mkdocs.yml](EN/mcdocs.yml) of the respective documentation.
-
 # DE
 ## Allgemeines
 - Die Dokumentation wird kuratiert und moderiert, nicht alles kann und wird einfließen.
@@ -32,4 +14,27 @@ The current structure can be found in the [mkdocs.yml](EN/mcdocs.yml) of the res
 - Vorschläge übersichtliche Dokumentationstruktur
 
 ## Struktur der Dokumentation
-Die aktuelle Struktur findet sich in der [mkdocs.yml](DE/mcdocs.yml) der jeweiligen Dokumentation
+Die aktuelle Struktur findet sich in der [mkdocs.yml](DE/mkdocs.yml) der jeweiligen Dokumentation
+
+![mkdocs.yml](DE/mkdocs.yml#nav)
+
+---
+
+# ENG
+## General
+- The documentation is curated and moderated; not everything can or will be included.
+- Please create pull requests not only as outlines but in complete form.
+- Keep it simple and short, stupid. Wait, KIS ASS? ([KISS](https://en.wikipedia.org/wiki/KISS_principle))
+- Please use [Markdown](https://en.wikipedia.org/wiki/Markdown).
+- Avoid descriptions and instructions for programs that already have official documentation. If possible, provide appropriate links and keep them up to date.
+- No links to commercial websites such as Heise, CT, etc. (It seems this project is perceived as competitor. Understandable, as I usually offer partially paid instructions for free.)
+
+## Desired
+- Usecases for the script.
+- Best practices - approaches to specific requirements and issues.
+- Examples missing in program docs.
+- Suggestions for an organized documentation structure.
+
+## Documentation Structure
+The current structure can be found in the [mkdocs.yml](EN/mkdocs.yml) of the respective documentation.
+

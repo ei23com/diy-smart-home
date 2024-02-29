@@ -77,7 +77,7 @@ Or reach out to the [Community](#community)
 ## Contribution
 Thanks for asking!
 
-If you want, you can pull request and edit or add doc files or edit and add [compose_templates](ei23-docker/compose_templates)
+If you want, you can pull request and edit or add doc files ([see guidelines](DOCS/guidelines.md)) or edit and add [compose_templates](ei23-docker/compose_templates)
 or any other files as well.
 If you want to have icons added for the dashboard, have a look [here](ei23-docker/volumes/ei23/web/img). Please use 128x128 PNG with transparent background.
 
