@@ -1,9 +1,10 @@
 # The ei23 DIY Smart Home
-You get a great and easy installation script for Debian or Raspberry OS with a huge amount of mostly Docker-based home automation and media software, nicely packed on a web dashboard.
-Perhaps not as easy to use as Home Assisstant OS for example, but you get significantly more options and customizability.
-You don't even have to use Home Assistant if you prefer OpenHAB or IObroker for example.
+This project is a dead-easy **installation** and **maintenance** tool for a huge amount of mostly Docker-based home automation and media software, easily accessible on a clean, slim and customizable web dashboard.
+Made for Debian and Raspberry OS, working on most architectures.
+Maybe it's not as easy to configure as the Home Assisstant OS, for example, but you get a lot more customization options and get in touch with the docker-compose.yml notation, which is also a great tool.
+And you don't even have to use Home Assistant if you prefer OpenHAB or IObroker for example. All on one system.
 
-Have fun, get smart and indipendent!
+Have fun, get smart and independent!
 
 ![ei23 Dashboard](https://ei23.de/bilder/ei23-terminal.gif)
 
@@ -49,11 +50,11 @@ The first line downloads the script (bash script) and the second line executes i
 3. Some advertising for my work and the project itself is possible
 4. And I can secretly inject malicious code on your script and create a botnet from a large number of servers... NOT! - seriously! I won't do that, or do you think i would? I'm confused... Why should i do that, should I do it? Now you're confused? Just don't make trouble! Ok back to topic xD
 
-The files are identical to ones you see here with the exeption of a uniqe USERID for downloading files from my server and automatically set LANGFILE dependent on which Newsletter you choose.
+The files are identical to ones you see here with the exeption of a uniqe USERID for downloading files from my server and automatically set LANGFILE dependent on which newsletter you choose.
 Also I won't bother you unnecessarily, if you think you can use a trash mail.
 
 ### Manual installation:
-1. Clone the Files to a Folder.
+1. Clone the files to a folder.
 2. Insert the language file of your choice (de-file.txt / en-file.txt) into ei23.sh and replace "LANGFILE_PLACEHOLDER"
 3. Install a fresh Debian / Rasbian system, login via ssh or terminal and create a user like this "useradd -m ei23" (or another name)
 4. Copy the entire "ei23-docker" folder into your users home directory (with root privileges)
@@ -63,8 +64,8 @@ Also I won't bother you unnecessarily, if you think you can use a trash mail.
 8. after you done the reboot, run "ei23", the script then will finish the installation
 
 
-- ei23 updates won't work with manual installation (USERID from Newsletter is needed)
-- you won't see a version number and will not get info about new versions (USERID from Newsletter is needed)
+- ei23 updates won't work with manual installation (USERID from newsletter is needed)
+- you won't see a version number and will not get info about new versions (USERID from newsletter is needed)
 - everything else works like normal
 
 ## Contribution
