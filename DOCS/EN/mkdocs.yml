@@ -74,11 +74,11 @@ extra_javascript:
 extra:
   social:
     - icon: fontawesome/solid/globe
-      link: 'https://ei23.de'
+      link: 'https://ei23.com'
     - icon: fontawesome/brands/youtube
       link: 'https://youtube.com/ei23-de'
     - icon: fontawesome/brands/github
-      link: 'https://github.com/ei23-fxg/ei23-diy-smart-home'
+      link: 'https://github.com/ei23com/diy-smart-home'
     - icon: fontawesome/brands/reddit
       link: 'https://www.reddit.com/r/ei23/'
     - icon: fontawesome/brands/discord

@@ -2,34 +2,34 @@ site_name: Docs | Smart Home Server by ei23.de
 nav:
   - Smart Home Server:
     - Los gehts: index.md
-    - Installation & erster Start: install.md
-    - Programme installieren & anpassen (Docker-Compose): docker-compose.md
-    - ei23 Dashboard anpassen: ei23-dashboard.md
-    - Backup & Restore: backuprestore.md
-    - Häufige Fragen (FAQ): faq.md
+    - Installation & erster Start: start/install.md
+    - Programme installieren & anpassen (Docker-Compose): start/docker-compose.md
+    - ei23 Dashboard anpassen: start/ei23-dashboard.md
+    - Backup & Restore: start/backuprestore.md
+    - Häufige Fragen (FAQ): start/faq.md
     - Weitere Fragen?: 'https://ei23.de/donate'
   - Programme:
-    - Home Assinstant: homeassistant.md
-    - NodeRED: nodered.md
-    - Traefik: traefik.md
-    - WireguardVPN: wireguard.md
-    - Nextcloud: nextcloud.md
-    - Vaultwarden/Bitwarden: vaultwarden.md
-    - ESPHome: esphome.md
-    - PaperlessNGX: paperlessngx.md
-    - MQTT-Explorer: mqttexplorer.md
-    - Logitech-Media-Server: lms.md
-    - Grafana: grafana.md
-    - InfluxDB: influx.md
-    - VSCode: vscode.md
+    - Home Assinstant: software/homeassistant.md
+    - NodeRED: software/nodered.md
+    - Traefik: software/traefik.md
+    - WireguardVPN: software/wireguard.md
+    - Nextcloud: software/nextcloud.md
+    - Vaultwarden/Bitwarden: software/vaultwarden.md
+    - ESPHome: software/esphome.md
+    - PaperlessNGX: software/paperlessngx.md
+    - MQTT-Explorer: software/mqttexplorer.md
+    - Logitech-Media-Server: software/lms.md
+    - Grafana: software/grafana.md
+    - InfluxDB: software/influx.md
+    - VSCode: software/vscode.md
   - Hardware:
-    - Struktur: structure.md
-    - Server: server.md
-    - Edge Devices: edge-devices.md
-  - Best Practise:
-    - Akzeptanz der Mitbewohner: acceptance.md
-    - Absicherung: security.md
-    - Fernzugriff: remote-access.md
+    - Struktur: hardware/structure.md
+    - Server: hardware/server.md
+    - Edge Devices: hardware/edge-devices.md
+  - Empfehlungen:
+    - Akzeptanz der Mitbewohner: recommendations/acceptance.md
+    - Absicherung: recommendations/security.md
+    - Fernzugriff: recommendations/remote-access.md
 
 
 theme:
@@ -79,7 +79,7 @@ extra:
     - icon: fontawesome/brands/youtube
       link: 'https://youtube.com/ei23-de'
     - icon: fontawesome/brands/github
-      link: 'https://github.com/ei23-fxg/ei23-diy-smart-home'
+      link: 'https://github.com/ei23com/diy-smart-home'
     - icon: fontawesome/brands/reddit
       link: 'https://www.reddit.com/r/ei23/'
     - icon: fontawesome/brands/discord
