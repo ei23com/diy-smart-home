@@ -15,7 +15,7 @@ nav:
     - WireguardVPN: wireguard.md
     - Nextcloud: nextcloud.md
     - Vaultwarden/Bitwarden: vaultwarden.md
-    - ESPHome: ESPHome.md
+    - ESPHome: esphome.md
     - PaperlessNGX: paperlessngx.md
     - MQTT-Explorer: mqttexplorer.md
     - Logitech-Media-Server: lms.md

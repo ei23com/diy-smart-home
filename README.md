@@ -57,11 +57,11 @@ Also I won't bother you unnecessarily, if you think you can use a trash mail.
 
 ### Manual installation:
 1. Clone the files to a folder.
-2. Insert the language file of your choice (de-file.txt / en-file.txt) into ei23.sh and replace "LANGFILE_PLACEHOLDER"
+2. Insert the language file of your choice (de-file.txt / en-file.txt) into [ei23.sh](ei23.sh) and replace "LANGFILE_PLACEHOLDER"
 3. Install a fresh Debian / Rasbian system, login via ssh or terminal and create a user like this "useradd -m ei23" (or another name)
 4. Copy the entire "ei23-docker" folder into your users home directory (with root privileges)
-5. Copy the ei23.sh into your user home directory
-6. run "bash ei23.sh part1"
+5. Copy the [ei23.sh](ei23.sh) into your user home directory
+6. run "bash [ei23.sh](ei23.sh) part1"
 7. follow instructions
 8. after you done the reboot, run "ei23", the script then will finish the installation
 
@@ -72,12 +72,12 @@ Also I won't bother you unnecessarily, if you think you can use a trash mail.
 
 ## Reporting issues
 Please use the [issues](https://github.com/ei23com/diy-smart-home/issues) tab to report issues or make suggestions for new features or containers.
-Or reach out to the [Community](#community)
+Or reach out to the [Community (see below)](#community)
 
 ## Contribution
 Thanks for asking!
 
-If you want, you can pull request and edit or add doc files ([see guidelines](DOCS/guidelines.md)) or edit and add [compose_templates](ei23-docker/compose_templates)
+If you want, you can pull request and edit or add doc files [(read guidelines)](DOCS/guidelines.md) or edit and add [compose_templates](ei23-docker/compose_templates)
 or any other files as well.
 If you want to have icons added for the dashboard, have a look [here](ei23-docker/volumes/ei23/web/img). Please use 128x128 PNG with transparent background.
 
@@ -86,14 +86,16 @@ I love open source projects - [here is my best of list](https://ei23.com/opensou
 Consider supporting them!
 
 ## Community
-[YouTube](https://youtube.com/ei23-de)
-[Discord](https://discord.gg/pS9cZTBUfs)
-[Telegram (DE)](https://t.me/ei23de)
-[Forum (DE)](https://forum.ei23.de/)
+[YouTube](https://youtube.com/ei23-de)<br>
+[Discord](https://discord.gg/pS9cZTBUfs)<br>
+[Telegram (DE)](https://t.me/ei23de)<br>
+[Forum (DE)](https://forum.ei23.de/)<br>
+
 
 ## Donations
-[(EN) ei23.com/donate](https://ei23.com/donate/)
-[(DE) ei23.de/donate](https://ei23.de/donate/)
+[(EN) ei23.com/donate](https://ei23.com/donate/)<br>
+[(DE) ei23.de/donate](https://ei23.de/donate/)<br>
 You can expect special percs there.
+
 
 Thanks!
