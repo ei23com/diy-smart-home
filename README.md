@@ -1,14 +1,80 @@
 # The ei23 DIY Smart Home
-Easy installation script for great open source home automation software
+You get a great, simple installation script for Debian / Rasbian with a huge amount of mostly Docker-based home automation and media software, nicely packed on a web dashboard.
+Perhaps not as easy to use as Home Assisstant OS, but with significantly more options and customizability.
+You don't even have to use Home Assistant if you prefer OpenHAB or IObroker for example.
+Have fun, get smart and indipendent!
 
-This Repository is work in progress, the script never the less is allready production ready.
-Have a look at https://ei23.com/diy-smarthome/ or https://ei23.de/diy-smarthome/ (for german readers).
-You can get the script via the newsletter.
+## What's included
+Have a look in **ei23-docker->compose_templates** and the **ei23.sh** script.
+Batteries are not included.
 
-## English Playlist
+![ei23 Dashboard](https://ei23.de/bilder/ei23-dashboard.jpg)
 
-[![English Playlist](https://img.youtube.com/vi/ENOUR6umXkY/0.jpg)](https://www.youtube.com/playlist?list=PLA4hcTFeulZcGNxLxbJdqPaHvpPjgBwHp)
+## Documentation and official Website
+Documentation and official Website can be found on [diy-smart-home.ei23.de (german)](https://diy-smart-home.ei23.de) and [diy-smart-home.ei23.com (english)](https://diy-smart-home.ei23.com)
+This is just a Github README.
 
-## German Playlist
+## Introduction
+Around the year 2017, I planned the installation of a Smart Home System. There were various options to choose from, and I was unsure about which program was right for me. It was also clear that I would be running a computer, in this case, a Raspberry Pi, permanently. It would have been a shame if only a single application ran on it. At that time, I had already conducted some experiments with NodeRED and appreciated the advantages of the Raspberry Pi's GPIOs.
 
-[![English Playlist](https://img.youtube.com/vi/ENOUR6umXkY/0.jpg)](https://www.youtube.com/playlist?list=PLA4hcTFeulZdEGwWtHhla-Xd_b8BMH5Rp)
+Although I liked the Home Assistant System overall, using it meant giving up the flexibility of a conventional Linux system. Therefore, I found a compromise: My installation script takes care of installing and configuring all necessary programs and settings, and whenever possible, all programs are run in Docker containers. This significantly simplifies system maintenance and experiments while providing more convenience.
+
+So, the script originated from the need to offer more flexibility, customization options, and programs than the Home Assistant operating system. For those who want to expand their system without running another server/Raspberry Pi or virtual machines in parallel, this script provides a solution. First, necessary and useful programs and frameworks like Docker, Python, etc., are installed on the raw Raspbian OS or Debian. Then, NodeRED is installed in its native form, not as a Docker container. This offers additional features and easier configuration without cumbersome workarounds. Additionally, Log2Ram (to reduce SD card write operations), RTL_SDR software (for example, for 433MHz sensors), and rpiClone (for easy backups) can be installed directly. The script currently automates the installation of the following programs and also includes some addons (custom extensions are, of course, possible).
+
+## System requirements
+Originally, the system was only available for the Raspberry Pi (armv7). In the meantime, however, I recommend using a 64-bit system (arm64). The script is also functional on Debian 12 and AMD64 architectures.
+(Docker images may not be available for all system architectures)
+
+If you only plan to operate home automation, a Raspberry Pi 4 with 2GB is already sufficient.
+If you also use computing-intensive, like Media / Photo Cloud apps. like Immich or Nextcloud, consider using an low-end ThinClient with an Intel i5 and 8GB RAM or something.
+
+SSD Storage may works best for you.
+Always backup important data.
+
+## Installation
+
+### Easy installation:
+The easy-installation is self-explanatory. 
+After registering for the newsletter ([ENGLISH NEWSLETTER](https://ei23.de/newsletter) / [GERMAN NEWSLETTER](https://ei23.de/newsletter)), you will receive two command lines, which you must execute via the input console or SSH. 
+The first line downloads the script (bash script) and the second line executes it.
+
+*Why Newsletter?*
+1. I can inform you quickly about security vulnerabilities and interesting new features
+2. Community building gets easier
+3. Some self-marketing for me is possible
+4. And I can secretly inject malicious code on your script and create a botnet from a large number of servers... NOT! - seriously! I won't do that, or do you think i would? I'm confused... Why should i do that, should I do it? Now you're confused? Just don't make trouble! Ok back to topic xD
+
+The files are identical to ones you see here with the exeption of a uniqe USERID for downloading files from my server and automatically set LANGFILE dependent on which Newsletter you choose.
+Also I won't bother you unnecessarily, if you think you can use a trash mail.
+
+### Manual installation:
+1. Clone the Files to a Folder.
+2. Insert the language file of your choice (de-file.txt / en-file.txt) into ei23.sh and replace "LANGFILE_PLACEHOLDER"
+3. Install a fresh Debian / Rasbian system, login via ssh or terminal and create a user like this "useradd -m ei23" (or another name)
+4. Copy the entire "ei23-docker" folder into your users home directory (with root privileges)
+5. Copy the ei23.sh into your user home directory
+6. run "bash ei23.sh part1"
+7. follow instructions
+8. after you done the reboot, run "ei23", the script then will finish the installation
+
+
+- ei23 updates won't work with manual installation (USERID from Newsletter is needed)
+- you won't see a version number and will not get info about new versions (USERID from Newsletter is needed)
+- everything else works like normal
+
+## Contribution
+If you want, you can pull request doc files (see guidelines)
+or any other files as well
+
+## Community
+[YouTube](https://youtube.com/ei23-de)
+[Discord](https://discord.gg/pS9cZTBUfs)
+[Telegram (DE)](https://t.me/ei23de)
+[Forum (DE)](https://forum.ei23.de/)
+
+## Donations
+[(EN) ei23.com/donate](https://ei23.com/donate/)
+[(DE) ei23.de/donate](https://ei23.de/donate/)
+You can expect special percs there.
+
+Thanks!

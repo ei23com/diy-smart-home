@@ -609,7 +609,7 @@ if [ -d "$DOCKERDIR" ] && [ ! -f "$FIRSTFILE" ] && [[ $1 != "part1" ]] && [[ $1 
 fi
 
 # Installation Part 2 - after reboot
-if [ -f "$FIRSTFILE" ] || [[ $1 == "part2" ]]; then
+if [[ ( -f "$FIRSTFILE" || $1 == "part2" ) && $1 != "part1" ]]; then
     dockerCompose "first"
     custom-ha-addons
     
