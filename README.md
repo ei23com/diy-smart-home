@@ -20,6 +20,7 @@ This is just a Github README.
 ## Introduction
 In 2017, I planned the installation of a Smart Home System. There were various options to choose from, and I was unsure about which program was right for me. It was also clear that I would be running a computer, in this case, a Raspberry Pi, permanently. It would have been a shame if only a single application ran on it. At that time, I had already conducted some experiments with NodeRED and appreciated the advantages of the Raspberry Pi's GPIOs.
 [You can watch a video about my journey back then](https://www.youtube.com/watch?v=6FkINyLcLnU)
+[![YT](https://ei23.de/bilder/YTthumbs/6FkINyLcLnU.webp)](https://www.youtube.com/watch?v=6FkINyLcLnU)
 
 Although I liked the Home Assistant OS overall, using it meant giving up the flexibility of a conventional Linux system. Therefore, I created a compromise: My installation script takes care of installing and configuring all necessary programs and settings, and whenever possible or the best option, all programs are run in Docker containers. This significantly simplifies system maintenance and experiments while providing more convenience.
 
