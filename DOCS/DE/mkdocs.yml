@@ -17,6 +17,11 @@ nav:
     - Vaultwarden/Bitwarden: vaultwarden.md
     - ESPHome: ESPHome.md
     - PaperlessNGX: paperlessngx.md
+    - MQTT-Explorer: mqttexplorer.md
+    - Logitech-Media-Server: lms.md
+    - Grafana: grafana.md
+    - InfluxDB: influx.md
+    - VSCode: vscode.md
   - Hardware:
     - Struktur: structure.md
     - Server: server.md
@@ -63,6 +68,9 @@ theme:
 extra_css:
   - stylesheets/extra.css
 #   - stylesheets/codehilite.css
+
+extra_javascript:
+  - js/matomo.js
 
 extra:
   social:

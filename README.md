@@ -9,13 +9,14 @@ Have fun, get smart and independent!
 ![ei23 Dashboard](https://ei23.de/bilder/ei23-terminal.gif)
 
 ## What's included
-Have a loook in the **ei23-docker/compose_templates** and the **ei23.sh** script itself.
+Have a loook in the **[compose_templates](ei23-docker/compose_templates)** and the **[ei23.sh](ei23.sh)** script itself.
 Batteries are not included.
 
 ![ei23 Dashboard](https://ei23.de/bilder/ei23-dashboard.jpg)
 
-## Documentation and official Website
+## Documentation and official website
 The Documentation and official website of the project can be found on [diy-smart-home.ei23.de (german)](https://diy-smart-home.ei23.de) and [diy-smart-home.ei23.com (english)](https://diy-smart-home.ei23.com)
+You should find much more about this project there.
 This is just a Github README.
 
 ## Introduction
@@ -69,9 +70,16 @@ Also I won't bother you unnecessarily, if you think you can use a trash mail.
 - you won't see a version number and will not get info about new versions (USERID from newsletter is needed)
 - everything else works like normal
 
+## Reporting issues
+Please use the [issues](https://github.com/ei23com/diy-smart-home/issues) tab to report issues or make suggestions for new features or containers.
+Or reach out to the [Community](#community)
+
 ## Contribution
-If you want, you can pull request doc files (see guidelines)
-or any other files as well
+Thanks for asking!
+
+If you want, you can pull request and edit or add doc files or edit and add [compose_templates](ei23-docker/compose_templates)
+or any other files as well.
+If you want to have icons added for the dashboard, have a look [here](ei23-docker/volumes/ei23/web/img). Please use 128x128 PNG with transparent background.
 
 ## Great Open Source Projects
 I love open source projects - [here is my best of list](https://ei23.com/opensource/)
