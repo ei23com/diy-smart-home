@@ -1,5 +1,5 @@
 # The ei23 DIY Smart Home
-This project is a dead-easy **installation** and **maintenance** tool for a huge amount of mostly Docker-based home automation and media software, easily accessible on a clean, slim and customizable web dashboard.
+This project is a dead-easy, clean and slim **installation** and **maintenance** tool for a huge amount of mostly Docker-based home automation and media software, easily accessible on a clean, slim and customizable web dashboard.
 Made for Debian and Raspberry OS, working on most architectures.
 Maybe it's not as easy to configure as the Home Assisstant OS, for example, but you get a lot more customization options and get in touch with the docker-compose.yml notation, which is also a great tool.
 And you don't even have to use Home Assistant if you prefer OpenHAB or IObroker for example. All on one system.
@@ -9,7 +9,7 @@ Have fun, get smart and independent!
 ![ei23 Dashboard](https://ei23.de/bilder/ei23-terminal.gif)
 
 ## What's included
-Have a look in **ei23-docker->compose_templates** and the **ei23.sh** script.
+Have a loook in the **ei23-docker/compose_templates** and the **ei23.sh** script itself.
 Batteries are not included.
 
 ![ei23 Dashboard](https://ei23.de/bilder/ei23-dashboard.jpg)
@@ -19,11 +19,11 @@ The Documentation and official website of the project can be found on [diy-smart
 This is just a Github README.
 
 ## Introduction
-In 2017, I planned the installation of a Smart Home System. There were various options to choose from, and I was unsure about which program was right for me. It was also clear that I would be running a computer, in this case, a Raspberry Pi, permanently. It would have been a shame if only a single application ran on it. At that time, I had already conducted some experiments with NodeRED and appreciated the advantages of the Raspberry Pi's GPIOs.
+In 2017, I planned to install a self-built smart home system that would control some retrofit devices. There were various options to choose from, and I was unsure about which program was right for me. It was also clear that I would be running a computer 24/7, in this case a Raspberry Pi. It would have been a shame if only a single application ran on it. At that time, I had already conducted some experiments with NodeRED and appreciated the advantages of the Raspberry Pi's GPIOs.
 [You can watch a video about my journey back then](https://www.youtube.com/watch?v=6FkINyLcLnU)
 [![YT](https://ei23.de/bilder/YTthumbs/6FkINyLcLnU.webp)](https://www.youtube.com/watch?v=6FkINyLcLnU)
 
-Although I liked the Home Assistant OS overall, using it meant giving up the flexibility of a conventional Linux system. Therefore, I created a compromise: My installation script takes care of installing and configuring all necessary programs and settings, and whenever possible or the best option, all programs are run in Docker containers. This significantly simplifies system maintenance and experiments while providing more convenience.
+Although I liked the Home Assistant OS overall, using it meant giving up the flexibility of a conventional Linux system. Therefore, I created a compromise: My installation script takes care of installing and configuring all necessary programs and settings. When possible, all programs run in Docker containers. This significantly simplifies system maintenance and experiments while providing more convenience.
 
 So, the script originated from the need to offer more flexibility, customization options, and programs than the Home Assistant operating system. For those who want to expand their system without running another server/Raspberry Pi or virtual machines in parallel, this script provides a solution. First, necessary and useful programs and frameworks like Docker, Python, etc., are installed on the raw Raspbian OS or Debian. Then, NodeRED is installed in its native form, not as a Docker container. This offers additional features and easier configuration without cumbersome workarounds. Additionally, Log2Ram (to reduce SD card write operations), RTL_SDR software (for example, for 433MHz sensors), and rpiClone (for easy backups) can be installed directly. The script currently automates the installation of those programs and also includes some addons (custom extensions are, of course, possible).
 
@@ -32,9 +32,9 @@ Originally, the system was only available for the Raspberry Pi (armv7 / 32-bit).
 (Docker images may not be available for all system architectures)
 
 If you only plan to run home automation software like [Home Assistant Docker](https://github.com/home-assistant/docker), [NodeRED](https://github.com/node-red/node-red) and a password manager like [Vaultwarden / Bitwarden](https://github.com/dani-garcia/vaultwarden), a Raspberry Pi 4 with 2GB is already sufficient.
-If you also want to run compute-intensive software like a media center or photo cloud apps like [Immich](https://immich.app/) or [Nextcloud](https://nextcloud.com/), consider using an low-end ThinClient with an Intel i5 and 8GB RAM or similar.
+If you also want to run compute-intensive software like a media center or photo cloud apps like [Immich](https://immich.app/) or [Nextcloud](https://nextcloud.com/), consider using an low-end thinclient with an Intel i5 and 8GB RAM or similar.
 
-SSD Storage may works best for you.
+SSD storage may works best for you.
 Always backup important data.
 
 ## Installation
