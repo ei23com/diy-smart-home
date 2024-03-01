@@ -24,6 +24,7 @@ nav:
     - NodeRED: software/nodered.md
     - PaperlessNGX: software/paperlessngx.md
     - Traefik: software/traefik.md
+    - Uptime Kuma: software/uptimekuma.md
     - Vaultwarden/Bitwarden: software/vaultwarden.md
     - VSCode: software/vscode.md
     - Wireguard VPN: software/wireguard.md
@@ -31,6 +32,15 @@ nav:
     - Structure: hardware/structure.md
     - Server: hardware/server.md
     - Edge Devices: hardware/edge-devices.md
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
 
 theme:
   name: material
@@ -61,13 +71,23 @@ theme:
     - navigation.tabs
     - navigation.instant
     - navigation.tabs.sticky
-  font:
-    text: Barlow
+    - content.code.copy
+    - content.code.select
+    - content.code.annotate 
+    
+  font: 
+    text: Karla
+    code: Roboto Mono
+
+  font: 
+    text: Karla
     code: Roboto Mono
 
 extra_css:
   - stylesheets/extra.css
-#   - stylesheets/codehilite.css
+
+plugins:
+  - privacy
 
 extra_javascript:
   - js/matomo.js

@@ -10,7 +10,7 @@ Depending on the architecture (armv7/arm64/amd64), it may happen that there is n
 
 It is also possible that a port is already in use. Docker routing works similarly to port forwarding on a regular router. The notation is as follows (also for volumes and devices):
 
-```
+```yaml
 Host System:Container
 ```
 
