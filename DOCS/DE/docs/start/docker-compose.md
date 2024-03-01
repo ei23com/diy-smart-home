@@ -13,14 +13,14 @@ Auch kann es vorkommen, dass ein Port bereits belegt ist.
 Das Routing für Docker funktioniert wie die Portfreigabe an einem normalen Router.
 Die Notation ist folgdermaßen (auch bei Volumes und Devices)
 
-```
+```yaml
 Hostsystem:Container
 ```
 Man so einfach beliebige Ports weiterleiten - Im Beispiel unten steht `8080` für den externen Port, also der Port am Computer ansprechbar ist. Der hintere Port ist nur Docker-intern erreichbar.
 Das funktioniert gleichermaßen für Ordner, Geräte, etc. im Hostsystem - Sehr praktisch und sicher!
 
 Beispiel:
-```
+```yaml
   image: nginx:1.24.0
   volumes:
    - ./volumes/nginx:/etc/nginx/templates
@@ -29,50 +29,4 @@ Beispiel:
   devices:
    - /dev/video0:/dev/video0
 ```
-
-Folgende Docker-Compose Templates sind an Bord:
-
-- Adguardhome
-- Awtrix
-- Bitwarden
-- Deconz
-- Domoticz
-- Duplicati
-- ei23-Dashboard
-- ESPhome
-- FHEM
-- FireflyIII
-- FreePBX-Asterisk
-- Gotify
-- Grafana
-- Grocy
-- Homeassistant-Matterserver
-- HomeAssistant
-- HomeBridge
-- Immich
-- InfluxDB
-- IObroker
-- Jellyfin
-- LogitechMediaServer
-- Mosquitto
-- Motioneye
-- Nextcloud-Official
-- NextcloudPI
-- Nginx-ProxyManager
-- NginxSSL
-- OctoPrint
-- OpenHAB
-- PaperlessNGX
-- PiHole
-- Piper
-- PLEX
-- Portainer
-- Rhasspy
-- Tasmoadmin
-- Teamspeak
-- TimescaleDB
-- Traefik
-- Uptime-Kuma
-- VSCode
-- Whisper
 

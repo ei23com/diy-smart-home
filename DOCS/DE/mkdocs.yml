@@ -13,7 +13,6 @@ nav:
     - Häufige Fragen (FAQ): start/faq.md
     - Weitere Fragen?: 'https://ei23.de/donate'
   - Software:
-    - Überblick: software/overview.md
     - ESPHome: software/esphome.md
     - Grafana: software/grafana.md
     - Home Assinstant: software/homeassistant.md
@@ -24,6 +23,8 @@ nav:
     - NodeRED: software/nodered.md
     - PaperlessNGX: software/paperlessngx.md
     - Traefik: software/traefik.md
+    - Überblick: software/overview.md
+    - Uptime Kuma: software/uptimekuma.md
     - Vaultwarden/Bitwarden: software/vaultwarden.md
     - VSCode: software/vscode.md
     - WireguardVPN: software/wireguard.md
@@ -31,6 +32,15 @@ nav:
     - Struktur: hardware/structure.md
     - Server: hardware/server.md
     - Edge Devices: hardware/edge-devices.md
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
 
 theme:
   name: material
@@ -61,13 +71,19 @@ theme:
     - navigation.tabs
     - navigation.instant
     - navigation.tabs.sticky
-  font:
-    text: Barlow
+    - content.code.copy
+    - content.code.select
+    - content.code.annotate 
+    
+  font: 
+    text: Karla
     code: Roboto Mono
 
 extra_css:
   - stylesheets/extra.css
-#   - stylesheets/codehilite.css
+
+plugins:
+  - privacy
 
 extra_javascript:
   - js/matomo.js
