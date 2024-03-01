@@ -7,7 +7,7 @@ nav:
     - Shortcuts: start/shortcuts.md
     - ei23 Dashboard anpassen: start/ei23-dashboard.md
     - Fernzugriff: start/remote-access.md
-    - Sicherheit: start/security.md
+    - Sicherheit & Monitoring: start/security-monitoring.md
     - Backup & Restore: start/backuprestore.md
     - Akzeptanz der Mitbewohner: start/acceptance.md
     - Häufige Fragen (FAQ): start/faq.md
