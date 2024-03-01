@@ -283,31 +283,32 @@ rootanduserpassword() {
         sudo passwd root
 }
 
-supervised_HomeAssistant() {
-    sudo apt-get install -y software-properties-common apparmor-utils apt-transport-https jq curl avahi-daemon ca-certificates curl dbus jq network-manager
-    printmsg "$L_INSTALLING supervised Home Assistant"
-    hassio_machine=$(whiptail --title "Device Type" --menu \
-        "Select your device" 20 78 12 -- \
-        "raspberrypi4-64" " " \
-        "raspberrypi4" " " \
-        "raspberrypi3-64" " " \
-        "raspberrypi3" " " \
-        "raspberrypi2" " " \
-        3>&1 1>&2 2>&3)
+# will be deleted soon
+# supervised_HomeAssistant() { 
+#     sudo apt-get install -y software-properties-common apparmor-utils apt-transport-https jq curl avahi-daemon ca-certificates curl dbus jq network-manager
+#     printmsg "$L_INSTALLING supervised Home Assistant"
+#     hassio_machine=$(whiptail --title "Device Type" --menu \
+#         "Select your device" 20 78 12 -- \
+#         "raspberrypi4-64" " " \
+#         "raspberrypi4" " " \
+#         "raspberrypi3-64" " " \
+#         "raspberrypi3" " " \
+#         "raspberrypi2" " " \
+#         3>&1 1>&2 2>&3)
 
-    if [ -n "$hassio_machine" ]; then
-        sudo systemctl disable ModemManager
-        sudo systemctl stop ModemManager
-        printmsg "$L_INSTALLING supervised Home Assistant for $hassio_machine"
-        curl -sL "https://raw.githubusercontent.com/Kanga-Who/home-assistant/master/supervised-installer.sh" | sudo bash -s -- -m $hassio_machine
-        clear
-        exit 0
-    else
-        clear
-        printmsg "Nothing selected"
-        exit 4
-    fi
-}
+#     if [ -n "$hassio_machine" ]; then
+#         sudo systemctl disable ModemManager
+#         sudo systemctl stop ModemManager
+#         printmsg "$L_INSTALLING supervised Home Assistant for $hassio_machine"
+#         curl -sL "https://raw.githubusercontent.com/Kanga-Who/home-assistant/master/supervised-installer.sh" | sudo bash -s -- -m $hassio_machine
+#         clear
+#         exit 0
+#     else
+#         clear
+#         printmsg "Nothing selected"
+#         exit 4
+#     fi
+# }
 
 install-rtl-sdr() {
         printstatus "$L_INSTALLING SDR-Stick"
@@ -451,10 +452,11 @@ if [[ $1 == "ha-addons" ]]; then
     exit 0
 fi
 
-if [[ $1 == "ha-supervised" ]]; then
-    supervised_HomeAssistant
-    exit 0
-fi
+# will be deleted soon
+# if [[ $1 == "ha-supervised" ]]; then
+#     supervised_HomeAssistant
+#     exit 0
+# fi
 
 if [[ $1 == "install-rtl-sdr" ]]; then
     install-rtl-sdr

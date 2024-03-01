@@ -4,33 +4,33 @@ nav:
     - Los gehts: index.md
     - Installation & erster Start: start/install.md
     - Programme installieren & anpassen (Docker-Compose): start/docker-compose.md
+    - Shortcuts: start/shortcuts.md
     - ei23 Dashboard anpassen: start/ei23-dashboard.md
+    - Fernzugriff: start/remote-access.md
+    - Sicherheit: start/security.md
     - Backup & Restore: start/backuprestore.md
+    - Akzeptanz der Mitbewohner: start/acceptance.md
     - Häufige Fragen (FAQ): start/faq.md
     - Weitere Fragen?: 'https://ei23.de/donate'
-  - Programme:
-    - Home Assinstant: software/homeassistant.md
-    - NodeRED: software/nodered.md
-    - Traefik: software/traefik.md
-    - WireguardVPN: software/wireguard.md
-    - Nextcloud: software/nextcloud.md
-    - Vaultwarden/Bitwarden: software/vaultwarden.md
+  - Software:
+    - Überblick: software/overview.md
     - ESPHome: software/esphome.md
-    - PaperlessNGX: software/paperlessngx.md
-    - MQTT-Explorer: software/mqttexplorer.md
-    - Logitech-Media-Server: software/lms.md
     - Grafana: software/grafana.md
+    - Home Assinstant: software/homeassistant.md
     - InfluxDB: software/influx.md
+    - Logitech-Media-Server: software/lms.md
+    - MQTT-Explorer: software/mqttexplorer.md
+    - Nextcloud: software/nextcloud.md
+    - NodeRED: software/nodered.md
+    - PaperlessNGX: software/paperlessngx.md
+    - Traefik: software/traefik.md
+    - Vaultwarden/Bitwarden: software/vaultwarden.md
     - VSCode: software/vscode.md
+    - WireguardVPN: software/wireguard.md
   - Hardware:
     - Struktur: hardware/structure.md
     - Server: hardware/server.md
     - Edge Devices: hardware/edge-devices.md
-  - Empfehlungen:
-    - Akzeptanz der Mitbewohner: recommendations/acceptance.md
-    - Absicherung: recommendations/security.md
-    - Fernzugriff: recommendations/remote-access.md
-
 
 theme:
   name: material
