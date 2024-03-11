@@ -1,0 +1,15 @@
+# systemd service file to start ei23-Supervisor
+
+[Unit]
+Description=ei23 Supervisor Service
+After=network.target
+
+[Service]
+ExecStart=/home/username/ei23-docker/volumes/ei23/.venv/bin/python3 /home/username/ei23-docker/volumes/ei23/ei23-supervisor.py
+User=root
+Group=root
+WorkingDirectory=/home/username/ei23-docker/volumes/ei23/
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
