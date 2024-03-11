@@ -801,12 +801,12 @@ if [ ! -d "$DOCKERDIR" ] || [[ $1 == "part1" ]]; then
     fi
 
     yml_build(){
-        if [[ "$1" == *"nextcloudofficial"* ]]; then
-            sudo sed -i '/networks:/ r '$DOCKERDIR/compose_templates/nextcloud-network.yml $DOCKERDIR/docker-compose.yml # TODO: Check for double entries
-        fi
         printf "\n\n" >> "$DOCKERDIR/docker-compose.yml"
         cat "$DOCKERDIR/compose_templates/$1.yml" >> "$DOCKERDIR/docker-compose.yml"
         sudo sed -i -e "/$1/s/\"active\":false,/\"active\":true, /" $DOCKERDIR/volumes/ei23/web/static/programs.json
+        if [[ "$1" == *"nextcloudofficial"* ]]; then
+            sudo sed -i '/# custom_networks_here/ r '$DOCKERDIR/compose_templates/nextcloud-network.yml $DOCKERDIR/docker-compose.yml
+        fi
     }
 
     for dockercontainer in awtrix bitwarden deconz domoticz duplicati ei23 esphome fhem fireflyiii gotify grafana grocy homeassistant homebridge influxdb18 influxdb2 iobroker mosquitto motioneye mqtt-explorer nextcloudofficial nextcloudpi octoprint openhab paperlessngx pihole portainer rhasspy tasmoadmin teamspeak timescaledb traefik vscode wireguard zigbee2mqtt; do
