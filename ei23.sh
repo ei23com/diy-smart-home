@@ -167,6 +167,7 @@ pipUpdate(){
 }
 
 ei23_supervisor(){
+    sudo apt-get update
     cd ~/ei23-docker/; docker-compose stop ei23; docker-compose rm -f ei23
     sudo apt-get install python3-venv -y
     sudo mkdir -p $DOCKERDIR/volumes/ei23/web/static/
