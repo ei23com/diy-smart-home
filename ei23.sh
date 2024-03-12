@@ -242,11 +242,7 @@ generate_password(){
 }
 
 buildDocs(){
-    source $DOCKERDIR/volumes/ei23/.venv/bin/activate
-    cd $DOCKERDIR/volumes/ei23/docs/
-    sudo mkdocs build 
-    deativate
-    cd ~
+    sudo bash -c 'cd /home/'$IAM'/ei23-docker/volumes/ei23/; source .venv/bin/activate; cd docs/; mkdocs build; deactivate'
 }
 
 fullUpdate() {
@@ -282,6 +278,7 @@ cleanDockerImages(){
 #     send -- "y\r"
 #     expect eof
 # EOF
+    # cd ~/ei23-docker/; docker-compose up -d --remove-orphans; cd ~
     docker image prune -a -f
     printmsg "$L_DOCKERDELETE"
 }

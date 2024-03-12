@@ -5,18 +5,22 @@ site_description: >-
   DIY Smart Home
 
 nav:
-  - Smart Home Server:
+  - ei23 Smart Home Server:
     - Los gehts: index.md
     - Installation & erster Start: start/install.md
     - Programme installieren & anpassen (Docker-Compose): start/docker-compose.md
     - Shortcuts: start/shortcuts.md
     - ei23 Dashboard anpassen: start/ei23-dashboard.md
-    - Fernzugriff: start/remote-access.md
-    - Sicherheit & Monitoring: start/security-monitoring.md
+    - Update & Upgrade: start/update.md
     - Backup & Restore: start/backuprestore.md
-    - Akzeptanz der Mitbewohner: start/acceptance.md
+    # - Changelog: https://github.com/ei23com/diy-smart-home/releases/
+    - Changelog: /start/update/#changelog
     - Häufige Fragen (FAQ): start/faq.md
     - Weitere Fragen?: 'https://ei23.de/donate'
+  - Smart Home Allgemein:
+    - Fernzugriff: start/remote-access.md
+    - Sicherheit & Monitoring: start/security-monitoring.md
+    - Akzeptanz der Mitbewohner: start/acceptance.md
   - Software:
     - ESPHome: software/esphome.md
     - Grafana: software/grafana.md
@@ -82,13 +86,12 @@ theme:
     - announce.dismiss
     - content.code.copy
     - content.code.annotate 
-    - navigation.tabs
-    - navigation.instant
-    # - navigation.tabs.sticky
-    - navigation.sections
-    - navigation.top
-    - navigation.tracking
-    - navigation.footer
+    # - navigation.tabs
+    # - navigation.instant
+    # - navigation.sections
+    # - navigation.top
+    # - navigation.tracking
+    # - navigation.footer
     - search.highlight
     - search.share
     - search.suggest

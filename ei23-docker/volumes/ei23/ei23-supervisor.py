@@ -52,8 +52,11 @@ mkdocs_directory = 'docs/site/'
 def serve_docs(filename='index.html'):
     # build docs wenn nicht vorhanden
     if not os.path.exists(mkdocs_directory):
-        print("create docs")
-        subprocess.run('cd docs/; mkdocs build', shell=True)
+        # pfad fuer root command holen
+        docs_path = subprocess.check_output(['pwd']).decode('utf-8')
+        # build docs
+        command = 'bash -c \'cd '+docs_path+'/; source .venv/bin/activate; cd docs/; mkdocs build; deactivate\''
+        subprocess.run(command, shell=True)
 
     full_path = os.path.join(mkdocs_directory, filename)
     # Überprüfe, ob der angegebene Dateiname ein Verzeichnis ist
@@ -129,12 +132,13 @@ def ip_scan():
     target_data = {'devices': []}
     try:
         # arp-scan --plain --ignoredups -l --format='${ip}\t${Name}\t${mac}\t${vendor}'
-        arp_scan_output = subprocess.check_output(['arp-scan', '--plain', '--ignoredups', '-l', '--format=${ip}\t${Name}\t${mac}\t${vendor}']).decode('utf-8')
+        arp_scan_output = subprocess.check_output(['arp-scan', '--plain', '--ignoredups', '-l', '--resolve', '--format=${ip}\t${Name}\t${mac}\t${vendor}']).decode('utf-8')
         for line in arp_scan_output.splitlines():
             parts = line.split('\t')
             if len(parts) == 4:
                 ip, host, mac, vendor = parts
                 http_status = check_http(ip)
+                print(host+" "+ip)
                 target_data['devices'].append({'ip': ip, 'host': host, 'mac': mac, 'vendor': vendor, 'http': http_status})
     except subprocess.CalledProcessError:
         # Fehler beim arp-scan Aufruf - alternativen Aufruf hier einfügen
