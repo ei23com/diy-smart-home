@@ -1,4 +1,4 @@
-  # startpage for ei23-SmartHomeServer
+  # startpage for ei23-SmartHomeServer [deprecated - is now a python server]
   ei23:
     image: nginx:alpine
     container_name: ei23
