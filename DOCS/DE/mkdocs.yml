@@ -22,18 +22,19 @@ nav:
     - Sicherheit & Monitoring: start/security-monitoring.md
     - Akzeptanz der Mitbewohner: start/acceptance.md
   - Software:
+    # - Überblick: software/overview.md
     - ESPHome: software/esphome.md
     - Grafana: software/grafana.md
     - Home Assinstant: software/homeassistant.md
     - InfluxDB: software/influx.md
-    - Logitech-Media-Server: software/lms.md
+    - Immich.app lokale Foto Cloud: software/immich.md
+    - Logitech Media Server & Squeezelite: software/lms.md
     - MQTT-Explorer: software/mqttexplorer.md
     - Nextcloud: software/nextcloud.md
     - Nginx Proxy Manager: software/nginxproxy.md
     - NodeRED: software/nodered.md
     - PaperlessNGX: software/paperlessngx.md
     - Traefik: software/traefik.md
-    - Überblick: software/overview.md
     - Uptime Kuma: software/uptimekuma.md
     - Vaultwarden/Bitwarden: software/vaultwarden.md
     - VSCode: software/vscode.md

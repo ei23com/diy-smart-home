@@ -22,12 +22,13 @@ nav:
     - Security & Monitoring: start/security-monitoring.md
     - Family Acceptance: start/acceptance.md
   - Software:
-    - Overview: software/overview.md
+    # - Overview: software/overview.md
     - ESPHome: software/esphome.md
     - Grafana: software/grafana.md
     - Home Assistant: software/homeassistant.md
     - InfluxDB: software/influx.md
-    - Logitech Media Server: software/lms.md
+    - Immich.app Local Photo Cloud: software/immich.md
+    - Logitech Media Server & Squeezelite: software/lms.md
     - MQTT Explorer: software/mqttexplorer.md
     - Nextcloud: software/nextcloud.md
     - NodeRED: software/nodered.md
