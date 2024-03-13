@@ -15,9 +15,11 @@ Batteries are not included.
 ![ei23 Dashboard](https://ei23.de/bilder/ei23-dashboard.jpg)
 
 ## Documentation and official website
-The Documentation and official website of the project can be found on [diy-smart-home.ei23.de (german)](https://diy-smart-home.ei23.de) and [diy-smart-home.ei23.com (english)](https://diy-smart-home.ei23.com)
-You should find much more about this project there.
-This is just a Github README.
+- [[DE] DOCS - diy-smart-home.ei23.de](https://diy-smart-home.ei23.de)
+- [[EN] DOCS - diy-smart-home.ei23.com](https://diy-smart-home.ei23.com)
+
+You should find much more about this project there. 
+If you want to edit pages or add stuff [read the guidelines](DOCS/guidelines.md)
 
 ## Introduction
 In 2017, I planned to install a self-built smart home system that would control some retrofit devices. There were various options to choose from, and I was unsure about which program was right for me. It was also clear that I would be running a computer 24/7, in this case a Raspberry Pi. It would have been a shame if only a single application ran on it. At that time, I had already conducted some experiments with NodeRED and appreciated the advantages of the Raspberry Pi's GPIOs.
