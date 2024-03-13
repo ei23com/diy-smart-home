@@ -171,8 +171,8 @@ ei23_supervisor(){
     cd ~/ei23-docker/; docker-compose stop ei23; docker-compose rm -f ei23
     sudo apt-get install python3-venv -y
     sudo mkdir -p $DOCKERDIR/volumes/ei23/web/static/
-    sudo mv $DOCKERDIR/volumes/ei23/web/dist/ $DOCKERDIR/volumes/ei23/web/static/dist/
-    sudo mv $DOCKERDIR/volumes/ei23/web/img/ $DOCKERDIR/volumes/ei23/web/static/img/
+    sudo mv -f $DOCKERDIR/volumes/ei23/web/dist $DOCKERDIR/volumes/ei23/web/static
+    sudo mv -f $DOCKERDIR/volumes/ei23/web/img $DOCKERDIR/volumes/ei23/web/static
     cd $DOCKERDIR/volumes/ei23/
     sudo python3 -m venv .venv
     sudo .venv/bin/pip3 install flask waitress mkdocs-material ruamel.yaml
