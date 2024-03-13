@@ -265,7 +265,7 @@ fullUpdate() {
 
 dockerUpdate(){
     cd ~/ei23-docker/
-    sudo docker-compose pull
+    sudo docker-compose pull --ignore-pull-failures
     cd ~
     dockerCompose "first"
     custom-ha-addons
