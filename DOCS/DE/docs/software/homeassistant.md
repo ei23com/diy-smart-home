@@ -20,4 +20,4 @@ Deshalb nutzen wir Home Assistant Docker.
 Bereits teilweise in [docker-compose](/start/docker-compose) beschrieben.
 
 ## Home Assistant über HTTPS absichern
-Siehe Reverse Proxy mit Traefik [Reverse Proxy mit Traefik](/software/traefik)
+Siehe Reverse Proxy mit Traefik oder Nginx - [Reverse Proxy mit Traefik](/software/traefik) [Reverse Proxy mit Nginx](/software/nginxproxy)

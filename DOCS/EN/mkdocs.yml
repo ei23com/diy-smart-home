@@ -32,6 +32,7 @@ nav:
     - Nextcloud: software/nextcloud.md
     - NodeRED: software/nodered.md
     - PaperlessNGX: software/paperlessngx.md
+    - Nginx Proxy Manager: software/nginxproxy.md
     - Traefik: software/traefik.md
     - Uptime Kuma: software/uptimekuma.md
     - Vaultwarden/Bitwarden: software/vaultwarden.md

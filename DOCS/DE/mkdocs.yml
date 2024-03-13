@@ -29,6 +29,7 @@ nav:
     - Logitech-Media-Server: software/lms.md
     - MQTT-Explorer: software/mqttexplorer.md
     - Nextcloud: software/nextcloud.md
+    - Nginx Proxy Manager: software/nginxproxy.md
     - NodeRED: software/nodered.md
     - PaperlessNGX: software/paperlessngx.md
     - Traefik: software/traefik.md
