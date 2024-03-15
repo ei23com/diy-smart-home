@@ -1,4 +1,4 @@
-# The ei23 DIY Smart Home
+# The ei23 DIY Smart Home (Server)
 This project is a dead-easy, clean and slim **installation** and **maintenance** tool for a huge amount of mostly Docker-based home automation and media software, easily accessible on a clean, slim and customizable web dashboard.
 Made for Debian and Raspberry OS, working on most architectures.
 Maybe it's not as easy to configure as the Home Assisstant OS, for example, but you get a lot more customization options and get in touch with the docker-compose.yml notation, which is also a great tool.
