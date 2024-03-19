@@ -156,6 +156,7 @@ aptUpdate(){
     sudo apt-get update -y
     sudo dpkg --configure -a
     sudo apt-get upgrade -y
+    # sudo apt-get dist-upgrade # Kernel Upgrade
 
 }
 
@@ -175,6 +176,7 @@ ei23_supervisor(){
     sudo mv -f $DOCKERDIR/volumes/ei23/web/img $DOCKERDIR/volumes/ei23/web/static
     cd $DOCKERDIR/volumes/ei23/
     sudo python3 -m venv .venv
+    sudo .venv/bin/pip3 install --upgrade pip
     sudo .venv/bin/pip3 install flask waitress mkdocs-material ruamel.yaml
     # sudo arp-scan --plain --ignoredups --resolve -l --format='${ip} ${Name} ${mac} ${vendor}'
     # move files
@@ -202,6 +204,7 @@ dockerCompose(){
         exit 0
     fi
 }
+
 
 containerStatus(){
     printmsg "Docker Container Status"

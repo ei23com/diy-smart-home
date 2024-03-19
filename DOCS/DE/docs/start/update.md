@@ -32,12 +32,63 @@ ei23 ei23upgrade
 sudo systemctl restart ei23.service
 ```
 
+#### Troubleshooting
+Ist das Dashboard nicht erreichbar, stoppt den Server mit
+```bash
+sudo systemctl stop ei23.service
+```
+
+Der Server lässt sich diesem Befehl manuell starten
+```bash
+cd ei23-docker/volumes/ei23/; sudo .venv/bin/python3 ei23-supervisor.py
+```
+Gibt es die Fehlermeldungen das beispielsweise "Flask" nicht richtig funktioniert oder fehlt, dann wurde das Python Virtual Environment nicht korrekt installiert.
+Python verlangt für Erweiterungen seit einiger Zeit ein Virutal Environment (.venv)
+[externally-managed-environments](https://packaging.python.org/en/latest/specifications/externally-managed-environments/)
+
+Das ist beispielsweise auch der Grund, warum die MKDocs Intallation seit einiger Zeit nicht korrekt funktionierte. Dies konnte ich damit beheben.
+
+Auf älteren oder 32Bit Systemen kann die Installation von python3-venv Probleme verursachen und damit auch den Start des neuen Dashboards verhindern.
+Es ist notwendig, das Paket python3-venv korrekt installiert wird
+```bash
+sudo apt-get install python3-venv -y # (1)
+ei23 ei23update 
+ei23 ei23upgrade
+sudo systemctl restart ei23.service # (2)
+```
+
+1.   Erst wenn dieser Befehl fehlerfrei ausgeführt wird, können die folgenden Befehle ausgeführt werden
+2.   Dieser Befehl startet den Server erneut. Der Server sollte nun erreichbar sein.
+
+
+Wenn das auch nicht klappt, kannst du es nochmal manuell versuchen:
+
+```bash
+sudo apt-get update
+sudo python3 -m venv .venv
+sudo su
+cd ei23-docker/volumes/ei23/
+python3 -m venv .venv
+source .venv/bin/activate
+pip3 install --upgrade pip
+pip3 install flask waitress mkdocs-material ruamel.yaml
+exit
+sudo systemctl enable ei23.service
+sudo systemctl start ei23.service
+```
+
+Damit werden dir alle Fehlermeldungen angezeigt, die bei der Installation auftreten könnten.
+Wenn das immer noch keine Abhilfe schafft, ist eine Neuinstallation vermutlich der einfachere weg.
+
+--- 
+
+
 Falls die ursprünglichen Programme nicht sichtbar sind
 ```bash
 sudo cp ei23-docker/volumes/ei23/web/programs.json ei23-docker/volumes/ei23/web/static/programs.json
 ```
-
-Falls ihr die Hostnamen in der Liste vom IP-Scan nicht seht, könnt ihr ein Update von arp-scan ausführen:
+---
+Falls die Hostnamen in der Liste vom IP-Scan nicht sichtbar sind, kann ein Update von arp-scan ausgeführt werden:
 ```bash
 sudo apt-get update
 sudo apt-get install -y build-essential autoconf automake libtool pkg-config libpcap-dev
