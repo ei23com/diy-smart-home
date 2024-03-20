@@ -1,6 +1,6 @@
 ## How to Customize the Homepage with Programs and Add Your Own Programs?
 
-Yes, you can add your own programs or network devices to the homepage. To do this, you need to modify the file `/home/pi/ei23-docker/volumes/ei23/web/programs.json` line by line. You can also find newly added programs after an update under `/home/pi/ei23-docker/volumes/ei23/web/programs_templates.json`. External pages can also be added to the dashboard, for example, the IP `192.168.0.1`:
+Yes, you can add your own programs or network devices to the homepage. To do this, you need to modify the file `/home/pi/ei23-docker/volumes/ei23/web/static/programs.json` line by line. You can also find newly added programs after an update under `/home/pi/ei23-docker/volumes/ei23/web/static/programs_templates.json`. External pages can also be added to the dashboard, for example, the IP `192.168.0.1`:
 
 ```json
 {"active":true, "port" : "", "custom_url":"http://192.168.0.1", "name": "Router", "title": "Router", "img":"img/router.png"}

@@ -29,7 +29,7 @@ sudo rsync -a $volumes/grafana/ $backuppfad/temp/volumes/grafana
 sudo rsync -a $volumes/wireguard/ $backuppfad/temp/volumes/wireguard
 sudo rsync -a $volumes/tasmoadmin/ $backuppfad/temp/volumes/tasmoadmin
 sudo rsync -a $volumes/bitwarden/ $backuppfad/temp/volumes/bitwarden
-sudo rsync -a $volumes/ei23/web/programs.json $backuppfad/temp/volumes/ei23/web/programs.json
+sudo rsync -a $volumes/ei23/web/static/programs.json $backuppfad/temp/volumes/ei23/web/static/programs.json
 sudo rsync -a --exclude '*.log*' $volumes/mosquitto/ $backuppfad/temp/volumes/mosquitto
 sudo rsync -a --exclude '*.log*' $volumes/traefik/ $backuppfad/temp/volumes/traefik
 sudo rsync -a --exclude '*.db' $volumes/pihole/ $backuppfad/temp/volumes/pihole

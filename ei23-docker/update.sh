@@ -3,6 +3,7 @@ getData(){
     wget "https://ei23.de/softwarehub/smarthome/USERID/DEVICEID/VERSIONNR/ei23.sh" -O ei23.sh
     wget "https://ei23.de/softwarehub/smarthome/USERID/DEVICEID/VERSIONNR/ei23-update.zip" -O ei23-update.zip
     sudo unzip -o ei23-update.zip -d $HOME/ei23-docker/
+    sudo systemctl stop ei23.service; sudo systemctl start ei23.service
 }
 if [[ $1 == "nodockerupdate" ]]; then
     getData

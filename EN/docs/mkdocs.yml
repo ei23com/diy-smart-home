@@ -10,23 +10,41 @@ nav:
 
 theme:
   name: material
-  language: en
+  language: de
   logo: media/ei23.svg
   favicon: media/favicon.png
   palette:
-    primary: grey
-    accent: light blue
-  features:
-    - navigation.tabs
-    - navigation.instant
-    - navigation.tabs.sticky
-  font:
+
+    # Light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: grey
+      accent: light blue
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+
+    # Dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: grey
+      accent: light blue
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+    
+  font: 
     text: Karla
     code: Roboto Mono
 
 extra_css:
-  - stylesheets/dark_theme.css
-  - stylesheets/codehilite.css
+  - stylesheets/extra.css
+
+plugins:
+  - privacy
+  - search:
+      separator: '[\s\u200b\-_,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
+  # - offline
 
 extra:
   social:
@@ -35,7 +53,9 @@ extra:
     - icon: fontawesome/brands/youtube
       link: 'https://youtube.com/ei23-de'
     - icon: fontawesome/brands/github
-      link: 'https://github.com/ei23-fxg/ei23-diy-smart-home'
+      link: 'https://github.com/ei23com/diy-smart-home'
+    - icon: fontawesome/brands/reddit
+      link: 'https://www.reddit.com/r/ei23/'
     - icon: fontawesome/brands/discord
       link: 'https://discord.gg/g88dNZq2'
     - icon: fontawesome/brands/telegram

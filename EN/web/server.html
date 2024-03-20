@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SmartHome-Server | Server</title>
+    {{ header | safe}}
+</head>
+<body>
+    <div id="app" class="bg">
+        {{ navbar | safe}}
+        <div class="content">
+            <div class="table-responsive">
+                <table class="table">
+                    <tr>
+                        <th>docker-compose.yml</th>
+                        <th>programs.json</th>
+                        <th>PORT</th>
+                        <th>NAME</th>
+                    </tr>
+                    {{ table | safe}}
+                </table>
+                <div class="white">* If marked red - please check!<br>Programs can be edited under ei23-docker/volumes/ei23/web/static/programs.json</div><br>
+                <a href="/addprograms" class="btn btn-info" style="margin-bottom: 20px;">load new templates</a>
+            </div>
+            </div>
+            {{ bottom_logo | safe}}
+    </div>
+</body>
+</html>

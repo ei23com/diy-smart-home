@@ -1,10 +1,4 @@
-  # Dieses Netzwerk wird benoetigt- Add this Network if not existing
-
-# networks:
-#   nextcloud:
-#     driver: bridge
-#     internal: true
-
+  # you may add nextcloud-network.yml content at the top
   # Aendere die Passwoerter - change the passwords (P4ssw0rt1 & P4ssw0rt2)
   nextcloud:
     image: nextcloud

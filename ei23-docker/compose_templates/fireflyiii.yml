@@ -7,7 +7,7 @@
 
 
   fireflyiii:
-    image: jc5x/firefly-iii:latest
+    image: fireflyiii/core:latest # untested
     container_name: fireflyiii
     volumes:
       - ./volumes/firefly_iii/upload:/var/www/html/storage/upload

@@ -1,8 +1,8 @@
 docker-compose.md
 ##  Wie passe ich die Startseite mit den Programmen an, kann ich eigene Programme hinzufügen?</strong>
 Ja, du kannst eigene Programme oder Netzwerkgeräte zur Startseite hinzufügen.
-Dazu musst du die Datei `/home/pi/ei23-docker/volumes/ei23/web/programs.json` zeilenweise anpassen:
-Unter `/home/pi/ei23-docker/volumes/ei23/web/programs_templates.json` findest du auch neu hinzugefügte Programme nach einem Update.
+Dazu musst du die Datei `/home/pi/ei23-docker/volumes/ei23/web/static/programs.json` zeilenweise anpassen:
+Unter `/home/pi/ei23-docker/volumes/ei23/web/static/programs_templates.json` findest du auch neu hinzugefügte Programme nach einem Update.
 Es lassen sich auch externe Seiten ins Dashboard aufnehmen - als Beispiel die IP 192.168.0.1:
 `{"active":true, "port" : "", "custom_url":"http://192.168.0.1", "name": "Router", "title": "Router", "img":"img/router.png"},`
 Achtung! Die letzte dieser Art von Zeilen darf nicht mit einem Komma enden.

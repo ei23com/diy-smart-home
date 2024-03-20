@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SmartHome-Server | LocalNet</title>
+    {{ header | safe}}
+</head>
+<body>
+    <div id="app" class="bg">
+        {{ navbar | safe}}
+        <div class="content">
+            <a href="/scan" class="btn btn-info">NETSCAN</a>
+            <div class="table-responsive">
+                <table class="table">
+                    <tr>
+                        <th>HOST</th>
+                        <th>IP</th>
+                        <th>MAC</th>
+                        <th>MANUFACTURER</th>
+                    </tr>
+                    {{ scan_result | safe}}
+                </table>
+            </div>
+            <a href="/scan" class="btn btn-info" style="margin-bottom: 20px;">NETSCAN</a>
+            {{ bottom_logo | safe}}
+        </div>
+    </div>
+</body>
+</html>

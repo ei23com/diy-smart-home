@@ -1,25 +1,23 @@
 # Home Assistant
 (Noch im Aufbau)
+
 ## Home Assistant Docker vs. Supervised Home Assistant
-Home Assistant gibt es in zwei verschiedenen Versionen:<br>
+
+Es gibt zwei Versionen von Home Assistant:<br>
 1. Home Assistant Docker<br>
-2. Supervised Home Assistant (aka. Home Assistant OS)<br>
+2. Supervised Home Assistant (auch bekannt als Home Assistant OS)<br>
 
-In diesem Skript nutzen wir Home Assistant Docker. Das hat zwar Nachteile auf der einen Seite, dafür aber deutlich mehr Vorteile auf der anderen.
-Die "Nachteile" sind, dass es keine "Addons" im Sinne Home Assistant OS gibt und man Hardware über die [docker-compose.yml](start/docker-compose) konfigurieren muss. Dazu muss man allerdings direkt erwähnen, dass die Addons technisch nichts anderes sind vorkonfigurierte Docker Container. Der Supervisor übernimmt lediglich einiges der Konfiguration.
-Dafür bietet dieses Skript die [docker-compose Templates](start/docker-compose), welches die Konfiguration auch einfach ermöglicht.
-Das [Einbinden von Hardware](#hardware) ist mit ein paar Anweisungen außerdem nicht komplitziert
+In diesem Skript verwenden wir Home Assistant Docker. Das hat zwar Nachteile auf der einen Seite, bietet jedoch auf der anderen Seite deutlich mehr Vorteile. Die "Nachteile" beinhalten das Fehlen von "Addons" im Sinne von Home Assistant OS und die notwendige Konfiguration von Hardware über die [docker-compose.yml](/start/docker-compose). Es ist wichtig zu erwähnen, dass die Addons technisch gesehen vorkonfigurierte Docker Container sind. Der Supervisor übernimmt lediglich einen Teil der Konfiguration. Dieses Skript bietet jedoch die [docker-compose Templates](/start/docker-compose), die die Konfiguration vereinfachen.
+Das [Einbinden von Hardware](#hardware) ist mit ein paar Anweisungen außerdem nicht kompliziert.
 
-Der Nachteil vom Home Assistant OS ist: Gibt es ein "Addon" nicht für das Home Assistant OS, ist man darauf angewiesen, dass die Entwickler oder die Community ein Solches erstellen.
-Die Anzahl der verfügbaren Docker Images hingegen ist unverhältnismäßig größer und das ist der wohl größte Vorteil. Außerdem ist so gar nicht sehr schwierig eigene Docker Images zu erstellen oder notfalls nativ Programme auf dem Linux Host Betriebsystem zu installieren. Die Installation von Software auf dem Host System empfehle ich aber nur eingeschränkt.
+Ein Nachteil von Home Assistant OS ist, dass wenn ein "Addon" nicht für Home Assistant OS verfügbar ist, man darauf angewiesen ist, dass die Entwickler oder die Community ein solches erstellen. Die Anzahl der verfügbaren Docker Images hingegen ist unverhältnismäßig größer, was einen großen Vorteil darstellt. Außerdem ist es nicht sehr schwierig, eigene Docker Images zu erstellen oder notfalls native Programme auf dem Linux-Host-Betriebssystem zu installieren. Die Installation von Software auf dem Host-System wird jedoch nur eingeschränkt empfohlen.
 
-Es gibt hin und wieder ein Missverständnis, dass die Docker Version vom Home Assistant die Version sei, die weniger Möglichkeiten bietet. Das ist nur der Fall, wenn man nicht weiß wie man sie richtig ausschöpft.
-Tatsächlich schränkt das Home Assistant OS aus Gründen der Nutzerfreundlichkeit diese Möglichkeiten aktiv ein. Oder man bei Apple agen würde "think different" ;-)
+Es gibt gelegentlich ein Missverständnis, dass die Docker-Version von Home Assistant weniger Möglichkeiten bietet. Das ist nur der Fall, wenn man nicht weiß, wie man sie richtig nutzt. Tatsächlich schränkt Home Assistant OS diese Möglichkeiten aus Gründen der Nutzerfreundlichkeit aktiv ein. Oder man könnte es bei Apple ausdrücken: "think different" ;-)
 
-Darum nutzen wir Home Assistant Docker.
+Deshalb nutzen wir Home Assistant Docker.
 
-## Einbiden von Hardware
-Bereits Teilweise in [docker-compose](start/docker-compose) beschrieben.
+## Einbinden von Hardware
+Bereits teilweise in [docker-compose](/start/docker-compose) beschrieben.
 
 ## Home Assistant über HTTPS absichern
-Siehe Reverse Proxy mit Traefik [Reverse Proxy mit Traefik](software/traefik)
+Siehe Reverse Proxy mit Traefik oder Nginx - [Reverse Proxy mit Traefik](/software/traefik) [Reverse Proxy mit Nginx](/software/nginxproxy)

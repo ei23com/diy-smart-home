@@ -1,247 +1,43 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>SmartHome-Server</title>
-    <link href="dist/bootstrap.min.css" rel="stylesheet">
-    <link href="dist/karla.css" rel="stylesheet">
-    <script src="dist/jquery-3.5.1.min.js"></script>
-    <style>
-        .item {
-            width: 280px;
-            height: 90px;
-            margin: 20px;
-            -webkit-box-flex: 0;
-            -ms-flex: 0 0 280px;
-            flex: 0 0 280px;
-            /* background-image: -webkit-gradient(linear, left top, right top, from(hsla(0, 0%, 60%, 0.3)), to(hsla(0, 0%, 10%, 1)));
-            background-image: linear-gradient(-90deg, hsla(0, 0%, 60%, 0.3), hsla(0, 0%, 10%, 1)); */
-            border-radius: 10px;
-            padding: 15px;
-            padding-right: 15px;
-            padding-right: 15px;
-            padding-right: 55px;
-            color: #fff;
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
-            -webkit-box-align: center;
-            -ms-flex-align: center;
-            align-items: center;
-            border: 1pt solid #ffffff;
-            background-clip: padding-box;
-        }
-
-        #app #list,
-        #app main {
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
-        }
-
-        #app #list,
-        #app main {
-            padding: 30px 10px;
-            -webkit-box-pack: center;
-            -ms-flex-pack: center;
-            justify-content: center;
-            -webkit-box-align: center;
-            -ms-flex-align: center;
-            align-items: center;
-            -webkit-box-flex: 1;
-            -ms-flex: 1;
-            flex: 1;
-            position: relative;
-            -ms-flex-wrap: wrap;
-            flex-wrap: wrap;
-            -ms-flex-line-pack: center;
-            align-content: center;
-            list-style: none;
-            margin: 0;
-        }
-
-        #app .content {
-            -webkit-box-flex: 1;
-            -ms-flex-positive: 1;
-            flex-grow: 1;
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
-            -webkit-box-orient: vertical;
-            -webkit-box-direction: normal;
-            -ms-flex-direction: column;
-            flex-direction: column;
-        }
-
-        #app {
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
-            -webkit-box-orient: vertical;
-            -webkit-box-direction: normal;
-            -ms-flex-direction: column;
-            flex-direction: column;
-        }
-
-        #app {
-            min-height: 100vh;
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-position: bottom;
-        }
-
-        .white {
-            fill: #ffffff;
-            color: #ffffff;
-            text-decoration: none;
-        }
-
-        #logo {
-            width: 80px;
-            height: 80px;
-            transition: 1s ease;
-            animation: 2s ease-out rotate;
-        }
-
-        #logo:hover {
-            transform: rotate(-180deg);
-        }
-
-        @keyframes rotate {
-            0% {
-                transform: rotate(-360deg);
-            }
-
-            100% {
-                transform: rotate(0deg);
-            }
-        }
-
-
-        .app-icon {
-            max-width: 60px;
-            margin-right: 15px;
-        }
-
-        .bg {
-            background-color: #424242;
-            background-image: url("img/ei23.svg");
-        }
-
-        .blink {
-            text-align: center;
-            color: #fff;
-            /* font-size: small; */
-            animation: blinker 0.6s linear infinite;
-            /* padding-top: 10px; */
-        }
-
-        .smallblink {
-            text-align: center;
-            color: #fff;
-            font-size: small;
-        }
-
-        @keyframes blinker {
-            50% {
-                opacity: 0;
-            }
-        }
-    </style>
-    <link rel="icon" href="dist/cropped-favicon-32x32.png" sizes="32x32" />
-    <link rel="icon" href="dist/cropped-favicon-192x192.png" sizes="192x192" />
-    <link rel="apple-touch-icon-precomposed" href="dist/cropped-favicon-180x180.png" />
-    <meta name="msapplication-TileImage" content="dist/cropped-favicon-270x270.png" />
-    <script>
-        document.addEventListener('click', function (event) {
-            var target = event.target;
-            if (target.tagName.toLowerCase() == 'a') {
-                var port = target.getAttribute('href').match(/^:(\d+)(.*)/);
-                if (port) {
-                    target.href = port[2];
-                    target.port = port[1];
-                }
-            }
-        }, false);
-        // create Programlist
-        let request_json = new XMLHttpRequest();
-        request_json.open('GET', 'programs.json');
-        request_json.responseType = 'json';
-        request_json.send();
-        let programs_html = "";
-        request_json.onload = function () {
-            const programs = request_json.response.programs;
-            for (var progs in programs) {
-                var program = programs[progs];
-                let link = window.location.protocol + '//' + window.location.hostname + ':' + program.port;
-                link = program.custom_url==="" ? link : program.custom_url;
-                if(program.custom_url==="https") link = "https:" + '//' + window.location.hostname + ':' + program.port;
-                if(program.active) {
-                    programs_html += '<section class="item-container">' +
-                    '<a title="' + program.name + ' - ' + program.title + '" class="white" href="' + link + '" target="_blank" style="text-decoration: none;">' +
-                    '<div class="item">' +
-                    '<img class="app-icon" src="' + program.img + '">' +
-                    '<div class="details">' +
-                    '<div class="title white">' + program.name + '</div>' +
-                    '<small>' + program.title + '</small>' +
-                    '</div>' +
-                    '</div>' +
-                    '</a>' +
-                    '</section>';
-                }
-            }
-            document.getElementById("main").innerHTML = programs_html;
-        };
-    </script>
+        {{ header | safe}}
 </head>
-
 <body>
-
     <div id="app" class="bg">
+        {{ navbar | safe}}
         <div class="content">
-            <main id="main"></main>
-            <a href="https://ei23.de" class="white"
-                style="text-decoration: none; text-align: center; padding-bottom: 20px;"><svg id="logo"
-                    viewBox="0 0 500 500">
-                    <path class="white"
-                        d="m346.75 445.89c-0.2-3.3 0.1-19.6-13.1-34.2-8.6-9.5-20-16.8-34.3-21.6 12.8-4.4 22.5-11 29-19.8s9.8-19.3 9.8-31.4c0-19.4-8.5-35.2-25.4-47.6-16.2-12.1-37.3-18.2-63.2-18.2-25.2 0-45.5 5.5-61 16.4-16.5 11.9-25.9 29.4-28.3 52.7h45c4.4-20.1 19.7-30.2 46.1-30.2 13.8 0 24 3 30.7 9.1s10 13.9 10 23.6-3.9 17.5-11.6 23.4-18.5 8.9-32.3 8.9h-26.9v33.8h31.2c16.5 0 28.5 2.9 36.1 8.7s11.4 13.9 11.4 24.2-4.2 18.8-12.5 25.4c-13.5 10.8-30.9 9.8-37.5 9.8-98.6 0-173.1-91.2-173.1-190.2s80.5-267.6 173.2-267.6c27.6 0 44.9 16.7 44.9 32.5 0 9.4-2.5 17.2-7.6 23.5s-13 11.5-23.9 15.7l-49.2 18.9c-9.1 3.5-17.1 7.4-24 11.8-20.5 13.1-30.7 34.1-30.7 62.9v41.1h180.9v-40h-137.2v-7c0-7.2 2.2-13 6.5-17.6s11.3-8.7 20.9-12.4l49.9-19.3c21-8.1 36.4-18.2 46.4-30.2 6.4-7.7 10.8-17.1 13.1-28.2 49.1 57.8 83.1 151.3 83.1 215.6 0 62.9-29.6 122.2-76.4 157.5z">
-                    </path>
-                </svg>
-                <div class="white">ei23.de</br>SmartHome-Server<small>
-                        <div id="version"></div>
-                        <div id="update" class="smmalblink"></div>
-                    </small></div>
-            </a>
+            <main>
+                {{ items | safe}}
+            </main>
+            {{ bottom_logo | safe}}
         </div>
     </div>
 </body>
 <script>
-    var currentversion = VERSIONNR;
-    // function getText(){
-    // read text from URL location
-    var request = new XMLHttpRequest();
-    request.open('GET', 'https://ei23.de/softwarehub/smarthome/USERID/DEVICEID/VERSIONNR/version', true);
-    request.send(null);
-    request.onreadystatechange = function () {
-        if (request.readyState === 4 && request.status === 200) {
-            var serverversion = request.response;
-            if (serverversion > currentversion) {
-                console.log("Update Available");
-                document.getElementById('version').innerHTML = "Update auf Version " + serverversion + " verfügbar!";
-                document.getElementById('version').classList.add("blink");
-                document.getElementById('update').innerHTML = "Führe ein Update mit \"bash ei23.sh\" durch.";
-            }
-            else {
-                document.getElementById('version').innerHTML = "Version " + currentversion;
-                console.log("Latest Version Installed");
+    const currentversion = VERSIONNR;
+    const userID = "USERID"
+    const deviceID = "DEVICEID"
+    if(userID.length > 6){
+        var request = new XMLHttpRequest();
+        request.open('GET', 'https://ei23.de/softwarehub/smarthome/'+userID+'/'+deviceID+'/'+currentversion+'/version', true);
+        request.send(null);
+        request.onreadystatechange = function () {
+            if (request.readyState === 4 && request.status === 200) {
+                var serverversion = request.response;
+                if (serverversion > currentversion) {
+                    console.log("Update Available");
+                    document.getElementById('version').innerHTML = "Update auf Version " + serverversion + " verfügbar!";
+                    document.getElementById('version').classList.add("blink");
+                    document.getElementById('update').innerHTML = "Führe ein Update mit \"bash ei23.sh\" durch.";
+                }
+                else {
+                    document.getElementById('version').innerHTML = "Version " + currentversion;
+                    console.log("Latest Version Installed");
+                }
             }
         }
     }
-
-
 </script>
-
 </html>
