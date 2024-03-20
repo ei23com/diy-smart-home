@@ -1,29 +1,40 @@
 site_name: Docs | Smart Home Server by ei23.de
+site_url: https://ei23.de
+site_author: Felix Grave
+site_description: >-
+  DIY Smart Home
+
 nav:
-  - Smart Home Server:
+  - ei23 Smart Home Server:
     - Los gehts: index.md
     - Installation & erster Start: start/install.md
     - Programme installieren & anpassen (Docker-Compose): start/docker-compose.md
     - Shortcuts: start/shortcuts.md
     - ei23 Dashboard anpassen: start/ei23-dashboard.md
-    - Fernzugriff: start/remote-access.md
-    - Sicherheit & Monitoring: start/security-monitoring.md
+    - Update & Upgrade: start/update.md
     - Backup & Restore: start/backuprestore.md
-    - Akzeptanz der Mitbewohner: start/acceptance.md
+    # - Changelog: https://github.com/ei23com/diy-smart-home/releases/
+    - Changelog: /start/update/#changelog
     - Häufige Fragen (FAQ): start/faq.md
     - Weitere Fragen?: 'https://ei23.de/donate'
+  - Smart Home Allgemein:
+    - Fernzugriff: start/remote-access.md
+    - Sicherheit & Monitoring: start/security-monitoring.md
+    - Akzeptanz der Mitbewohner: start/acceptance.md
   - Software:
+    # - Überblick: software/overview.md
     - ESPHome: software/esphome.md
     - Grafana: software/grafana.md
     - Home Assinstant: software/homeassistant.md
     - InfluxDB: software/influx.md
-    - Logitech-Media-Server: software/lms.md
+    - Immich.app lokale Foto Cloud: software/immich.md
+    - Logitech Media Server & Squeezelite: software/lms.md
     - MQTT-Explorer: software/mqttexplorer.md
     - Nextcloud: software/nextcloud.md
+    - Nginx Proxy Manager: software/nginxproxy.md
     - NodeRED: software/nodered.md
     - PaperlessNGX: software/paperlessngx.md
     - Traefik: software/traefik.md
-    - Überblick: software/overview.md
     - Uptime Kuma: software/uptimekuma.md
     - Vaultwarden/Bitwarden: software/vaultwarden.md
     - VSCode: software/vscode.md
@@ -33,6 +44,10 @@ nav:
     - Server: hardware/server.md
     - Edge Devices: hardware/edge-devices.md
 
+repo_name: ei23com/diy-smart-home
+repo_url: https://github.com/ei23com/diy-smart-home
+copyright: by ei23.de
+
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
@@ -41,6 +56,8 @@ markdown_extensions:
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.superfences
+  - attr_list
+  - md_in_html
 
 theme:
   name: material
@@ -68,12 +85,18 @@ theme:
         name: Switch to light mode
 
   features:
-    - navigation.tabs
-    - navigation.instant
-    - navigation.tabs.sticky
+    - announce.dismiss
     - content.code.copy
-    - content.code.select
     - content.code.annotate 
+    # - navigation.tabs
+    # - navigation.instant
+    # - navigation.sections
+    # - navigation.top
+    # - navigation.tracking
+    # - navigation.footer
+    - search.highlight
+    - search.share
+    - search.suggest
     
   font: 
     text: Karla
@@ -84,6 +107,11 @@ extra_css:
 
 plugins:
   - privacy
+  - search:
+      separator: '[\s\u200b\-_,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
+  - minify:
+      minify_html: true
+  # - offline
 
 extra_javascript:
   - js/matomo.js

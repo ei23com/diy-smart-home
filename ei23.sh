@@ -144,39 +144,50 @@ nextcloud-upgrade(){
 }
 
 installPackages(){
-    # Samba Settings
-    # echo "samba-common samba-common/workgroup string  WORKGROUP" | sudo debconf-set-selections
-    # echo "samba-common samba-common/dhcp boolean true" | sudo debconf-set-selections
-    # echo "samba-common samba-common/do_debconf boolean true" | sudo debconf-set-selections
-    # sudo apt-get install -y samba samba-common samba-common-bin winbind minidlna
-    sudo apt-get install -y arp-scan autoconf build-essential cmake curl rsync expect ffmpeg gcc git htop imagemagick imagemagick-doc jq libcurl4-openssl-dev libfftw3-dev libimage-exiftool-perl libtool libusb-1.0 mkdocs mosquitto-clients mpg123 ncdu ncftp netdiscover nmap parted pkg-config pv python3-full screen ssh sshpass sysfsutils tcpdump telnet unzip usbutils virtualenv wireguard zsh minidlna
+    sudo apt-get install -y arp-scan autoconf build-essential cmake curl rsync expect ffmpeg gcc git htop imagemagick imagemagick-doc jq libcurl4-openssl-dev libfftw3-dev libimage-exiftool-perl libtool libusb-1.0 mkdocs mosquitto-clients mpg123 ncdu ncftp netdiscover nmap parted pkg-config pv python3-full python3-venv screen ssh sshpass sysfsutils tcpdump telnet unzip usbutils virtualenv wireguard zsh minidlna
 }
 
 aptUpdate(){
     what=$1
     printstatus "$what... $L_PLEASEWAIT"
-    # sudo sed -i "s/#\$nrconf{kernelhints} = -1;/\$nrconf{kernelhints} = -1;/g" /etc/needrestart/needrestart.conf
     sudo apt -y remove needrestart
     sudo apt-get clean -y
     sudo apt-get autoremove -y
     sudo apt-get update -y
     sudo dpkg --configure -a
     sudo apt-get upgrade -y
-    # sudo apt-get install -f
-    # sudo apt-get -y full-upgrade
-    # sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 04EE7237B7D453EC 648ACFD622F3D138
-    # Home Assistant 2021.7 fix
-    # (cat /etc/apt/sources.list.d/buster-backports.list | grep -v "deb http://deb.debian.org/debian buster-backports main"); echo "deb http://deb.debian.org/debian buster-backports main" | sudo tee /etc/apt/sources.list.d/buster-backports.list
-    # sudo apt install -t buster-backports libseccomp2
+    # sudo apt-get dist-upgrade # Kernel Upgrade
+
 }
 
 pipUpdate(){
     what=$1
     printstatus "$what... $L_PLEASEWAIT"
     pip3 install --upgrade pip
-    # pip3 install ruamel.yaml
-    # sudo pip3 install mkdocs-material
     sudo apt-get install python-rpi.gpio python3-rpi.gpio -y
+}
+
+ei23_supervisor(){
+    sudo apt-get update
+    cd ~/ei23-docker/; docker-compose stop ei23; docker-compose rm -f ei23
+    sudo apt-get install python3-venv -y
+    sudo mkdir -p $DOCKERDIR/volumes/ei23/web/static/
+    sudo mv -f $DOCKERDIR/volumes/ei23/web/dist $DOCKERDIR/volumes/ei23/web/static
+    sudo mv -f $DOCKERDIR/volumes/ei23/web/img $DOCKERDIR/volumes/ei23/web/static
+    cd $DOCKERDIR/volumes/ei23/
+    sudo python3 -m venv .venv
+    sudo .venv/bin/pip3 install --upgrade pip
+    sudo .venv/bin/pip3 install flask waitress mkdocs-material ruamel.yaml
+    # sudo arp-scan --plain --ignoredups --resolve -l --format='${ip} ${Name} ${mac} ${vendor}'
+    # move files
+    cd ~
+    # replace all "username" in each line
+    sudo cp $DOCKERDIR/volumes/ei23/web/programs.json $DOCKERDIR/volumes/ei23/web/static/programs.json
+    sudo sed -i -e "s#username#$IAM#g" $DOCKERDIR/volumes/ei23/ei23.service
+    sudo mv $DOCKERDIR/volumes/ei23/ei23.service /usr/lib/systemd/system/ei23.service
+    # cd ei23-docker/volumes/ei23/; sudo .venv/bin/python3 ei23-supervisor.py
+    sudo systemctl enable ei23.service
+    sudo systemctl start ei23.service
 }
 
 dockerCompose(){
@@ -193,6 +204,7 @@ dockerCompose(){
         exit 0
     fi
 }
+
 
 containerStatus(){
     printmsg "Docker Container Status"
@@ -234,9 +246,7 @@ generate_password(){
 }
 
 buildDocs(){
-    cd $DOCKERDIR/volumes/ei23/docs
-    sudo mkdocs build
-    cd ~
+    sudo bash -c 'cd /home/'$IAM'/ei23-docker/volumes/ei23/; source .venv/bin/activate; cd docs/; mkdocs build; deactivate'
 }
 
 fullUpdate() {
@@ -258,7 +268,7 @@ fullUpdate() {
 
 dockerUpdate(){
     cd ~/ei23-docker/
-    sudo docker-compose pull
+    sudo docker-compose pull --ignore-pull-failures
     cd ~
     dockerCompose "first"
     custom-ha-addons
@@ -272,6 +282,7 @@ cleanDockerImages(){
 #     send -- "y\r"
 #     expect eof
 # EOF
+    # cd ~/ei23-docker/; docker-compose up -d --remove-orphans; cd ~
     docker image prune -a -f
     printmsg "$L_DOCKERDELETE"
 }
@@ -282,33 +293,6 @@ rootanduserpassword() {
         printmsg "$L_PASSWORDFOR root"
         sudo passwd root
 }
-
-# will be deleted soon
-# supervised_HomeAssistant() { 
-#     sudo apt-get install -y software-properties-common apparmor-utils apt-transport-https jq curl avahi-daemon ca-certificates curl dbus jq network-manager
-#     printmsg "$L_INSTALLING supervised Home Assistant"
-#     hassio_machine=$(whiptail --title "Device Type" --menu \
-#         "Select your device" 20 78 12 -- \
-#         "raspberrypi4-64" " " \
-#         "raspberrypi4" " " \
-#         "raspberrypi3-64" " " \
-#         "raspberrypi3" " " \
-#         "raspberrypi2" " " \
-#         3>&1 1>&2 2>&3)
-
-#     if [ -n "$hassio_machine" ]; then
-#         sudo systemctl disable ModemManager
-#         sudo systemctl stop ModemManager
-#         printmsg "$L_INSTALLING supervised Home Assistant for $hassio_machine"
-#         curl -sL "https://raw.githubusercontent.com/Kanga-Who/home-assistant/master/supervised-installer.sh" | sudo bash -s -- -m $hassio_machine
-#         clear
-#         exit 0
-#     else
-#         clear
-#         printmsg "Nothing selected"
-#         exit 4
-#     fi
-# }
 
 install-rtl-sdr() {
         printstatus "$L_INSTALLING SDR-Stick"
@@ -440,6 +424,11 @@ if [[ $1 == "ei23update" ]]; then
     exit 0
 fi
 
+if [[ $1 == "ei23upgrade" ]]; then
+    ei23_supervisor
+    exit 0
+fi
+
 if [[ $1 == "fullreset" ]]; then
     program="X"
     program=$2
@@ -451,12 +440,6 @@ if [[ $1 == "ha-addons" ]]; then
     custom-ha-addons
     exit 0
 fi
-
-# will be deleted soon
-# if [[ $1 == "ha-supervised" ]]; then
-#     supervised_HomeAssistant
-#     exit 0
-# fi
 
 if [[ $1 == "install-rtl-sdr" ]]; then
     install-rtl-sdr
@@ -751,6 +734,8 @@ if [ ! -d "$DOCKERDIR" ] || [[ $1 == "part1" ]]; then
     sudo unzip ei23-docker.zip -d $HOME/ei23-docker/
     sudo rm ei23-docker.zip
 
+    ei23_supervisor
+
     # pip3 -q install psutil
     # pip3 -q install feedparser
     pipUpdate $L_INSTALLING
@@ -819,9 +804,9 @@ if [ ! -d "$DOCKERDIR" ] || [[ $1 == "part1" ]]; then
     yml_build(){
         printf "\n\n" >> "$DOCKERDIR/docker-compose.yml"
         cat "$DOCKERDIR/compose_templates/$1.yml" >> "$DOCKERDIR/docker-compose.yml"
-        sudo sed -i -e "/$1/s/\"active\":false,/\"active\":true, /" $DOCKERDIR/volumes/ei23/web/programs.json
+        sudo sed -i -e "/$1/s/\"active\":false,/\"active\":true, /" $DOCKERDIR/volumes/ei23/web/static/programs.json
         if [[ "$1" == *"nextcloudofficial"* ]]; then
-            sudo sed -i '/networks:/ r '$DOCKERDIR/compose_templates/nextcloud-network.yml $DOCKERDIR/docker-compose.yml
+            sudo sed -i '/# custom_networks_here/ r '$DOCKERDIR/compose_templates/nextcloud-network.yml $DOCKERDIR/docker-compose.yml
         fi
     }
 
@@ -838,7 +823,7 @@ if [ ! -d "$DOCKERDIR" ] || [[ $1 == "part1" ]]; then
     sudo sed -i -e 's/password1_placeholder/'$(generate_password)'/' "$DOCKERDIR/docker-compose.yml" # same passwords
 
     # set new hostname
-    # sudo sed -i -e "s#HomePi#$newhostname#" $DOCKERDIR/docker-compose.yml
+    # sudo sed -i -e "s#HomePi#$newhostname#" $DOCKERDIR/docker-compose
 
     printstatus "$L_INSTALLING Docker"
     if command_exists docker; then
@@ -855,14 +840,6 @@ if [ ! -d "$DOCKERDIR" ] || [[ $1 == "part1" ]]; then
         printstatus "$L_INSTALLING docker-compose"
         sudo apt install -y docker-compose
     fi
-
-    # Set Hostname
-    # myip=$(hostname -I)
-    # thehostname=$(hostname)
-    # echo $newhostname | sudo tee /etc/hostname > /dev/null 2>&1
-    # sudo sed -i '/^127.0.1.1/ d' /etc/hosts > /dev/null 2>&1
-    # echo 127.0.1.1 $newhostname | sudo tee -a /etc/hosts > /dev/null 2>&1
-    # sudo /etc/init.d/hostname.sh > /dev/null 2>&1
 
     if (whiptail --title "$L_REBOOT" --yesno "$L_REBOOTTEXT" 20 78); then
         sudo reboot
