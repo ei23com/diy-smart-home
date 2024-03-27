@@ -164,7 +164,8 @@ def check_http(ip):
         sock = socket.create_connection((ip, 80), timeout=2)
         sock.close()
         return True
-    except (socket.timeout, ConnectionRefusedError):
+    # except (socket.timeout, ConnectionRefusedError):
+    except:
         return False
 
 
