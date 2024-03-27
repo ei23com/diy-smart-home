@@ -144,19 +144,19 @@ nextcloud-upgrade(){
 }
 
 installPackages(){
-    sudo apt-get install -y arp-scan autoconf build-essential cmake curl rsync expect ffmpeg gcc git htop imagemagick imagemagick-doc jq libcurl4-openssl-dev libfftw3-dev libimage-exiftool-perl libtool libusb-1.0 mkdocs mosquitto-clients mpg123 ncdu ncftp netdiscover nmap parted pkg-config pv python3-full python3-venv screen ssh sshpass sysfsutils tcpdump telnet unzip usbutils virtualenv wireguard zsh minidlna
+    sudo apt install -y arp-scan autoconf build-essential cmake curl rsync expect ffmpeg gcc git htop imagemagick imagemagick-doc jq libcurl4-openssl-dev libfftw3-dev libimage-exiftool-perl libtool libusb-1.0 mkdocs mosquitto-clients mpg123 ncdu ncftp netdiscover nmap parted pkg-config pv python3-full python3-venv screen ssh sshpass sysfsutils tcpdump telnet unzip usbutils virtualenv wireguard zsh minidlna
 }
 
 aptUpdate(){
     what=$1
     printstatus "$what... $L_PLEASEWAIT"
     sudo apt -y remove needrestart
-    sudo apt-get clean -y
-    sudo apt-get autoremove -y
-    sudo apt-get update -y
+    sudo apt clean -y
+    sudo apt autoremove -y
+    sudo apt update -y
     sudo dpkg --configure -a
-    sudo apt-get upgrade -y
-    # sudo apt-get dist-upgrade # Kernel Upgrade
+    sudo apt upgrade -y
+    # sudo apt dist-upgrade # Kernel Upgrade
 
 }
 
@@ -164,13 +164,13 @@ pipUpdate(){
     what=$1
     printstatus "$what... $L_PLEASEWAIT"
     pip3 install --upgrade pip
-    sudo apt-get install python-rpi.gpio python3-rpi.gpio -y
+    sudo apt install python-rpi.gpio python3-rpi.gpio -y
 }
 
 ei23_supervisor(){
-    sudo apt-get update
+    sudo apt update
     cd ~/ei23-docker/; docker-compose stop ei23; docker-compose rm -f ei23
-    sudo apt-get install python3-venv -y
+    sudo apt install python3-venv -y
     sudo mkdir -p $DOCKERDIR/volumes/ei23/web/static/
     sudo mv -f $DOCKERDIR/volumes/ei23/web/dist $DOCKERDIR/volumes/ei23/web/static
     sudo mv -f $DOCKERDIR/volumes/ei23/web/img $DOCKERDIR/volumes/ei23/web/static
@@ -515,7 +515,7 @@ else
   # if user has no sudo
   if ! sudo -v &> /dev/null; then
     echo "Please login root"
-    su -c "apt-get install sudo -y; echo '$IAM ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/010_$IAM-nopasswd; sudo adduser $IAM sudo; chown 1000:1000 /home/$IAM"
+    su -c "apt install sudo -y; echo '$IAM ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/010_$IAM-nopasswd; sudo adduser $IAM sudo; chown 1000:1000 /home/$IAM"
   else
     echo "User already has sudo rights"
   fi
@@ -613,9 +613,9 @@ fi
 # Installation Part 1 - fresh install
 if [ ! -d "$DOCKERDIR" ] || [[ $1 == "part1" ]]; then
     # install dependencies
-    sudo apt-get update
-    [ ! -x /usr/bin/sudo ] && apt-get -y update > /dev/null 2>&1 && apt-get -y install sudo
-    sudo apt-get -y install whiptail ccze net-tools
+    sudo apt update
+    [ ! -x /usr/bin/sudo ] && apt -y update > /dev/null 2>&1 && apt -y install sudo
+    sudo apt -y install whiptail ccze net-tools
     
     addaliases
     # Check for Raspberry System
