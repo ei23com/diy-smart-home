@@ -125,9 +125,7 @@ extra:
       link: 'https://youtube.com/ei23-de'
     - icon: fontawesome/brands/github
       link: 'https://github.com/ei23com/diy-smart-home'
-    - icon: fontawesome/brands/reddit
-      link: 'https://www.reddit.com/r/ei23/'
     - icon: fontawesome/brands/discord
-      link: 'https://discord.gg/g88dNZq2'
+      link: 'https://ei23.de/discord'
     - icon: fontawesome/brands/telegram
       link: 'https://t.me/ei23de'
