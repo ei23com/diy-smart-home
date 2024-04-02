@@ -655,13 +655,13 @@ if [ ! -d "$DOCKERDIR" ] || [[ $1 == "part1" ]]; then
         "motioneye" "MotionEye" OFF \
         "mqtt-explorer" "MQTT-explorer" ON \
         "nextcloudofficial" "Nextcloud" OFF \
+        "nginxproxymanger" "NGINX Proxymanager" OFF \
         "paperlessngx" "PaperlessNGX" OFF \
         "pihole" "Pihole" OFF \
         "portainer" "Portainer" ON \
-        "rhasspy" "RHASSPY" OFF \
         "tasmoadmin" "Tasmoadmin" OFF \
         "timescaledb" "Timescaledb" OFF \
-        "traefik" "Traefik SSL Proxy " ON \
+        "traefik" "Traefik SSL Proxy " OFF \
         "vscode" "VSCode ConfigEditor" ON \
         "wireguard" "Wireguard VPN-Server" OFF \
         "stufftext" "_________Native Addons" ON \
@@ -817,7 +817,7 @@ if [ ! -d "$DOCKERDIR" ] || [[ $1 == "part1" ]]; then
         fi
     }
 
-    for dockercontainer in awtrix bitwarden deconz domoticz duplicati ei23 esphome fhem fireflyiii gotify grafana grocy homeassistant homebridge influxdb18 influxdb2 iobroker mosquitto motioneye mqtt-explorer nextcloudofficial nextcloudpi octoprint openhab paperlessngx pihole portainer rhasspy tasmoadmin teamspeak timescaledb traefik vscode wireguard zigbee2mqtt; do
+    for dockercontainer in awtrix bitwarden deconz domoticz duplicati ei23 esphome fhem fireflyiii gotify grafana grocy homeassistant homebridge influxdb18 influxdb2 iobroker mosquitto motioneye mqtt-explorer nextcloudofficial nextcloudpi nginxproxymanger octoprint openhab paperlessngx pihole portainer rhasspy tasmoadmin teamspeak timescaledb traefik vscode wireguard zigbee2mqtt; do
         if [[ $MYMENU == *"${dockercontainer}"* ]]; then
             yml_build "${dockercontainer}"
         fi
