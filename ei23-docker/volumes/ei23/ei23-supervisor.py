@@ -87,6 +87,11 @@ def server():
                 table += f"{color}<td>{'&#x2705;' if program['port'] in external_ports else '&#x274C;'}</td><td>{'&#x2705;' if program['active'] else '&#x274C;'}</td><td>{program['port']}</td><td>{program['name']}</td></tr>\n"
             else:
                 table += f"<tr><td>{'&#x2705;' if program['port'] in external_ports else '&#x274C;'}</td><td>{'&#x2705;' if program['active'] else '&#x274C;'}</td><td>{program['port']}</td><td>{program['name']}</td></tr>\n"
+        table += f"<tr><td><b>Docker-Compose Ports</td><td>----</td><td>----</td><td>----</td></tr>\n"
+
+        programs = get_yaml_programs()
+        for programm_info in programs:
+            table += f"<tr><td><a href='{request.url_root.rstrip('/')}:{programm_info.port}'>{programm_info.name} ({programm_info.port})</a></td><td></td><td></td><td></td></tr>\n"
 
     return render_template('server.html', header=header, navbar=navbar, table=table, bottom_logo=bottom_logo)
 
@@ -184,6 +189,28 @@ def get_external_ports():
                 external_ports.append(external_port)
 
     return external_ports
+
+class ProgramInfo:
+    def __init__(self, name, port):
+        self.name = name
+        self.port = port
+
+def get_yaml_programs():
+    yaml = YAML(typ='safe', pure=True)
+    with open('../../docker-compose.yml', 'r') as yaml_file:
+        data = yaml.load(yaml_file)
+
+    programs = []
+    
+    for service_name, service_config in data.get('services', {}).items():
+        ports = service_config.get('ports', [])
+        for port in ports:
+            if isinstance(port, str):
+                external_port = port.split(":")[0]
+                programm_info = ProgramInfo(service_name, external_port)
+                programs.append(programm_info)
+
+    return programs
 
     
 def create_items():
