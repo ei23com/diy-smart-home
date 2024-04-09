@@ -95,7 +95,7 @@ noderedUpdate(){
     printstatus "$what Nodes $L_PLEASEWAIT"
     cd ~/.node-red/
     # Update preselected Addons
-    for addonnodes in moment node-red-contrib-boolean-logic node-red-contrib-config node-red-contrib-counter node-red-contrib-dwd-local-weather node-red-contrib-eztimer node-red-contrib-fritz node-red-contrib-ftp node-red-contrib-home-assistant-websocket node-red-contrib-ical-events node-red-contrib-influxdb node-red-contrib-looptimer2 node-red-contrib-smartmeter node-red-contrib-speedtest node-red-contrib-sunpos node-red-contrib-telegrambot node-red-contrib-time-range-switch node-red-contrib-timerswitch node-red-contrib-ui-level node-red-contrib-vcgencmd node-red-dashboard node-red-node-email node-red-node-pi-gpio node-red-node-ping node-red-node-random node-red-node-serialport node-red-node-smooth node-red-contrib-postgresql; do
+    for addonnodes in moment node-red-contrib-boolean-logic node-red-contrib-config node-red-contrib-counter node-red-contrib-dwd-local-weather node-red-contrib-eztimer node-red-contrib-fritz node-red-contrib-ftp node-red-contrib-home-assistant-websocket node-red-contrib-ical-events node-red-contrib-influxdb node-red-contrib-looptimer2 node-red-contrib-smartmeter node-red-contrib-sunpos node-red-contrib-telegrambot node-red-contrib-time-range-switch node-red-contrib-timerswitch node-red-contrib-ui-level node-red-contrib-vcgencmd node-red-dashboard node-red-node-email node-red-node-pi-gpio node-red-node-ping node-red-node-random node-red-node-serialport node-red-node-smooth node-red-contrib-postgresql; do
         printstatus "$what node ${addonnodes}"
         npm $NOLOGNODE install --no-audit --no-update-notifier --no-fund --save --save-prefix="~" --production ${addonnodes}@latest
     done
@@ -150,7 +150,7 @@ nextcloud-upgrade(){
 }
 
 installPackages(){
-    sudo apt-get install -y arp-scan autoconf build-essential cmake curl rsync expect ffmpeg gcc git htop imagemagick imagemagick-doc jq libcurl4-openssl-dev libfftw3-dev libimage-exiftool-perl libtool libusb-1.0 mkdocs mosquitto-clients mpg123 ncdu ncftp netdiscover nmap parted pkg-config pv python3-full python3-venv screen ssh sshpass sysfsutils tcpdump telnet unzip usbutils virtualenv wireguard zsh minidlna
+    sudo apt-get install -y arp-scan autoconf build-essential cmake curl rsync expect ffmpeg gcc git htop imagemagick imagemagick-doc jq libcurl4-openssl-dev libfftw3-dev libimage-exiftool-perl libtool libusb-1.0 mkdocs mosquitto-clients mpg123 ncdu ncftp netdiscover nmap parted pkg-config pv python3-full python3-venv screen ssh sshpass sysfsutils tcpdump telnet ufw unzip usbutils virtualenv wireguard zsh minidlna
 }
 
 aptUpdate(){
@@ -175,7 +175,7 @@ pipUpdate(){
 
 ei23_supervisor(){
     sudo apt-get update
-    cd ~/ei23-docker/; docker-compose stop ei23; docker-compose rm -f ei23
+    docker stop ei23; cd ~/ei23-docker/; docker-compose rm -f ei23
     sudo apt-get install python3-venv -y
     sudo mkdir -p $DOCKERDIR/volumes/ei23/web/static/
     sudo mv -f $DOCKERDIR/volumes/ei23/web/dist $DOCKERDIR/volumes/ei23/web/static
@@ -198,7 +198,7 @@ ei23_supervisor(){
 
 dockerCompose(){
     cd $DOCKERDIR
-    if ! docker-compose up -d; then 
+    if ! docker-compose --env-file ./env/* up -d; then 
         printwarn "$L_COMPOSE_ERROR"
         exit 1
     fi
@@ -664,9 +664,10 @@ if [ ! -d "$DOCKERDIR" ] || [[ $1 == "part1" ]]; then
         "traefik" "Traefik SSL Proxy " OFF \
         "vscode" "VSCode ConfigEditor" ON \
         "wireguard" "Wireguard VPN-Server" OFF \
-        "stufftext" "_________Native Addons" ON \
+        "stufftext" "_________Extras" ON \
         "log2ram" "Log2RAM (SD-Card)" OFF \
         "nonodered" "No-NodeRED" OFF \
+        "nodocker" "No-Docker" OFF \
         "rpiclone" "RPI-clone" OFF \
         "sdr" "SDR DVB-T Stick" OFF \
         3>&1 1>&2 2>&3)
@@ -742,11 +743,7 @@ if [ ! -d "$DOCKERDIR" ] || [[ $1 == "part1" ]]; then
 
     ei23_supervisor
 
-    # pip3 -q install psutil
-    # pip3 -q install feedparser
     pipUpdate $L_INSTALLING
-    # sudo sed -i '/\[global\]/a name resolve order = hosts wins bcast' /etc/samba/smb.conf
-        
 
     # RTL-SDR
     if [[ $MYMENU == *"sdr"* ]]; then
@@ -808,47 +805,56 @@ if [ ! -d "$DOCKERDIR" ] || [[ $1 == "part1" ]]; then
         sudo rm -r rpi-clone
     fi
 
-    yml_build(){
-        printf "\n\n" >> "$DOCKERDIR/docker-compose.yml"
-        cat "$DOCKERDIR/compose_templates/$1.yml" >> "$DOCKERDIR/docker-compose.yml"
-        sudo sed -i -e "/$1/s/\"active\":false,/\"active\":true, /" $DOCKERDIR/volumes/ei23/web/static/programs.json
-        if [[ "$1" == *"nextcloudofficial"* ]]; then
-            sudo sed -i '/# custom_networks_here/ r '$DOCKERDIR/compose_templates/nextcloud-network.yml $DOCKERDIR/docker-compose.yml
-        fi
-    }
+    if [[ $MYMENU != *"nodocker"* ]]; then
+        yml_build(){
+            printf "\n\n" >> "$DOCKERDIR/docker-compose.yml"
+            cat "$DOCKERDIR/compose_templates/$1.yml" >> "$DOCKERDIR/docker-compose.yml"
+            sudo sed -i -e "/$1/s/\"active\":false,/\"active\":true, /" $DOCKERDIR/volumes/ei23/web/static/programs.json
+            if [[ "$1" == *"nextcloudofficial"* ]]; then
+                sudo sed -i '/# custom_networks_here/ r '$DOCKERDIR/compose_templates/nextcloud-network.yml $DOCKERDIR/docker-compose.yml
+            fi
+        }
 
-    for dockercontainer in awtrix bitwarden deconz domoticz duplicati ei23 esphome fhem fireflyiii gotify grafana grocy homeassistant homebridge influxdb18 influxdb2 iobroker mosquitto motioneye mqtt-explorer nextcloudofficial nextcloudpi nginxproxymanger octoprint openhab paperlessngx pihole portainer rhasspy tasmoadmin teamspeak timescaledb traefik vscode wireguard zigbee2mqtt; do
-        if [[ $MYMENU == *"${dockercontainer}"* ]]; then
-            yml_build "${dockercontainer}"
-        fi
-    done
+        for dockercontainer in awtrix bitwarden deconz domoticz duplicati ei23 esphome fhem fireflyiii gotify grafana grocy homeassistant homebridge influxdb18 influxdb2 iobroker mosquitto motioneye mqtt-explorer nextcloudofficial nextcloudpi nginxproxymanger octoprint openhab paperlessngx pihole portainer rhasspy tasmoadmin teamspeak timescaledb traefik vscode wireguard zigbee2mqtt; do
+            if [[ $MYMENU == *"${dockercontainer}"* ]]; then
+                yml_build "${dockercontainer}"
+            fi
+        done
 
-    # set random generated passwords
-    while cat "$DOCKERDIR/docker-compose.yml" | grep -q "password_placeholder"; do
-        sudo sed -i -e '0,/password_placeholder/s//'$(generate_password)'/' "$DOCKERDIR/docker-compose.yml" # different passwords
-    done
-    sudo sed -i -e 's/password1_placeholder/'$(generate_password)'/' "$DOCKERDIR/docker-compose.yml" # same passwords
+        # set random generated passwords
+        while cat "$DOCKERDIR/docker-compose.yml" | grep -q "password_placeholder"; do
+            sudo sed -i -e '0,/password_placeholder/s//'$(generate_password)'/' "$DOCKERDIR/docker-compose.yml" # different passwords
+        done
+        sudo sed -i -e 's/password1_placeholder/'$(generate_password)'/' "$DOCKERDIR/docker-compose.yml" # same passwords
 
-    # set new hostname
-    # sudo sed -i -e "s#HomePi#$newhostname#" $DOCKERDIR/docker-compose
+        # set new hostname
+        # sudo sed -i -e "s#HomePi#$newhostname#" $DOCKERDIR/docker-compose
 
-    printstatus "$L_INSTALLING Docker"
-    if command_exists docker; then
-        printstatus "docker $L_ALREADYINSTALLED"
-    else
         printstatus "$L_INSTALLING Docker"
-        curl -fsSL https://get.docker.com | sh
-        sudo usermod -aG docker $IAM
+        if command_exists docker; then
+            printstatus "docker $L_ALREADYINSTALLED"
+        else
+            printstatus "$L_INSTALLING Docker"
+            curl -fsSL https://get.docker.com | sh
+            sudo usermod -aG docker $IAM
+        fi
+
+        if command_exists docker-compose; then
+            printstatus "docker-compose $L_ALREADYINSTALLED"
+        else
+            printstatus "$L_INSTALLING docker-compose"
+            sudo apt install -y docker-compose
+        fi
+        if (whiptail --title "$L_REBOOT" --yesno "$L_REBOOTTEXT" 20 78); then
+            sudo reboot
+        fi
     fi
 
-    if command_exists docker-compose; then
-        printstatus "docker-compose $L_ALREADYINSTALLED"
-    else
-        printstatus "$L_INSTALLING docker-compose"
-        sudo apt install -y docker-compose
-    fi
-
-    if (whiptail --title "$L_REBOOT" --yesno "$L_REBOOTTEXT" 20 78); then
+    if [[ $MYMENU == *"nodocker"* ]]; then
+        sudo rm $FIRSTFILE
+        printstatus "RESTART IN 10 SEC"
+        sleep 10
         sudo reboot
     fi
+
 fi
