@@ -1,0 +1,29 @@
+  nocodb: 
+    container_name: nocodb
+    depends_on: 
+      noco_rootdb: 
+        condition: service_healthy
+    environment: 
+      NC_DB: "pg://noco_rootdb:5432?u=postgres&p=\"${PW}\"&d=noco_rootdb"
+    image: "nocodb/nocodb:latest"
+    ports: 
+      - "2289:8080"
+    restart: always
+    volumes: 
+      - "./volumes/nocodb/nc_data:/usr/app/data"
+      
+  noco_rootdb: 
+    container_name: noco_rootdb
+    environment: 
+      POSTGRES_DB: noco_rootdb
+      POSTGRES_PASSWORD: ${PW}
+      POSTGRES_USER: postgres
+    healthcheck: 
+      interval: 10s
+      retries: 10
+      test: "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""
+      timeout: 2s
+    image: postgres:latest
+    restart: always
+    volumes: 
+      - "./volumes/nocodb/db_data:/var/lib/postgresql/data"

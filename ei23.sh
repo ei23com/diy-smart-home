@@ -175,7 +175,7 @@ pipUpdate(){
 
 ei23_supervisor(){
     sudo apt-get update
-    docker stop ei23; cd ~/ei23-docker/; docker-compose rm -f ei23
+    docker stop ei23; cd ~/ei23-docker/; docker compose rm -f ei23
     sudo apt-get install python3-venv -y
     sudo mkdir -p $DOCKERDIR/volumes/ei23/web/static/
     sudo mv -f $DOCKERDIR/volumes/ei23/web/dist $DOCKERDIR/volumes/ei23/web/static
@@ -198,7 +198,21 @@ ei23_supervisor(){
 
 dockerCompose(){
     cd $DOCKERDIR
-    if ! docker-compose --env-file ./env/* up -d; then 
+    env_dir="env"
+    env_files=()
+    # Check if there are any .env files in the directory
+    if [ -n "$(find "$env_dir" -maxdepth 1 -name '*.env' -print -quit)" ]; then
+        # Loop through each .env file in the directory
+        for env_file in "$env_dir"/*.env; do
+            env_files+=("--env-file" "$env_file")
+        done
+    fi
+    if [ -f .env ]; then
+        DC="docker compose --env-file .env "${env_files[@]}" up -d"
+    else
+        DC="docker compose "${env_files[@]}" up -d"
+    fi
+    if ! $DC; then 
         printwarn "$L_COMPOSE_ERROR"
         exit 1
     fi
@@ -210,7 +224,6 @@ dockerCompose(){
         exit 0
     fi
 }
-
 
 containerStatus(){
     printmsg "Docker Container Status"
@@ -231,6 +244,7 @@ addaliases(){
 
 add_new_functions(){
     setsshlogo
+    sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 }
 
 set_ip() {
@@ -274,7 +288,7 @@ fullUpdate() {
 
 dockerUpdate(){
     cd ~/ei23-docker/
-    sudo docker-compose pull --ignore-pull-failures
+    sudo docker compose pull --ignore-pull-failures
     cd ~
     dockerCompose "first"
     custom-ha-addons
@@ -288,7 +302,7 @@ cleanDockerImages(){
 #     send -- "y\r"
 #     expect eof
 # EOF
-    # cd ~/ei23-docker/; docker-compose up -d --remove-orphans; cd ~
+    # cd ~/ei23-docker/; docker compose up -d --remove-orphans; cd ~
     docker image prune -a -f
     printmsg "$L_DOCKERDELETE"
 }
@@ -334,12 +348,12 @@ mosquittopassword() {
     sudo chown -R 1883:1883 $DOCKERDIR/volumes/mosquitto/
     sudo sed -i -e "s#\# password_file#password_file#" $DOCKERDIR/volumes/mosquitto/config/mosquitto.conf
     sudo sed -i -e "s#\password_file#\# password_file#" $DOCKERDIR/volumes/mosquitto/config/mosquitto.conf
-    docker-compose restart mosquitto
+    docker compose restart mosquitto
     printmsg "$L_PASSWORDFOR Mosquitto / MQTT..."
     docker exec -it mosquitto mosquitto_passwd -c /mosquitto/config/pwfile $adminname
     # set passwordline in mosquitto conf
     sudo sed -i -e "s#\# password_file#password_file#" $DOCKERDIR/volumes/mosquitto/config/mosquitto.conf
-    docker-compose restart mosquitto
+    docker compose restart mosquitto
     cd ~
 }
 
@@ -438,7 +452,7 @@ fi
 if [[ $1 == "fullreset" ]]; then
     program="X"
     program=$2
-    cd ~/ei23-docker/; docker-compose stop $program; docker-compose rm -f $program; sudo rm -r volumes/$program; docker-compose up -d; cd ~;
+    cd ~/ei23-docker/; docker compose stop $program; docker compose rm -f $program; sudo rm -r volumes/$program; docker compose up -d; cd ~;
     exit 0
 fi
 
@@ -835,16 +849,11 @@ if [ ! -d "$DOCKERDIR" ] || [[ $1 == "part1" ]]; then
             printstatus "docker $L_ALREADYINSTALLED"
         else
             printstatus "$L_INSTALLING Docker"
-            curl -fsSL https://get.docker.com | sh
+            # curl -fsSL https://get.docker.com | sh
+            sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
             sudo usermod -aG docker $IAM
         fi
 
-        if command_exists docker-compose; then
-            printstatus "docker-compose $L_ALREADYINSTALLED"
-        else
-            printstatus "$L_INSTALLING docker-compose"
-            sudo apt install -y docker-compose
-        fi
         if (whiptail --title "$L_REBOOT" --yesno "$L_REBOOTTEXT" 20 78); then
             sudo reboot
         fi
