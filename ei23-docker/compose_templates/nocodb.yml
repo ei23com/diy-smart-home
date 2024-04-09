@@ -4,7 +4,7 @@
       noco_rootdb: 
         condition: service_healthy
     environment: 
-      NC_DB: "pg://noco_rootdb:5432?u=postgres&p=\"${PW}\"&d=noco_rootdb"
+      NC_DB: pg://noco_rootdb:5432?u=postgres&p=${PW}&d=noco_rootdb
     image: "nocodb/nocodb:latest"
     ports: 
       - "2289:8080"
