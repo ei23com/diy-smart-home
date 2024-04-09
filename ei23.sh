@@ -2,6 +2,7 @@
 # then run script: bash ei23.sh
 #
 IAM=$(whoami)
+OS="$(cat /etc/[A-Za-z]*[_-][rv]e[lr]* | grep "^ID=" | cut -d= -f2 | uniq | tr '[:upper:]' '[:lower:]' | tr -d '"')"
 LANGFILE_PLACEHOLDER
 
 SCRIPT_VERSION=0
@@ -293,6 +294,55 @@ dockerUpdate(){
     dockerCompose "first"
     custom-ha-addons
     nextcloud-upgrade
+}
+
+install_docker() {
+  local os="${1}"
+
+  if [[ "${os}" == "debian" ]]; then
+    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y ca-certificates curl gnupg lsb-release
+    sudo mkdir -p /etc/apt/keyrings
+    curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
+    sudo DEBIAN_FRONTEND=noninteractive apt-get update -y
+    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+    return 0
+  elif [[ "${os}" == "ubuntu" || "${os}" == "pop" ]]; then
+    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y ca-certificates curl gnupg lsb-release
+    sudo mkdir -p /etc/apt/keyrings
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
+    sudo DEBIAN_FRONTEND=noninteractive apt-get update -y
+    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+    return 0
+  elif [[ "${os}" == "centos" ]]; then
+    sudo yum install -y yum-utils
+    sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+    sudo yum install -y --allowerasing docker-ce docker-ce-cli containerd.io docker-compose-plugin
+    sudo systemctl start docker
+    sudo systemctl enable docker
+    return 0
+  elif [[ "${os}" == "rocky" ]]; then
+    sudo dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+    sudo dnf -y install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+    sudo systemctl start docker
+    sudo systemctl enable docker
+    return 0
+  elif [[ "${os}" == "fedora" ]]; then
+    sudo dnf -y install dnf-plugins-core
+    sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+    sudo dnf -y install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+    sudo systemctl start docker
+    sudo systemctl enable docker
+    return 0
+  elif [[ "${os}" == "arch" || "${os}" == "manjaro" ]]; then
+    sudo pacman -Sy --noconfirm docker docker-compose
+    sudo systemctl start docker.service
+    sudo systemctl enable docker.service
+    return 0
+  else
+    return 1
+  fi
 }
 
 cleanDockerImages(){
@@ -849,7 +899,8 @@ if [ ! -d "$DOCKERDIR" ] || [[ $1 == "part1" ]]; then
             printstatus "docker $L_ALREADYINSTALLED"
         else
             printstatus "$L_INSTALLING Docker"
-            curl -fsSL https://get.docker.com | sh
+            # curl -fsSL https://get.docker.com | sh
+            install_docker "${OS}"
             sudo usermod -aG docker $IAM
         fi
 
