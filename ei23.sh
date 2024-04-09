@@ -849,8 +849,7 @@ if [ ! -d "$DOCKERDIR" ] || [[ $1 == "part1" ]]; then
             printstatus "docker $L_ALREADYINSTALLED"
         else
             printstatus "$L_INSTALLING Docker"
-            # curl -fsSL https://get.docker.com | sh
-            sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+            curl -fsSL https://get.docker.com | sh
             sudo usermod -aG docker $IAM
         fi
 
