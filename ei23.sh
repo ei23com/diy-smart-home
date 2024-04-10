@@ -3,6 +3,10 @@
 #
 IAM=$(whoami)
 OS="$(cat /etc/[A-Za-z]*[_-][rv]e[lr]* | grep "^ID=" | cut -d= -f2 | uniq | tr '[:upper:]' '[:lower:]' | tr -d '"')"
+ARCHITECTURE="$(uname -m)"
+ARCHITECTURE_DPKG="$(dpkg --print-architecture)"
+DOCKER_COMPOSE="docker compose"
+
 LANGFILE_PLACEHOLDER
 
 SCRIPT_VERSION=0
@@ -20,6 +24,15 @@ CBlue='\e[0;94m'       # Blue
 CMagenta='\e[0;95m'    # Purple
 CCyan='\e[0;96m'       # Cyan
 CWhite='\e[0;97m'      # White
+
+sshlogo=$(cat <<EOF
+           _ ___ ____
+       ___(_)_  )__ /
+      / -_) |/ / |_ \\ 
+      \___|_/___|___/
+     Smart Home Server
+EOF
+)
 
 printmsg() {
     printf "${CWhite}===================================================\n"
@@ -72,18 +85,22 @@ printwarn(){
  	printf "${CWhite}===================================================\n${CGreen}"      
 }
 
+system_32bit(){
+# Check for 32Bit
+    if [[ "$ARCHITECTURE" == "armv7"* ]] || [[ "$ARCHITECTURE" == "i686" ]] || [[ "$ARCHITECTURE" == "i386" ]] || [[ "$ARCHITECTURE_DPKG" == "armhf" ]]; then
+        echo $sshlogo
+        DOCKER_COMPOSE="docker-compose"
+        printwarn "32Bit OS $L_DEPRECATED"
+        if [[ $MYMENU != *"nodocker"* ]]; then
+            MYMENU="$MYMENU nodocker"
+        fi
+        return 0
+    fi
+    return 1
+}
+
 setsshlogo(){
-
-sshlogo=$(cat <<EOF
-           _ ___ ____
-       ___(_)_  )__ /
-      / -_) |/ / |_ \\ 
-      \___|_/___|___/
-     Smart Home Server
-EOF
-)
-echo "$sshlogo" | sudo tee /etc/motd
-
+    echo "$sshlogo" | sudo tee /etc/motd
 }
 
 noderedUpdate(){
@@ -175,8 +192,12 @@ pipUpdate(){
 }
 
 ei23_supervisor(){
+    # if system_32bit; then
+    #     exit 1
+    # fi
+    system_32bit
     sudo apt-get update
-    docker stop ei23; cd ~/ei23-docker/; docker compose rm -f ei23
+    docker stop ei23; cd ~/ei23-docker/; $DOCKER_COMPOSE rm -f ei23
     sudo apt-get install python3-venv -y
     sudo mkdir -p $DOCKERDIR/volumes/ei23/web/static/
     sudo mv -f $DOCKERDIR/volumes/ei23/web/dist $DOCKERDIR/volumes/ei23/web/static
@@ -201,17 +222,21 @@ dockerCompose(){
     cd $DOCKERDIR
     env_dir="env"
     env_files=()
-    # Check if there are any .env files in the directory
-    if [ -n "$(find "$env_dir" -maxdepth 1 -name '*.env' -print -quit)" ]; then
-        # Loop through each .env file in the directory
-        for env_file in "$env_dir"/*.env; do
-            env_files+=("--env-file" "$env_file")
-        done
-    fi
-    if [ -f .env ]; then
-        DC="docker compose --env-file .env "${env_files[@]}" up -d"
+    if ! system_32bit; then
+        # Check if there are any .env files in the directory
+        if [ -n "$(find "$env_dir" -maxdepth 1 -name '*.env' -print -quit)" ]; then
+            # Loop through each .env file in the directory
+            for env_file in "$env_dir"/*.env; do
+                env_files+=("--env-file" "$env_file")
+            done
+        fi
+        if [ -f .env ]; then
+            DC="$DOCKER_COMPOSE --env-file .env "${env_files[@]}" up -d"
+        else
+            DC="$DOCKER_COMPOSE "${env_files[@]}" up -d"
+        fi
     else
-        DC="docker compose "${env_files[@]}" up -d"
+        DC="$DOCKER_COMPOSE up -d"
     fi
     if ! $DC; then 
         printwarn "$L_COMPOSE_ERROR"
@@ -245,7 +270,8 @@ addaliases(){
 
 add_new_functions(){
     setsshlogo
-    sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+    system_32bit
+    install_docker "${OS}"
 }
 
 set_ip() {
@@ -288,8 +314,12 @@ fullUpdate() {
 }
 
 dockerUpdate(){
+    # if system_32bit; then
+    #     exit 1
+    # fi
+    system_32bit
     cd ~/ei23-docker/
-    sudo docker compose pull --ignore-pull-failures
+    sudo $DOCKER_COMPOSE pull --ignore-pull-failures
     cd ~
     dockerCompose "first"
     custom-ha-addons
@@ -352,7 +382,7 @@ cleanDockerImages(){
 #     send -- "y\r"
 #     expect eof
 # EOF
-    # cd ~/ei23-docker/; docker compose up -d --remove-orphans; cd ~
+    # cd ~/ei23-docker/; $DOCKER_COMPOSE up -d --remove-orphans; cd ~
     docker image prune -a -f
     printmsg "$L_DOCKERDELETE"
 }
@@ -398,12 +428,12 @@ mosquittopassword() {
     sudo chown -R 1883:1883 $DOCKERDIR/volumes/mosquitto/
     sudo sed -i -e "s#\# password_file#password_file#" $DOCKERDIR/volumes/mosquitto/config/mosquitto.conf
     sudo sed -i -e "s#\password_file#\# password_file#" $DOCKERDIR/volumes/mosquitto/config/mosquitto.conf
-    docker compose restart mosquitto
+    $DOCKER_COMPOSE restart mosquitto
     printmsg "$L_PASSWORDFOR Mosquitto / MQTT..."
     docker exec -it mosquitto mosquitto_passwd -c /mosquitto/config/pwfile $adminname
     # set passwordline in mosquitto conf
     sudo sed -i -e "s#\# password_file#password_file#" $DOCKERDIR/volumes/mosquitto/config/mosquitto.conf
-    docker compose restart mosquitto
+    $DOCKER_COMPOSE restart mosquitto
     cd ~
 }
 
@@ -502,7 +532,7 @@ fi
 if [[ $1 == "fullreset" ]]; then
     program="X"
     program=$2
-    cd ~/ei23-docker/; docker compose stop $program; docker compose rm -f $program; sudo rm -r volumes/$program; docker compose up -d; cd ~;
+    cd ~/ei23-docker/; $DOCKER_COMPOSE stop $program; $DOCKER_COMPOSE rm -f $program; sudo rm -r volumes/$program; $DOCKER_COMPOSE up -d; cd ~;
     exit 0
 fi
 
@@ -869,6 +899,8 @@ if [ ! -d "$DOCKERDIR" ] || [[ $1 == "part1" ]]; then
         sudo rm -r rpi-clone
     fi
 
+    system_32bit
+
     if [[ $MYMENU != *"nodocker"* ]]; then
         yml_build(){
             printf "\n\n" >> "$DOCKERDIR/docker-compose.yml"
@@ -899,7 +931,6 @@ if [ ! -d "$DOCKERDIR" ] || [[ $1 == "part1" ]]; then
             printstatus "docker $L_ALREADYINSTALLED"
         else
             printstatus "$L_INSTALLING Docker"
-            # curl -fsSL https://get.docker.com | sh
             install_docker "${OS}"
             sudo usermod -aG docker $IAM
         fi
