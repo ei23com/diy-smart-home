@@ -8,7 +8,7 @@ Have fun, get smart and independent!
 
 ![ei23 Dashboard](https://ei23.de/bilder/ei23-terminal.gif)
 
-![ei23 Counter](https://ei23.de/softwarehub/smarthome/stats-svg.php)
+![ei23 Counter](https://ei23.de/bilder/svg-stats.svg)
 
 ## What's included
 Have a loook in the **[compose_templates](ei23-docker/compose_templates)** and the **[ei23.sh](ei23.sh)** script itself.

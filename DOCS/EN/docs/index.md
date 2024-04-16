@@ -6,9 +6,11 @@ And you don't even have to use Home Assistant if you prefer OpenHAB or IObroker 
 
 Have fun, get smart and independent!
 
-![ei23 Dashboard](https://ei23.de/bilder/ei23-terminal.gif)
+![ei23 terminal](https://ei23.de/bilder/ei23-terminal.gif)
 
 ![ei23 Dashboard](https://ei23.de/bilder/ei23-dashboard.jpg)
+
+![ei23 Counter](https://ei23.de/bilder/svg-stats.svg)
 
 ## Introduction
 In 2017, I planned to install a self-built smart home system that would control some retrofit devices. There were various options to choose from, and I was unsure about which program was right for me. It was also clear that I would be running a computer 24/7, in this case a Raspberry Pi. It would have been a shame if only a single application ran on it. At that time, I had already conducted some experiments with NodeRED and appreciated the advantages of the Raspberry Pi's GPIOs.
