@@ -88,7 +88,6 @@ printwarn(){
 system_32bit(){
 # Check for 32Bit
     if [[ "$ARCHITECTURE" == "armv7"* ]] || [[ "$ARCHITECTURE" == "i686" ]] || [[ "$ARCHITECTURE" == "i386" ]] || [[ "$ARCHITECTURE_DPKG" == "armhf" ]]; then
-        echo $sshlogo
         DOCKER_COMPOSE="docker-compose"
         printwarn "32Bit OS $L_DEPRECATED"
         if [[ $MYMENU != *"nodocker"* ]]; then
