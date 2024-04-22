@@ -183,11 +183,11 @@ aptUpdate(){
 
 }
 
-pipUpdate(){
+pipUpdate(){ # TODO REFACTOR
     what=$1
     printstatus "$what... $L_PLEASEWAIT"
-    pip3 install --upgrade pip
-    sudo apt-get install python-rpi.gpio python3-rpi.gpio -y
+    # pip3 install --upgrade pip
+    sudo apt-get install python3-rpi.gpio -y
 }
 
 ei23_supervisor(){
@@ -217,7 +217,8 @@ ei23_supervisor(){
     sudo systemctl start ei23.service
 }
 
-dockerCompose(){
+composeCMD(){
+    cmd=$1
     cd $DOCKERDIR
     env_dir="env"
     env_files=()
@@ -230,24 +231,35 @@ dockerCompose(){
             done
         fi
         if [ -f .env ]; then
-            DC="$DOCKER_COMPOSE --env-file .env "${env_files[@]}" up -d"
+            DC="$DOCKER_COMPOSE --env-file .env "${env_files[@]}" $cmd"
         else
-            DC="$DOCKER_COMPOSE "${env_files[@]}" up -d"
+            DC="$DOCKER_COMPOSE "${env_files[@]}" $cmd"
         fi
     else
-        DC="$DOCKER_COMPOSE up -d"
+        DC="$DOCKER_COMPOSE $cmd"
     fi
     if ! $DC; then 
         printwarn "$L_COMPOSE_ERROR"
         exit 1
     fi
     cd ~
+}
+
+dockerCompose(){
+    composeCMD "up -d"
     sleep 10
     cleanDockerImages
     printmsg "$L_DOCKERSUCCESS"
     if [[ $1 != "first" ]]; then
         exit 0
     fi
+}
+
+dockerUpdate(){
+    composeCMD "pull --ignore-pull-failures"
+    dockerCompose "first"
+    custom-ha-addons
+    nextcloud-upgrade
 }
 
 containerStatus(){
@@ -312,18 +324,6 @@ fullUpdate() {
     exit 0
 }
 
-dockerUpdate(){
-    # if system_32bit; then
-    #     exit 1
-    # fi
-    system_32bit
-    cd ~/ei23-docker/
-    sudo $DOCKER_COMPOSE pull --ignore-pull-failures
-    cd ~
-    dockerCompose "first"
-    custom-ha-addons
-    nextcloud-upgrade
-}
 
 install_docker() {
   local os="${1}"
