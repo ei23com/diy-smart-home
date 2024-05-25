@@ -1,28 +1,50 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>SmartHome-Server | Server</title>
     {{ header | safe}}
 </head>
+
 <body>
     <div id="app" class="bg">
         {{ navbar | safe}}
         <div class="content">
-            <div class="table-responsive">
-                <table class="table">
-                    <tr>
-                        <th>docker-compose.yml</th>
-                        <th>programs.json</th>
-                        <th>PORT</th>
-                        <th>NAME</th>
-                    </tr>
-                    {{ table | safe}}
-                </table>
-                <div class="white">* If marked red - please check!<br>Programs can be edited under ei23-docker/volumes/ei23/web/static/programs.json</div><br>
-                <a href="/addprograms" class="btn btn-info" style="margin-bottom: 20px;">load new templates</a>
+            <div class="d-flex justify-content-center">
+                <div class="col-md-4 mx-auto">
+                    <div class="content">
+                        <a href="/refresh_programs" class="btn btn-info btn-block" style="margin-top: 20px;">Refresh Dashboard</a>
+                        <a href="/make_docs" class="btn btn-info btn-block" style="margin-top: 20px;">Rebuild Docs</a>
+                        <a href="/tree" class="btn btn-info btn-block" style="margin-top: 20px;">Show Structured Storage</a>
+                        <small style="color: #fff; text-align: center">*SLOW! If you have many files</small>
+                    </div>
+                </div>
             </div>
-            </div>
-            {{ bottom_logo | safe}}
+                <div class="d-flex justify-content-center" style="margin-top: 20px;">
+                    <div class="col-md-4 mx-auto">
+                        <div class="content">
+                            <table class="table table-striped">
+                                <tr>
+                                    <th>Container</th>
+                                    <th>Port</th>
+                                    <th>HTTP*</th>
+                                </tr>
+                                {{ table | safe}}
+                            </table>
+                            <div style="color: #fff; text-align: center">*shows status of active HTTP ports</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="d-flex justify-content-center">
+                    <div class="col-md-4 mx-auto">
+                        <div class="content">
+                            <a href="/update" class="btn btn-info btn-block" style="margin-top: 20px;">Update</a>
+                        </div>
+                    </div>
+                </div> -->
+        </div>
+        {{ bottom_logo | safe}}
     </div>
 </body>
+
 </html>

@@ -6,10 +6,8 @@
         {"active":false,        "port" : "8123",                        "custom_url":"",                                        "name": "HomeAssistant",        "title": "Hausautomation",              "img":"img/homeassistant.png"},
         {"active":false,        "port" : "3000",                        "custom_url":"",                                        "name": "Grafana",              "title": "Datenvisualisierung",         "img":"img/grafana.png"},
         {"active":false,        "port" : "9000",                        "custom_url":"",                                        "name": "Portainer",            "title": "Docker Verwaltung",           "img":"img/portainer.png"},
-        {"active":false,        "port" : "9000",                        "custom_url":"",                                        "name": "LMS",                  "title": "Logitech Media Server",       "img":"img/logitechmediaserver.png"},
+        {"active":false,        "port" : "9000",                        "custom_url":"",                                        "name": "LMS",                  "title": "Lyrion Music Server",         "img":"img/lyrionmusicserver.png"},
         {"active":false,        "port" : "8080",                        "custom_url":"",                                        "name": "Nextcloud",            "title": "Deine Cloud",                 "img":"img/nextcloudofficial.png"},
-        {"active":false,        "port" : "8080",                        "custom_url":"",                                        "name": "Nextcloud",            "title": "Deine Cloud",                 "img":"img/nextcloudpi.png"},
-        {"active":false,        "port" : "4443",                        "custom_url":"https",                                   "name": "NextcloudPi",          "title": "Konfiguration",               "img":"img/nextcloudpi.png"},
         {"active":false,        "port" : "8765",                        "custom_url":"",                                        "name": "MotionEye",            "title": "Kamerasystem",                "img":"img/motioneye.png"},
         {"active":true,         "port" : "1880/ui",                     "custom_url":"",                                        "name": "DashBoard",            "title": "NodeRED-Dashboard",           "img":"img/nodered.png"},
         {"active":false,        "port" : "8089",                        "custom_url":"",                                        "name": "TasmoAdmin",           "title": "Steckdosen Verwaltung",       "img":"img/tasmoadmin.png"},
@@ -24,7 +22,6 @@
         {"active":false,        "port" : "2280",                        "custom_url":"",                                        "name": "Traefik",              "title": "SSL Reverse Proxy",           "img":"img/traefik.png"},
         {"active":false,        "port" : "81",                          "custom_url":"",                                        "name": "Nginx Proxy",          "title": "SSL Reverse Proxy",           "img":"img/nginxproxymanger.png"},
         {"active":false,        "port" : "2223",                        "custom_url":"",                                        "name": "Bitwarden",            "title": "Passwort Verwaltung",         "img":"img/bitwarden.png"},
-        {"active":false,        "port" : "7000",                        "custom_url":"",                                        "name": "Awtrix",               "title": "LED-Matrix-Controller",       "img":"img/awtrix.png"},
         {"active":false,        "port" : "8200",                        "custom_url":"",                                        "name": "Duplicati",            "title": "Backup Verwaltung",           "img":"img/duplicati.png"},
         {"active":false,        "port" : "2225",                        "custom_url":"",                                        "name": "FireflyIII",           "title": "Buchhaltung",                 "img":"img/fireflyiii.png"},
         {"active":false,        "port" : "2224",                        "custom_url":"",                                        "name": "Gotify",               "title": "Push Nachrichten",            "img":"img/gotify.png"},
@@ -32,11 +29,10 @@
         {"active":false,        "port" : "2220",                        "custom_url":"",                                        "name": "OctoPrint",            "title": "3D-Drucker",                  "img":"img/octoprint.png"},
         {"active":false,        "port" : "2221",                        "custom_url":"",                                        "name": "Domoticz",             "title": "Hausautomation",              "img":"img/domoticz.png"},
         {"active":false,        "port" : "8384",                        "custom_url":"",                                        "name": "Syncthing",            "title": "Synchronisierung",            "img":"img/syncthing.png"},
-        {"active":false,        "port" : "8090",                        "custom_url":"",                                        "name": "Deconz",               "title": "Hausautomation",              "img":"img/deconz.png"},
         {"active":false,        "port" : "4000",                        "custom_url":"",                                        "name": "TeslaMate",            "title": "Tesla Statistik",             "img":"img/teslamate.png"},
         {"active":false,        "port" : "4004",                        "custom_url":"",                                        "name": "MQTT-Explorer",        "title": "MQTT-Explorer",               "img":"img/mqtt-explorer.png"},
-        {"active":false,        "port" : "2226",                        "custom_url":"",                                        "name": "Paperless-ng",         "title": "Buchhaltung OCR",             "img":"img/paperlessng.png"},
-        {"active":true,         "port" : "/docs",                       "custom_url":"",                                        "name": "myDOCS",               "title": "Mein Smarthome",              "img":"img/docs.png"},
+        {"active":false,        "port" : "2226",                        "custom_url":"",                                        "name": "PaperlessNGX",         "title": "Buchhaltung OCR",             "img":"img/paperlessng.png"},
+        {"active":true,         "port" : "",                            "custom_url":"/docs",                                   "name": "myDOCS",               "title": "Mein Smarthome",              "img":"img/docs.png"},
         {"active":true,         "port" : "",                            "custom_url":"https://diy-smart-home.ei23.de",          "name": "Handbuch",             "title": "offizielles Handbuch",        "img":"img/docs.png"}
         ]
 }

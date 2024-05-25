@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>SmartHome-Server</title>
+    {{ header | safe}}
+</head>
+
+<body>
+    <div id="app" class="bg">
+        {{ navbar | safe}}
+        <div class="content">
+            <div class="d-flex justify-content-center" style="margin-top: 20px;">
+                <div class="col-md-4 mx-auto">
+                    <div class="content">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Size</th>
+                                    <th>Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% macro render_tree(tree, parent_path) %}
+                                {% if parent_path %}
+                                <tr class="directory">
+                                    <td></td>
+                                    <td><a href='?path={{ parent_path }}'>../</a></td>
+                                </tr>
+                                {% endif %}
+                                {% for item in tree %}
+                                <tr class="{{ item.type }}">
+                                    <td>{{ item.size_hr }}</td>
+                                    <td>
+                                        {% if item.type == 'directory' %}
+                                        <a href='?path={{ item.path }}'>{{ item.name }}</a>
+                                        <table style="display: none;">
+                                            <tbody>
+                                                {{ render_tree(item.children, item.path) }}
+                                            </tbody>
+                                        </table>
+                                        {% else %}
+                                        <span>{{ item.name }}</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                {% endmacro %}
+                                {{ render_tree(tree, parent_path) }}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {{ bottom_logo | safe}}
+        </div>
+    </div>
+</body>

@@ -1,5 +1,14 @@
 ## Changelog
 
+
+### v1.11
+#### Was gibt es Neues? [Hier ein Video](https://youtu.be/_eBfsc9YRHE)
+- Verbessertes Dashboard mit automatischem Anzeigen / Ausblenden von deaktiverten Docker-Programmen
+- Verbesserte Server-Übersicht
+- Resourcen Anzeige (RAM / DISK)
+- Speicherbelegung nach Ordnern
+- Port des ei23-supervisors kann verändert werden [siehe ei23-supervisor.py](https://github.com/ei23com/diy-smart-home/blob/main/ei23-docker/volumes/ei23/ei23-supervisor.py#L22) 
+
 ### v1.1 - Die Version 1.1 des Skripts ist verfügbar! Hurra!
 
 #### Was gibt es Neues? [Hier ein Video](https://youtu.be/Ar_j29EbX98)

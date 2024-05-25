@@ -2,14 +2,13 @@
 #
 # THIS FILE GETS OVERWRITTEN WITH EVERY ei23 UPDATE
 # YOUR OWN CHANGES CAN BE FOUND IN YOUR LAST BACKUP OR THEY ARE LOST
+# YOUR OWN BACKUP goes here: $HOME/ei23-docker/custom_backup.sh
 #
 backuppfad="$HOME/backup"
 volumes="$HOME/ei23-docker/volumes"
 backupfile=HomeServerBackup-$(date +"%Y-%m-%d_%H-%M").tar.gz
 # Backup InfluxDB
-sudo mkdir -p $HOME/ei23-docker/backups/influxdb/db
-sudo rm $HOME/ei23-docker/backups/influxdb/db/*
-docker exec influxdb influxd backup -portable /var/lib/influxdb/backup
+sudo rm -r $HOME/ei23-docker/backups/
 cd ~
 mkdir -p $backuppfad/temp/node-red
 mkdir -p $backuppfad/temp/volumes/ei23/web/
@@ -26,6 +25,7 @@ sudo rsync -a --max-size=20k $volumes/motioneye/data/ $backuppfad/temp/volumes/m
 nextcloud_data=$(sudo ls $volumes/nextcloud/html/data/ | grep "^appdata_" | head -n 1)
 sudo rsync -a --include={"config", "$volumes/nextcloud/html/data/"{"owncloud.db","$nextcloud_data/"{"appstore","theming","identityproof"}}} --exclude="*" $volumes/nextcloud/html/ $backuppfad/temp/volumes/nextcloud/html/
 sudo rsync -a $volumes/grafana/ $backuppfad/temp/volumes/grafana
+sudo rsync -a $volumes/influxdb/ $backuppfad/temp/volumes/influxdb
 sudo rsync -a $volumes/wireguard/ $backuppfad/temp/volumes/wireguard
 sudo rsync -a $volumes/tasmoadmin/ $backuppfad/temp/volumes/tasmoadmin
 sudo rsync -a $volumes/bitwarden/ $backuppfad/temp/volumes/bitwarden
@@ -33,7 +33,10 @@ sudo rsync -a $volumes/ei23/web/static/programs.json $backuppfad/temp/volumes/ei
 sudo rsync -a --exclude '*.log*' $volumes/mosquitto/ $backuppfad/temp/volumes/mosquitto
 sudo rsync -a --exclude '*.log*' $volumes/traefik/ $backuppfad/temp/volumes/traefik
 sudo rsync -a --exclude '*.db' $volumes/pihole/ $backuppfad/temp/volumes/pihole
-sudo rsync -a --exclude '*.db' --exclude 'core' --exclude 'backups' --exclude '*.log' $volumes/homeassistant/ $backuppfad/temp/volumes/homeassistant
+docker stop homeassistant
+sudo rsync -a --exclude 'core' --exclude 'backups' --exclude '*.log' $volumes/homeassistant/ $backuppfad/temp/volumes/homeassistant
+docker start homeassistant
+sudo rsync -a --exclude '.esphome' $volumes/esphome/ $backuppfad/temp/volumes/esphome
 sudo rsync -a --max-size=50k $volumes/rhasspy/ $backuppfad/temp/volumes/rhasspy
 sudo cp /etc/samba/smb.conf $backuppfad/temp/smb.conf
 sudo cp /boot/config.txt $backuppfad/temp/bootconfig.txt

@@ -2,37 +2,112 @@ from datetime import datetime
 from flask import Flask, render_template, redirect, url_for, send_from_directory, request, jsonify
 from ruamel.yaml import YAML
 from waitress import serve
+from humanize import naturalsize
+import requests
 import json, socket, subprocess, os
-
+import shutil
+import psutil
+import asyncio
+import configparser
 
 app = Flask(__name__, template_folder='web', static_folder='web/static')
+app.config['TIMEOUT'] = 120
 
+# Default Config
+DEFAULT_CONFIG = {
+    'Port': '80', 
+    # more config
+}
+
+CONFIG_FILE = 'config.ini'
+# create config.ini like this
+# [DEFAULT]
+# Port = 8080
+
+
+def read_config():
+    config = configparser.ConfigParser(DEFAULT_CONFIG)
+    # Prüfen, ob die Konfigurationsdatei existiert
+    if os.path.exists(CONFIG_FILE):
+        config.read(CONFIG_FILE)
+    return config
+
+config = read_config()
+port = config.get('DEFAULT', 'Port')
 
 @app.route('/')
 def index():
     header = render_template('dashboard-head.html')
     navbar = render_template('navbar.html').replace("dashboard-placeholder\"", "active\" aria-current=\"page\"")
     items = create_items()
-    bottom_logo = render_template('bottom-logo.html')
+    disk = disk_usage
+    ram = memory_usage
+    bottom_logo = render_template('bottom-logo.html', disk=disk, ram=ram)
     return render_template('index.html', header=header, navbar=navbar, items=items, bottom_logo=bottom_logo)
+
+def get_directory_size(start_path='.'):
+    tree = []
+    def _get_size(path, depth):
+        total_size = 0
+        children = []
+        for entry in os.scandir(path):
+            if entry.is_file():
+                size = entry.stat().st_size
+                total_size += size
+                children.append({
+                    'path': entry.path,
+                    'name': entry.name,
+                    'size': size,
+                    'size_hr': naturalsize(size),
+                    'type': 'file'
+                })
+            elif entry.is_dir():
+                size, sub_children = _get_size(entry.path, depth + 1)
+                total_size += size
+                children.append({
+                    'path': entry.path,
+                    'name': entry.name,
+                    'size': size,
+                    'size_hr': naturalsize(size),
+                    'type': 'directory',
+                    'children': sub_children
+                })
+        children.sort(key=lambda x: x['size'], reverse=True)
+        return total_size, children
+
+    total_size, tree = _get_size(start_path, 0)
+    return tree
+
+# Treesize Speicherbelegung
+@app.route('/tree')
+def tree():
+    header = render_template('dashboard-head.html')
+    navbar = render_template('navbar.html').replace("dashboard-placeholder\"", "active\" aria-current=\"page\"")
+    items = create_items()
+    disk = disk_usage
+    ram = memory_usage
+    bottom_logo = render_template('bottom-logo.html', disk=disk, ram=ram)
+    path = request.args.get('path', '../../../')
+    tree = get_directory_size(path)
+    parent_path = os.path.dirname(path) if path != '.' else None
+    return render_template('tree.html', tree=tree, path=path, parent_path=parent_path, header=header, navbar=navbar, bottom_logo=bottom_logo)
 
 @app.route('/localnet')
 def localnet():
+    global net_data
     header = render_template('dashboard-head.html')
     navbar = render_template('navbar.html').replace("localnet-placeholder\"", "active\" aria-current=\"page\"")
-    bottom_logo = render_template('bottom-logo.html')
-    json_path = 'web/static/ipscan.json'
+    disk = disk_usage
+    ram = memory_usage
+    bottom_logo = render_template('bottom-logo.html', disk=disk, ram=ram)
     scan_result = ""
-    if os.path.exists(json_path):
-        with open(json_path, 'r') as file:
-            data = json.load(file)
-        # Daten für die Tabelle aufbauen und nach dem Host (ignorieren der Groß- und Kleinschreibung) sortieren
-        sorted_devices = sorted(data['devices'], key=lambda x: x['host'].casefold())
-        for device in sorted_devices:
-            ip_link = f"<a href={'http://' + device['ip']} target='_blank'>{device['ip']}</a>" if device['http'] else device['ip']
-            host_link = f"<a href={'http://' + device['host']} target='_blank'>{device['host']}</a>" if device['http'] else device['host']
-            
-            scan_result += f"<tr><td>{host_link}</td><td>{ip_link}</td><td>{device['mac']}</td><td>{device['vendor']}</td></tr>"
+    data = net_data
+    sorted_devices = sorted(data['devices'], key=lambda x: x['host'].casefold())
+    for device in sorted_devices:
+        ip_link = f"<a href={'http://' + device['ip']} target='_blank'>{device['ip']}</a>" if device['http'] else device['ip']
+        host_link = f"<a href={'http://' + device['host']} target='_blank'>{device['host']}</a>" if device['http'] else device['host']
+        
+        scan_result += f"<tr><td>{host_link}</td><td>{ip_link}</td><td>{device['mac']}</td><td>{device['vendor']}</td></tr>"
 
     return render_template('localnet.html', header=header, navbar=navbar, scan_result=scan_result, bottom_logo=bottom_logo)
 
@@ -46,18 +121,14 @@ def scan():
 def not_found_error(error):
     return render_template('404.html'), 404
 
+# Docs Ansicht
 mkdocs_directory = 'docs/site/'
 @app.route('/docs/')
 @app.route('/docs/<path:filename>')
 def serve_docs(filename='index.html'):
     # build docs wenn nicht vorhanden
     if not os.path.exists(mkdocs_directory):
-        # pfad fuer root command holen
-        docs_path = subprocess.check_output(['pwd']).decode('utf-8')
-        # build docs
-        command = 'bash -c \'cd '+docs_path+'/; source .venv/bin/activate; cd docs/; mkdocs build; deactivate\''
-        subprocess.run(command, shell=True)
-
+        make_docs_cmd()
     full_path = os.path.join(mkdocs_directory, filename)
     # Überprüfe, ob der angegebene Dateiname ein Verzeichnis ist
     if os.path.isdir(full_path):
@@ -65,41 +136,44 @@ def serve_docs(filename='index.html'):
         filename = os.path.join(filename, 'index.html')
     return send_from_directory(mkdocs_directory, filename)
 
-# Routen für die Anzeige der Tabelle und Aktualisierung der JSON-Daten
-@app.route('/server')
-def server():
-    header = render_template('dashboard-head.html')
-    navbar = render_template('navbar.html').replace("server-placeholder\"", "active\" aria-current=\"page\"")
-    bottom_logo = render_template('bottom-logo.html')
-    json_path = 'web/static/programs.json'
-    table = ""
-    external_ports = get_external_ports()
-    ignore = ["1880", "/", "8123"]
-    if os.path.exists(json_path):
-        with open(json_path, 'r') as file:
-            data = json.load(file)
-        for program in data['programs']:
-            port = program['port']
-            # ignoriere ports mit 1880 oder /
-            if not any(substr in port for substr in ignore) and program['custom_url'] == "":
-                no_entry = not program['port'] in external_ports and program['active']
-                color = "<tr style=\"background-color: #ff000050\">" if no_entry else "<tr>"
-                table += f"{color}<td>{'&#x2705;' if program['port'] in external_ports else '&#x274C;'}</td><td>{'&#x2705;' if program['active'] else '&#x274C;'}</td><td>{program['port']}</td><td>{program['name']}</td></tr>\n"
-            else:
-                table += f"<tr><td>{'&#x2705;' if program['port'] in external_ports else '&#x274C;'}</td><td>{'&#x2705;' if program['active'] else '&#x274C;'}</td><td>{program['port']}</td><td>{program['name']}</td></tr>\n"
-        table += f"<tr><td><b>Docker-Compose Ports</td><td>----</td><td>----</td><td>----</td></tr>\n"
-
-        programs = get_yaml_programs()
-        for programm_info in programs:
-            table += f"<tr><td><a href='{request.url_root.rstrip('/')}:{programm_info.port}'>{programm_info.name} ({programm_info.port})</a></td><td></td><td></td><td></td></tr>\n"
-
-    return render_template('server.html', header=header, navbar=navbar, table=table, bottom_logo=bottom_logo)
-
-@app.route('/addprograms')
-def add_programs():
-    merge_json_files('web/static/programs.json', 'web/static/programs_templates.json')
+@app.route('/make_docs')
+def make_docs():
+    make_docs_cmd()
     return redirect(url_for('server'))
 
+def make_docs_cmd():
+    # pfad fuer root command holen
+    docs_path = subprocess.check_output(['pwd']).decode('utf-8')
+    # build docs
+    command = 'bash -c \'cd '+docs_path+'/; source .venv/bin/activate; cd docs/; mkdocs build; deactivate\''
+    subprocess.run(command, shell=True)
+
+# Server Ansicht
+@app.route('/server')
+def server():
+    global programs
+    header = render_template('dashboard-head.html')
+    navbar = render_template('navbar.html').replace("server-placeholder\"", "active\" aria-current=\"page\"")
+    disk = disk_usage
+    ram = memory_usage
+    bottom_logo = render_template('bottom-logo.html', disk=disk, ram=ram)
+    table = ""
+    sorted_programs = sorted(programs, key=lambda x: x.name)
+    for programm_info in sorted_programs:
+        if programm_info.http:
+            table += f"<tr><td><a href='{request.url_root.rstrip('/')}:{programm_info.port}'>{programm_info.name} ({programm_info.port})</a></td><td>{programm_info.port}</td><td>{'&#x2705;' if programm_info.http else '&#x274C;'}</td></tr>\n"
+        else:
+            table += f"<tr><td>{programm_info.name} ({programm_info.port})</td><td>{programm_info.port}</td><td>{'&#x2705;' if programm_info.http else '&#x274C;'}</td></tr>\n"
+    return render_template('server.html', header=header, navbar=navbar, table=table, bottom_logo=bottom_logo)
+
+@app.route('/refresh_programs')
+def refresh_programs():
+    global programs
+    merge_json_files('web/static/programs.json', 'web/static/programs_templates.json')
+    programs = get_yaml_programs()
+    return redirect(url_for('server'))
+
+# Neue Programme in programs.json aus Template einfügen
 def merge_json_files(target_filename, template_filename):
     # Öffne die JSON-Dateien
     with open(target_filename, 'r') as target_file:
@@ -108,16 +182,25 @@ def merge_json_files(target_filename, template_filename):
     with open(template_filename, 'r') as template_file:
         template_data = json.load(template_file)
 
+    # Liste für spezielle Einträge
+    special_entries = []
+
     # Iteriere durch die Einträge der Vorlagendatei
     for template_entry in template_data['programs']:
-        template_port = template_entry['port']
+        template_img = template_entry['img']
 
         # Überprüfe, ob der Eintrag bereits in der Zieldatei vorhanden ist
-        existing_entry = next((entry for entry in target_data['programs'] if entry['port'] == template_port), None)
+        existing_entry = next((entry for entry in target_data['programs'] if entry['img'] == template_img), None)
 
         # Füge den Eintrag hinzu, falls er nicht vorhanden ist
         if existing_entry is None:
-            target_data['programs'].append(template_entry)
+            if template_img == "img/docs.png":
+                special_entries.append(template_entry)
+            else:
+                target_data['programs'].append(template_entry)
+
+    # Füge die speziellen Einträge ans Ende der Liste
+    target_data['programs'].extend(special_entries)
 
     # Schreibe die aktualisierten Daten zurück in die Zieldatei
     with open(target_filename, 'w') as updated_file:
@@ -131,10 +214,11 @@ def merge_json_files(target_filename, template_filename):
         f.write(content.replace('}, {', '},\n{').replace('[{', '[\n{').replace(']}', '\n]}'))
 
 
-
+net_data = []
 
 def ip_scan():
-    target_data = {'devices': []}
+    global net_data
+    net_data = {'devices': []}
     try:
         # arp-scan --plain --ignoredups -l --format='${ip}\t${Name}\t${mac}\t${vendor}'
         arp_scan_output = subprocess.check_output(['arp-scan', '--plain', '--ignoredups', '-l', '--resolve', '--format=${ip}\t${Name}\t${mac}\t${vendor}']).decode('utf-8')
@@ -142,9 +226,9 @@ def ip_scan():
             parts = line.split('\t')
             if len(parts) == 4:
                 ip, host, mac, vendor = parts
-                http_status = check_http(ip)
+                http_status = check_http(ip, 80)
                 print(host+" "+ip)
-                target_data['devices'].append({'ip': ip, 'host': host, 'mac': mac, 'vendor': vendor, 'http': http_status})
+                net_data['devices'].append({'ip': ip, 'host': host, 'mac': mac, 'vendor': vendor, 'http': http_status})
     except subprocess.CalledProcessError:
         # Fehler beim arp-scan Aufruf - alternativen Aufruf hier einfügen
         # Zum Beispiel: arp_scan_output = subprocess.check_output(['alternative_command', ...]).decode('utf-8')
@@ -153,73 +237,109 @@ def ip_scan():
             parts = line.split('\t')
             if len(parts) == 3:
                 ip, mac, vendor = parts
-                http_status = check_http(ip)
-                target_data['devices'].append({'ip': ip, 'host': ip, 'mac': mac, 'vendor': vendor, 'http': http_status})
+                http_status = check_http(ip, 80)
+                net_data['devices'].append({'ip': ip, 'host': ip, 'mac': mac, 'vendor': vendor, 'http': http_status})
 
+    net_data['timestamp'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-
-    # Füge einen aktuellen Zeitstempel hinzu
-    target_data['timestamp'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-    with open("web/static/ipscan.json", 'w') as updated_file:
-        json.dump(target_data, updated_file, indent=2)
-
-def check_http(ip):
+def check_http(ip, port):
+    url = f"http://{ip}:{port}"
     try:
-        sock = socket.create_connection((ip, 80), timeout=2)
+        # Check if the port is available
+        sock = socket.create_connection((ip, port), timeout=2)
         sock.close()
+        # Check if the server responds to a HTTP request
+        requests.head(url, timeout=10)
         return True
-    # except (socket.timeout, ConnectionRefusedError):
+    except requests.RequestException:
+        return False
     except:
         return False
 
-
-def get_external_ports():
-    yaml = YAML(typ='safe', pure=True)
-    with open('../../docker-compose.yml', 'r') as yaml_file:
-        data = yaml.load(yaml_file)
-
-    external_ports = []
-
-    for service_name, service_config in data.get('services', {}).items():
-        ports = service_config.get('ports', [])
-        for port in ports:
-            if isinstance(port, str):
-                external_port = port.split(":")[0]
-                external_ports.append(external_port)
-
-    return external_ports
-
 class ProgramInfo:
-    def __init__(self, name, port):
+    def __init__(self, name, port, http):
         self.name = name
         self.port = port
+        self.http = http
+
+programs = []
 
 def get_yaml_programs():
+    global programs
     yaml = YAML(typ='safe', pure=True)
     with open('../../docker-compose.yml', 'r') as yaml_file:
         data = yaml.load(yaml_file)
-
     programs = []
-    
     for service_name, service_config in data.get('services', {}).items():
         ports = service_config.get('ports', [])
         for port in ports:
             if isinstance(port, str):
                 external_port = port.split(":")[0]
-                programm_info = ProgramInfo(service_name, external_port)
+                http = check_http("localhost", external_port)
+                programm_info = ProgramInfo(service_name, external_port, http)
                 programs.append(programm_info)
-
     return programs
 
-    
-def create_items():
-    with open('web/static/programs.json', 'r') as json_file:
-        programs = json.load(json_file)['programs']
+memory_usage = ""
+disk_usage = ""
 
+async def resource_check():
+    global memory_usage, disk_usage
+    while True:
+        current_disk_usage = get_disk_usage("/")
+        current_memory_usage = get_memory_usage()
+        disk_usage = f"DISK: [ {current_disk_usage['used']} / {current_disk_usage['total']} ] - {current_disk_usage['used_percentage']}"
+        memory_usage = f"RAM: [ {current_memory_usage['used']} / {current_memory_usage['total']} ] - {current_memory_usage['used_percentage']}"
+        await asyncio.sleep(60)
+
+async def net_check():
+    global programs, net_data
+    while True:
+        programs = get_yaml_programs()
+        ip_scan()
+        await asyncio.sleep(600)
+
+def bytes_to_readable(bytes, suffix="B"):
+    for unit in ['','K','M','G','T','P','E','Z']:
+        if abs(bytes) < 1024.0:
+            return f"{bytes:3.1f} {unit}{suffix}"
+        bytes /= 1024.0
+    return f"{bytes:.1f} Y{suffix}"
+
+def get_memory_usage():
+    memory_info = psutil.virtual_memory()
+    used_percentage = memory_info.percent
+    return {
+        "total": bytes_to_readable(memory_info.total),
+        "available": bytes_to_readable(memory_info.available),
+        "used": bytes_to_readable(memory_info.used),
+        "free": bytes_to_readable(memory_info.free),
+        "used_percentage": f"{used_percentage:.1f}%"
+    }
+
+def get_disk_usage(path="/"):
+    total, used, free = shutil.disk_usage(path)
+    used_percentage = (used / total) * 100
+    return {
+        "total": bytes_to_readable(total),
+        "used": bytes_to_readable(used),
+        "free": bytes_to_readable(free),
+        "used_percentage": f"{used_percentage:.1f}%" 
+    }
+
+# Dashboard Items
+def create_items():
+    global programs
+    with open('web/static/programs.json', 'r') as json_file:
+        program_list = json.load(json_file)['programs']
+
+    program_names = [p.name for p in programs] 
+    program_ports = [p.port for p in programs]
+    program_filterlist = ["nodered","homeassistant","esphome","vscode","docs"] 
     items = []
-    for program in programs:
-        if program['active']:
+    for program in program_list:
+        program_name = program['img'].split('/')[-1].split('.')[0] # "img/name.png" zu "name."
+        if (program_name in program_names and program['port'] in program_ports) or (program['custom_url'] != "" and program['active']) or (program_name in program_filterlist and program['active']):
             link = f"{request.url_root.rstrip('/')}:{program['port']}"
             link = program['custom_url'] if program['custom_url'] else link
             if program['custom_url'] == "https":
@@ -244,6 +364,17 @@ def create_items():
     return ''.join(items)
 
 
+async def start_server():
+    global port
+    await asyncio.to_thread(serve, app, host='0.0.0.0', port=port)
+
+async def main():
+    task1 = asyncio.create_task(resource_check())
+    task2 = asyncio.create_task(start_server())
+    task3 = asyncio.create_task(net_check())
+    await task1
+    await task2
+    await task3
+
 if __name__ == '__main__':
-    # Starte den Webserver mit Waitress
-    serve(app, host='0.0.0.0', port=80)
+    asyncio.run(main())

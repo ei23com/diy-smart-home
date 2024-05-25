@@ -6,9 +6,8 @@
         {"active":false,        "port" : "8123",                        "custom_url":"",                                        "name": "HomeAssistant",        "title": "Homeautomation",              "img":"img/homeassistant.png"},
         {"active":false,        "port" : "3000",                        "custom_url":"",                                        "name": "Grafana",              "title": "Data Visualization",          "img":"img/grafana.png"},
         {"active":false,        "port" : "9000",                        "custom_url":"",                                        "name": "Portainer",            "title": "Docker Management",           "img":"img/portainer.png"},
+        {"active":false,        "port" : "9000",                        "custom_url":"",                                        "name": "LMS",                  "title": "Lyrion Music Server",         "img":"img/lyrionmusicserver.png"},
         {"active":false,        "port" : "8080",                        "custom_url":"",                                        "name": "Nextcloud",            "title": "Your Cloud",                  "img":"img/nextcloudofficial.png"},
-        {"active":false,        "port" : "8080",                        "custom_url":"",                                        "name": "Nextcloud",            "title": "Your Cloud",                  "img":"img/nextcloudpi.png"},
-        {"active":false,        "port" : "4443",                        "custom_url":"https",                                   "name": "NextcloudPi",          "title": "Configuration",               "img":"img/nextcloudpi.png"},
         {"active":false,        "port" : "8765",                        "custom_url":"",                                        "name": "MotionEye",            "title": "Surveillance",                "img":"img/motioneye.png"},
         {"active":true,         "port" : "1880/ui",                     "custom_url":"",                                        "name": "DashBoard",            "title": "NodeRED-Dashboard",           "img":"img/nodered.png"},
         {"active":false,        "port" : "8089",                        "custom_url":"",                                        "name": "TasmoAdmin",           "title": "Socket Manager",              "img":"img/tasmoadmin.png"},
@@ -29,12 +28,11 @@
         {"active":false,        "port" : "2220",                        "custom_url":"",                                        "name": "OctoPrint",            "title": "3D-Printer",                  "img":"img/octoprint.png"},
         {"active":false,        "port" : "2221",                        "custom_url":"",                                        "name": "Domoticz",             "title": "Homeautomation",              "img":"img/domoticz.png"},
         {"active":false,        "port" : "8384",                        "custom_url":"",                                        "name": "Syncthing",            "title": "File-Sync",                   "img":"img/syncthing.png"},
-        {"active":false,        "port" : "8090",                        "custom_url":"",                                        "name": "Deconz",               "title": "Hausautomation",              "img":"img/deconz.png"},
-        {"active":false,        "port" : "7000",                        "custom_url":"",                                        "name": "Awtrix",               "title": "LED-Matrix-Controller",       "img":"img/awtrix.png"},
         {"active":false,        "port" : "4000",                        "custom_url":"",                                        "name": "TeslaMate",            "title": "Tesla Stats",                 "img":"img/teslamate.png"},
         {"active":false,        "port" : "4004",                        "custom_url":"",                                        "name": "MQTT-Explorer",        "title": "MQTT-Explorer",               "img":"img/mqtt-explorer.png"},
         {"active":false,        "port" : "2225",                        "custom_url":"",                                        "name": "FireflyIII",           "title": "Expense Manager",             "img":"img/fireflyiii.png"},
-        {"active":true,         "port" : "/docs",                       "custom_url":"",                                        "name": "MyDocs",               "title": "My Smarthome",                "img":"img/docs.png"},
+        {"active":false,        "port" : "2226",                        "custom_url":"",                                        "name": "PaperlessNGX",         "title": "Documents OCR",             "img":"img/paperlessng.png"},
+        {"active":true,         "port" : "",                            "custom_url":"/docs",                                   "name": "MyDocs",               "title": "My Smarthome",                "img":"img/docs.png"},
         {"active":true,         "port" : "",                            "custom_url":"https://diy-smart-home.ei23.com",          "name": "Manual",               "title": "official Manual",        "img":"img/docs.png"}
         ]
 }
