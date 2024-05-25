@@ -16,13 +16,14 @@ app.config['TIMEOUT'] = 120
 # Default Config
 DEFAULT_CONFIG = {
     'Port': '80', 
-    # more config
+    'PeriodicScan': True
 }
 
 CONFIG_FILE = 'config.ini'
 # create config.ini like this
 # [DEFAULT]
 # Port = 8080
+# PeriodicScan = False
 
 
 def read_config():
@@ -34,6 +35,9 @@ def read_config():
 
 config = read_config()
 port = config.get('DEFAULT', 'Port')
+periodic_scan = config.getboolean('DEFAULT', 'PeriodicScan')
+
+# url_root_without_port = request.url_root.rstrip.replace(f':{request.environ["SERVER_PORT"]}', '')
 
 @app.route('/')
 def index():
@@ -293,11 +297,13 @@ async def resource_check():
         await asyncio.sleep(60)
 
 async def net_check():
-    global programs, net_data
-    while True:
+    global programs, net_data, periodic_scan
+    programs = get_yaml_programs()
+    ip_scan()
+    while periodic_scan:
+        await asyncio.sleep(600)
         programs = get_yaml_programs()
         ip_scan()
-        await asyncio.sleep(600)
 
 def bytes_to_readable(bytes, suffix="B"):
     for unit in ['','K','M','G','T','P','E','Z']:
