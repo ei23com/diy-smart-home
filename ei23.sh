@@ -196,7 +196,8 @@ ei23_supervisor(){
     # fi
     system_32bit
     sudo apt-get update
-    docker stop ei23; cd ~/ei23-docker/; $DOCKER_COMPOSE rm -f ei23
+    docker stop ei23; cd ~/ei23-docker/; 
+    # composeCMD "rm -f ei23"
     sudo apt-get install python3-venv -y
     sudo mkdir -p $DOCKERDIR/volumes/ei23/web/static/
     sudo mv -f $DOCKERDIR/volumes/ei23/web/dist $DOCKERDIR/volumes/ei23/web/static
@@ -204,17 +205,20 @@ ei23_supervisor(){
     cd $DOCKERDIR/volumes/ei23/
     sudo python3 -m venv .venv
     sudo .venv/bin/pip3 install --upgrade pip
-    sudo .venv/bin/pip3 install flask waitress mkdocs-material ruamel.yaml
+    sudo .venv/bin/pip3 install flask waitress mkdocs-material ruamel.yaml psutil asyncio humanize
     # sudo arp-scan --plain --ignoredups --resolve -l --format='${ip} ${Name} ${mac} ${vendor}'
     # move files
     cd ~
     # replace all "username" in each line
-    sudo cp $DOCKERDIR/volumes/ei23/web/programs.json $DOCKERDIR/volumes/ei23/web/static/programs.json
+    if [ ! -f "$DOCKERDIR/volumes/ei23/web/static/programs.json" ]; then
+        sudo cp "$DOCKERDIR/volumes/ei23/web/programs.json" "$DOCKERDIR/volumes/ei23/web/static/programs.json"
+    fi
     sudo sed -i -e "s#username#$IAM#g" $DOCKERDIR/volumes/ei23/ei23.service
     sudo mv $DOCKERDIR/volumes/ei23/ei23.service /usr/lib/systemd/system/ei23.service
     # cd ei23-docker/volumes/ei23/; sudo .venv/bin/python3 ei23-supervisor.py
     sudo systemctl enable ei23.service
     sudo systemctl start ei23.service
+    sudo systemctl restart ei23.service
 }
 
 composeCMD(){
@@ -280,9 +284,9 @@ addaliases(){
 }
 
 add_new_functions(){
-    setsshlogo
+    # setsshlogo
     system_32bit
-    install_docker "${OS}"
+    # install_docker "${OS}"
 }
 
 set_ip() {
@@ -531,7 +535,11 @@ fi
 if [[ $1 == "fullreset" ]]; then
     program="X"
     program=$2
-    cd ~/ei23-docker/; $DOCKER_COMPOSE stop $program; $DOCKER_COMPOSE rm -f $program; sudo rm -r volumes/$program; $DOCKER_COMPOSE up -d; cd ~;
+    cd ~/ei23-docker/
+    composeCMD "stop $program"
+    composeCMD "rm -f $program"
+    sudo rm -r volumes/$program
+    dockerCompose
     exit 0
 fi
 

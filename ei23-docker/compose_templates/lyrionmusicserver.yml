@@ -1,9 +1,9 @@
-  logitechmediaserver:
-    container_name: logitechmediaserver
+  lyrionmusicserver:
+    container_name: lyrionmusicserver
     hostname: ei23
-    image: lmscommunity/logitechmediaserver:stable
+    image: lmscommunity/lyrionmusicserver:stable
     volumes:
-      - ./volumes/logitechmediaserver/config:/config:rw
+      - ./volumes/lyrionmusicserver/config:/config:rw
       - /home/pi/media/Playlist:/playlist:rw
       - /home/pi/media/Musik:/music:ro
       - /etc/localtime:/etc/localtime:ro

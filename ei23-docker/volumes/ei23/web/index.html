@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>SmartHome-Server</title>
-        {{ header | safe}}
+    {{ header | safe}}
 </head>
+
 <body>
     <div id="app" class="bg">
         {{ navbar | safe}}
@@ -19,9 +21,9 @@
     const currentversion = VERSIONNR;
     const userID = "USERID"
     const deviceID = "DEVICEID"
-    if(userID.length > 6){
+    if (userID.length > 6) {
         var request = new XMLHttpRequest();
-        request.open('GET', 'https://ei23.de/softwarehub/smarthome/'+userID+'/'+deviceID+'/'+currentversion+'/version', true);
+        request.open('GET', 'https://ei23.de/softwarehub/smarthome/' + userID + '/' + deviceID + '/' + currentversion + '/version', true);
         request.send(null);
         request.onreadystatechange = function () {
             if (request.readyState === 4 && request.status === 200) {
@@ -40,4 +42,5 @@
         }
     }
 </script>
+
 </html>

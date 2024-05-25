@@ -1,8 +1,16 @@
 ## Changelog
 
+### v1.11
+#### What's New? [Here's a Video (German Audio)](https://youtu.be/_eBfsc9YRHE)
+- Improved dashboard with automatic display/hide of deactivated Docker programs
+- Enhanced server overview
+- Resource display (RAM / DISK)
+- Storage occupancy by folders
+- Port of the ei23-supervisors can be changed [see ei23-supervisor.py](https://github.com/ei23com/diy-smart-home/blob/main/ei23-docker/volumes/ei23/ei23-supervisor.py#L22) 
+
 ### v1.1 - Version 1.1 of the script is available! Hooray!
 
-#### What's New? [Watch the Video Here](https://youtu.be/Ar_j29EbX98)
+#### What's New? [Watch the Video Here (German Audio)](https://youtu.be/Ar_j29EbX98)
 
 - The [dashboard](/start/ei23-dashboard/) has been revamped and now includes:
   - An IP scanner for the local network (similar to routers, but more practical and faster)

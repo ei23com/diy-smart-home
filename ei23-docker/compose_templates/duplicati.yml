@@ -1,9 +1,9 @@
   duplicati:
-    image: ghcr.io/linuxserver/duplicati
+    image: duplicati/duplicati:latest
     container_name: duplicati
     hostname: HomePi
     ports:
-      - "8200:8201"
+      - "8200:8200"
     restart: unless-stopped
     environment:
       - PUID=1000
