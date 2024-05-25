@@ -164,10 +164,13 @@ def server():
     table = ""
     sorted_programs = sorted(programs, key=lambda x: x.name)
     for programm_info in sorted_programs:
+        port = programm_info.port
+        if not programm_info.port:
+            port = "HOST/INTERN"
         if programm_info.http:
-            table += f"<tr><td><a href='{request.url_root.rstrip('/')}:{programm_info.port}'>{programm_info.name} ({programm_info.port})</a></td><td>{programm_info.port}</td><td>{'&#x2705;' if programm_info.http else '&#x274C;'}</td></tr>\n"
+            table += f"<tr><td><a href='{request.url_root.rstrip('/')}:{port}' target='_blank' >{programm_info.name} ({port})</a></td><td>{port}</td><td>{'&#x2705;' if programm_info.http else '&#x274C;'}</td></tr>\n"
         else:
-            table += f"<tr><td>{programm_info.name} ({programm_info.port})</td><td>{programm_info.port}</td><td>{'&#x2705;' if programm_info.http else '&#x274C;'}</td></tr>\n"
+            table += f"<tr><td>{programm_info.name} ({port})</td><td>{port}</td><td>{'&#x2705;' if programm_info.http else '&#x274C;'}</td></tr>\n"
     return render_template('server.html', header=header, navbar=navbar, table=table, bottom_logo=bottom_logo)
 
 @app.route('/refresh_programs')
@@ -276,12 +279,18 @@ def get_yaml_programs():
     programs = []
     for service_name, service_config in data.get('services', {}).items():
         ports = service_config.get('ports', [])
+        added = False
         for port in ports:
             if isinstance(port, str):
                 external_port = port.split(":")[0]
                 http = check_http("localhost", external_port)
                 programm_info = ProgramInfo(service_name, external_port, http)
                 programs.append(programm_info)
+                added = True
+        if not added:
+            programm_info = ProgramInfo(service_name, False, False)
+            programs.append(programm_info)
+            
     return programs
 
 memory_usage = ""
