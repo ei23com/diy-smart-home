@@ -350,7 +350,7 @@ def create_items():
 
     program_names = [p.name for p in programs] 
     program_ports = [p.port for p in programs]
-    program_filterlist = ["nodered","homeassistant","esphome","vscode","docs"] 
+    program_filterlist = ["nodered","homeassistant","esphome","vscode","docs","immich"] 
     items = []
     for program in program_list:
         program_name = program['img'].split('/')[-1].split('.')[0] # "img/name.png" zu "name."
