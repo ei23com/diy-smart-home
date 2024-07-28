@@ -1,0 +1,7 @@
+  music-assistant-server:
+    image: ghcr.io/music-assistant/server
+    container_name: music-assistant-server
+    network_mode: host
+    privileged: true
+    volumes:
+      - ./volumes/music-assistant:/data
