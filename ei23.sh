@@ -114,6 +114,7 @@ noderedUpdate(){
     # Update preselected Addons
     for addonnodes in moment node-red-contrib-boolean-logic node-red-contrib-config node-red-contrib-counter node-red-contrib-dwd-local-weather node-red-contrib-eztimer node-red-contrib-fritz node-red-contrib-ftp node-red-contrib-home-assistant-websocket node-red-contrib-ical-events node-red-contrib-influxdb node-red-contrib-looptimer2 node-red-contrib-smartmeter node-red-contrib-sunpos node-red-contrib-telegrambot node-red-contrib-time-range-switch node-red-contrib-timerswitch node-red-contrib-ui-level node-red-contrib-vcgencmd node-red-dashboard node-red-node-email node-red-node-pi-gpio node-red-node-ping node-red-node-random node-red-node-serialport node-red-node-smooth node-red-contrib-postgresql; do
         printstatus "$what node ${addonnodes}"
+        # npm -s install --no-audit --no-update-notifier --no-fund --save --save-prefix="~" --production node-red-contrib-config@latest
         npm $NOLOGNODE install --no-audit --no-update-notifier --no-fund --save --save-prefix="~" --production ${addonnodes}@latest
     done
     printstatus "$what node bcryptjs"
@@ -167,7 +168,7 @@ nextcloud-upgrade(){
 }
 
 installPackages(){
-    sudo apt-get install -y arp-scan autoconf build-essential cmake curl rsync expect ffmpeg gcc git htop btop imagemagick imagemagick-doc jq libcurl4-openssl-dev libfftw3-dev libimage-exiftool-perl libtool libusb-1.0 mkdocs mosquitto-clients mpg123 ncdu ncftp netdiscover nmap parted pkg-config pv python3-full python3-venv screen ssh sshpass sysfsutils tcpdump telnet ufw unzip usbutils virtualenv wireguard zsh minidlna
+    sudo apt-get install -y arp-scan autoconf build-essential cmake curl rsync expect ffmpeg gcc git htop btop imagemagick imagemagick-doc jq libcurl4-openssl-dev libfftw3-dev libimage-exiftool-perl libtool libusb-1.0 mkdocs mosquitto-clients mpg123 ncdu ncftp netdiscover nmap parted pkg-config pv python3-full python3-venv screen ssh sshpass sysfsutils tcpdump telnet ufw unzip usbutils virtualenv wireguard zsh
 }
 
 aptUpdate(){
