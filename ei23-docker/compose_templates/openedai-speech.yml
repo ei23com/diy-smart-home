@@ -1,0 +1,25 @@
+  # run the following command first
+  # cd ~/ei23-docker/volumes; sudo git clone https://github.com/matatonic/openedai-speech.git; cd openedai-speech/; cd config; sudo wget https://raw.githubusercontent.com/baefthde/OpenWebUI_De/refs/heads/main/voice_to_speaker.yaml; cd ..; cd voices; sudo wget https://huggingface.co/rhasspy/piper-voices/resolve/main/de/de_DE/thorsten/high/de_DE-thorsten-high.onnx; sudo wget https://huggingface.co/rhasspy/piper-voices/raw/main/de/de_DE/thorsten/high/de_DE-thorsten-high.onnx.json
+
+  openedai-speech:
+    image: ghcr.io/matatonic/openedai-speech:latest
+    container_name: openedai-speech
+    build:
+      context: ./volumes/openedai-speech/.
+      dockerfile: dockerfile
+    ports:
+      - "8001:8000"
+    volumes:
+      - ./volumes/openedai-speech/voices:/app/voices
+      - ./volumes/openedai-speech/config:/app/config
+    environment:
+      - TTS_VOICES=thorsten
+    restart: no
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              #device_ids: ['0', '1'] # Select a gpu, or
+              count: all
+              capabilities: [gpu]

@@ -4,7 +4,15 @@
     restart: unless-stopped
     environment:
       - OLLAMA_HOST=0.0.0.0
+      - OLLAMA_ORIGINS=moz-extension://*'
     ports:
       - 11434:11434
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
     volumes:
       - ./volumes/ollama:/root/.ollama

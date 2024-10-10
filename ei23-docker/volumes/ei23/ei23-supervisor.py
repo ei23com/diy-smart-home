@@ -220,15 +220,34 @@ def merge_json_files(target_filename, template_filename):
         f.truncate()
         f.write(content.replace('}, {', '},\n{').replace('[{', '[\n{').replace(']}', '\n]}'))
 
+def get_default_interface():
+    # Ermittelt das Interface, das für die Standardroute verwendet wird
+    try:
+        route_output = subprocess.check_output(['ip', 'route', 'show', 'default']).decode('utf-8')
+        # Extrahiere das Interface (5. Feld)
+        interface = route_output.split()[4]
+        return interface
+    except Exception as e:
+        print(f"Fehler beim Ermitteln des Standard-Interfaces: {e}")
+        return None
 
 net_data = []
 
 def ip_scan():
     global net_data
     net_data = {'devices': []}
+
+    interface = get_default_interface()
+    if interface is None:
+        print("Kein Interface gefunden, arp-scan kann nicht ausgeführt werden.")
+        return
+
     try:
         # arp-scan --plain --ignoredups -l --format='${ip}\t${Name}\t${mac}\t${vendor}'
-        arp_scan_output = subprocess.check_output(['arp-scan', '--plain', '--ignoredups', '-l', '--resolve', '--format=${ip}\t${Name}\t${mac}\t${vendor}']).decode('utf-8')
+        arp_scan_output = subprocess.check_output([
+            'arp-scan', '--interface', interface, '--plain', '--ignoredups', '-l', '--resolve', 
+            '--format=${ip}\t${Name}\t${mac}\t${vendor}'
+        ]).decode('utf-8')
         for line in arp_scan_output.splitlines():
             parts = line.split('\t')
             if len(parts) == 4:
@@ -238,16 +257,21 @@ def ip_scan():
                 net_data['devices'].append({'ip': ip, 'host': host, 'mac': mac, 'vendor': vendor, 'http': http_status})
     except subprocess.CalledProcessError:
         # Fehler beim arp-scan Aufruf - alternativen Aufruf hier einfügen
-        # Zum Beispiel: arp_scan_output = subprocess.check_output(['alternative_command', ...]).decode('utf-8')
-        arp_scan_output = subprocess.check_output(['arp-scan', '--plain', '--ignoredups', '-l']).decode('utf-8')
-        for line in arp_scan_output.splitlines():
-            parts = line.split('\t')
-            if len(parts) == 3:
-                ip, mac, vendor = parts
-                http_status = check_http(ip, 80)
-                net_data['devices'].append({'ip': ip, 'host': ip, 'mac': mac, 'vendor': vendor, 'http': http_status})
-
+        try:
+            arp_scan_output = subprocess.check_output(['arp-scan', '--interface', interface, '--plain', '--ignoredups', '-l']).decode('utf-8')
+            for line in arp_scan_output.splitlines():
+                parts = line.split('\t')
+                if len(parts) == 3:
+                    ip, mac, vendor = parts
+                    http_status = check_http(ip, 80)
+                    net_data['devices'].append({'ip': ip, 'host': ip, 'mac': mac, 'vendor': vendor, 'http': http_status})
+        except subprocess.CalledProcessError as e:
+            print(f"Ein allgemeiner Fehler ist aufgetreten: {e}")
+    except:
+        print("Ein allgemeiner Fehler ist aufgetreten: {e}")
+    
     net_data['timestamp'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
 
 def check_http(ip, port):
     url = f"http://{ip}:{port}"
@@ -310,7 +334,7 @@ async def net_check():
     programs = get_yaml_programs()
     ip_scan()
     while periodic_scan:
-        await asyncio.sleep(600)
+        await asyncio.sleep(120)
         programs = get_yaml_programs()
         ip_scan()
 
