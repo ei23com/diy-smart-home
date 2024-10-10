@@ -38,6 +38,7 @@ printmsg() {
     printf "${CWhite}===================================================\n"
     printf "${CWhite}//// $1\n"
     printf "${CWhite}===================================================\n${CGreen}"
+    # ok
 }   
 
 printstatus() {

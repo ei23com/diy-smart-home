@@ -1,0 +1,31 @@
+  # run the following command first
+  # cd ~/ei23-docker/volumes; sudo git clone https://github.com/jhj0517/Whisper-WebUI.git;
+
+  whisper-webui:
+    build:
+      context: ./volumes/openedai-speech/.
+      dockerfile: dockerfile
+    image: jhj0517/whisper-webui:latest
+    container_name: Whisper-WebUI
+    restart: no
+    volumes:
+      # Update paths to mount models and output paths to your custom paths like this, e.g:
+      # - C:/whisper-models/custom-path:/Whisper-WebUI/models
+      # - C:/whisper-webui-outputs/custom-path:/Whisper-WebUI/outputs
+      - ./volumes/Whisper-WebUI/models:/Whisper-WebUI/models
+      - ./volumes/Whisper-WebUI/outputs:/Whisper-WebUI/outputs
+      - ./volumes/Whisper-WebUI/configs:/Whisper-WebUI/configs
+    ports:
+      - "7860:7860"
+    stdin_open: true
+    tty: true
+    entrypoint: ["python", "app.py", "--server_port", "7860", "--whisper_type", "insanely-fast-whisper", "--inbrowser", "True", "--api_open", "True", "--server_name", "0.0.0.0",]
+    # If you're not using nvidia GPU, Update device to match yours.
+    # See more info at : https://docs.docker.com/compose/compose-file/deploy/#driver
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [ gpu ]

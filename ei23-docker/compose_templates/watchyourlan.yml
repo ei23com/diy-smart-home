@@ -1,0 +1,16 @@
+  watchyourlan:
+    image: aceberg/watchyourlan:v2
+    network_mode: "host"
+    container_name: watchyourlan
+    restart: unless-stopped
+    volumes:
+    - ./volumes/WatchYourLAN:/data/WatchYourLAN
+    environment:
+      TZ: Europe/Berlin              # required: needs your TZ for correct time
+      IFACES: "eno1"  # required: 1 or more interface
+      HOST: "0.0.0.0"                   # optional, default: 0.0.0.0
+      PORT: "8840"                      # optional, default: 8840
+      TIMEOUT: "120"                    # optional, time in seconds, default: 120
+      SHOUTRRR_URL: ""                  # optional, set url to notify
+      THEME: "sand"                     # optional
+      COLOR: "dark"                     # optional
