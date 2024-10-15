@@ -5,20 +5,23 @@ Dieses Projekt ist ein super einfaches, sauberes und schlankes Installations- un
 Viel Spaß, werde smart und unabhängig!
 
 ### Einfache Installation:
-Die einfache Installation ist selbsterklärend.  
-Nach der Anmeldung für den Newsletter ([ENGLISCHER NEWSLETTER](https://ei23.com/newsletter) / [DEUTSCHER NEWSLETTER](https://ei23.de/newsletter)) erhältst du zwei Befehlszeilen, die du über die Konsole oder SSH ausführen musst.  
+
+Die einfache Installation ist selbsterklärend.
+Nach der Anmeldung für den Newsletter ([ENGLISCHER NEWSLETTER](https://ei23.com/newsletter) / [DEUTSCHER NEWSLETTER](https://ei23.de/newsletter)) erhältst du zwei Befehlszeilen, die du über die Konsole oder SSH ausführen musst.
 Die erste Zeile lädt das Skript (bash script) herunter, und die zweite Zeile führt es aus.
 
-*Warum Newsletter?*  
+*Warum Newsletter?*
+
 1. Ich kann dich schnell über Sicherheitslücken und interessante neue Features informieren.
 2. Der Aufbau einer Community wird einfacher.
 3. Ein wenig Werbung für meine Arbeit und das Projekt ist möglich.
 4. Und ich könnte heimlich bösartigen Code in dein Skript einfügen und ein Botnetz aus einer großen Anzahl von Servern erstellen! - Natürlich mache ich das nicht! Oder glaubst du, ich würde das tun? Jetzt bin ich verwirrt... Warum sollte ich das tun, sollte ich es tun? Jetzt bist du verwirrt? Mach einfach keinen Ärger! Ok, zurück zum Thema xD
 
-Die Dateien vom Newsletter sind identisch mit denen von Github, mit der Ausnahme einer eindeutigen USERID zum Herunterladen von Dateien von meinem Server und dem automatischen Setzen der LANGFILE, abhängig davon, welche Sprache vom Newsletter du wählst.  
+Die Dateien vom Newsletter sind identisch mit denen von Github, mit der Ausnahme einer eindeutigen USERID zum Herunterladen von Dateien von meinem Server und dem automatischen Setzen der LANGFILE, abhängig davon, welche Sprache vom Newsletter du wählst.
 Außerdem werde ich dich nicht unnötig belästigen, wenn du bedenken hast nutze halt eine Wegwerf-Mail... Dann bin ich allerdings traurig.
 
 ### Manuelle Installation:
+
 1. Klone die Dateien in einen Ordner `git clone https://github.com/ei23com/diy-smart-home.git`
 2. Füge die Sprachdatei deiner Wahl (de-file.txt / en-file.txt) in die ei23.sh ein und ersetze den Platzhalter "LANGFILE_PLACEHOLDER".
 3. Installiere ein frisches Debian / Rasbian-System, melde dich per SSH oder Terminal an und erstelle einen Benutzer wie folgt: "useradd -m ei23" (oder einen anderen Namen).
@@ -38,4 +41,5 @@ Nach der Installation findest du auf dem http Port und der IP Adresse deines Ser
 Du kannst außerdem nun weitere Programme als [Docker Container installieren](/start/docker-compose)
 
 ## Weitere Fragen?
+
 Für alles weitere verweise ich auf die [Häufigen Fragen - FAQ](/start/faq)
