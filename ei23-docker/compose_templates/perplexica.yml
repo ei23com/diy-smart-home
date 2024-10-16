@@ -1,0 +1,45 @@
+  # run the following command first
+  # cd ~/ei23-docker/volumes; sudo git clone https://github.com/ItzCrazyKns/Perplexica.git; sudo mv Perplexica perplexica; cd perplexica; sudo cp sample.config.toml config.toml 
+  # edit config.toml
+  # sudo nano ~/ei23-docker/volumes/perplexica/config.toml 
+
+  searxng:
+    image: docker.io/searxng/searxng:latest
+    container_name: searxng
+    volumes:
+      - ./volumes/perplexica/searxng:/etc/searxng:rw
+    ports:
+      - 4000:8080 # change 4000 to your needs
+    restart: unless-stopped
+
+  perplexica-backend:
+    container_name: perplexica-backend
+    build:
+      context: ./volumes/perplexica/.
+      dockerfile: backend.dockerfile
+      args:
+        - SEARXNG_API_URL=http://searxng:8080
+    depends_on:
+      - searxng
+    ports:
+      - 3002:3001 # change 3002 to your needs
+    volumes:
+      - ./volumes/perplexica/backend-dbstore:/home/perplexica/data
+      - ./volumes/perplexica/config.toml:/home/perplexica/config.toml
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    restart: unless-stopped
+
+  perplexica-frontend:
+    container_name: perplexica-frontend
+    build:
+      context: ./volumes/perplexica/.
+      dockerfile: app.dockerfile
+      args:
+        - NEXT_PUBLIC_API_URL=http://10.1.1.10:3002/api # Change 10.1.1.10:3002 to your Servers LAN IP and the external perplexica-backend port
+        - NEXT_PUBLIC_WS_URL=ws://10.1.1.10:3002 # Change 10.1.1.10:3002 to your Servers LAN IP and the external perplexica-backend port
+    depends_on:
+      - perplexica-backend
+    ports:
+      - 3003:3000 # change 3003 to your needs
+    restart: unless-stopped
