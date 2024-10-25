@@ -19,6 +19,7 @@
 - [Home Assistant](/software/homeassistant/) erhält eine [Addon-Funktion](https://github.com/ei23com/diy-smart-home/blob/main/ei23-docker/custom_ha_addons-example.sh). Damit können Community-Integrationen automatisch aktualisiert werden - ähnlich wie bei HACS, nur einfacher und ohne einen Github-Account zu verknüpfen.
 - Das Skript ist jetzt auf GitHub verfügbar - Mitarbeit ist willkommen.
 - Du liest gerade die neue Dokumentation.
+- Das Skript ist mittlerweile komplett für 64Bit Systeme und AMD64 Architekturen mit Debian12 als Betriebssystem angepasst.
 
 #### Breaking Changes
 
