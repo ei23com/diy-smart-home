@@ -1,6 +1,6 @@
   pairdrop:
     container_name: pairdrop
-    image: linuxserver/pairdrop:latest
+    image: lscr.io/linuxserver/pairdrop:latest
     hostname: pairdrop
     restart: unless-stopped
     ports:
