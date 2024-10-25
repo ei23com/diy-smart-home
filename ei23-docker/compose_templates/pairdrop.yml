@@ -1,0 +1,15 @@
+  pairdrop:
+    container_name: pairdrop
+    image: linuxserver/pairdrop:latest
+    hostname: pairdrop
+    restart: unless-stopped
+    ports:
+      - 3010:3000
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Berlin
+      - RATE_LIMIT=false #optional
+      - WS_FALLBACK=false #optional
+      - RTC_CONFIG= #optional
+      - DEBUG_MODE=false #optional

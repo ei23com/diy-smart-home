@@ -1,6 +1,7 @@
   archivebox:
     #image: archivebox/archivebox:dev # dev branch
     image: archivebox/archivebox
+    container_name: archivebox
     command: server --quick-init 0.0.0.0:8000
     ports:
       - 8085:8000
