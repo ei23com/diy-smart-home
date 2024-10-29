@@ -2,6 +2,12 @@
 
 
 ### v1.11
+#### Was gibt es Neues?
+- Bugfixes: Verbesserte Installation und Probleme mit Icons / Links auf dem ei23 Dashboard behoben
+- Neue Docker Templates: fooocus, archivebox, ollama, openedai-speech, pairdrop, perplexica, watchyourlan, whisper-webui
+
+
+### v1.11
 #### Was gibt es Neues? [Hier ein Video](https://youtu.be/_eBfsc9YRHE)
 - Verbessertes Dashboard mit automatischem Anzeigen / Ausblenden von deaktiverten Docker-Programmen
 - Verbesserte Server-Übersicht
