@@ -1,7 +1,7 @@
 ## Changelog
 
 
-### v1.11
+### v1.12
 #### Was gibt es Neues?
 - Bugfixes: Verbesserte Installation und Probleme mit Icons / Links auf dem ei23 Dashboard behoben
 - Neue Docker Templates: fooocus, archivebox, ollama, openedai-speech, pairdrop, perplexica, watchyourlan, whisper-webui
