@@ -8,21 +8,29 @@ networks:
 # custom_networks_here
 
 services:
-
-  # MQTT-Broker
-  mosquitto:
-    container_name: mosquitto
-    image: eclipse-mosquitto
+# DEFAULT CONTAINER
+  portainer:
+    container_name: portainer
+    image: portainer/portainer-ce
     restart: unless-stopped
-    user: "1883"
     ports:
-      - "1883:1883"
-      - "9001:9001"
+      - "8000:8000"
+      - "9000:9000"
     volumes:
-      - ./volumes/mosquitto/data:/mosquitto/data
-      - ./volumes/mosquitto/log:/mosquitto/log
-      - ./volumes/mosquitto/config:/mosquitto/config
-    logging:
-      options:
-        max-size: "5m"
-        max-file: "3"
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./volumes/portainer/data:/data
+
+  vscode:
+    image: lscr.io/linuxserver/code-server
+    container_name: vscode
+    restart: unless-stopped
+    ports:
+      - 2222:8443
+    environment:
+      - PUID=0
+      - GUID=0
+      - TZ=Europe/Berlin
+      # - PASSWORD=password_placeholder
+    volumes:
+      - ./volumes/vscode/config:/config
+      - ./:/ei23-docker

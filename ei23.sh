@@ -498,6 +498,15 @@ show_shortcuts(){
     echo "ei23 update            - run full update"
 }
 
+yml_build(){
+    echo -e "\n\n" | sudo tee -a "$DOCKERDIR/docker-compose.yml" > /dev/null
+    sudo tee -a "$DOCKERDIR/docker-compose.yml" < "$DOCKERDIR/compose_templates/$1.yml"
+    sudo sed -i -e "/$1/s/\"active\":false,/\"active\":true, /" $DOCKERDIR/volumes/ei23/web/static/programs.json
+    if [[ "$1" == *"nextcloudofficial"* ]]; then
+        sudo sed -i '/# custom_networks_here/ r '$DOCKERDIR/compose_templates/nextcloud-network.yml $DOCKERDIR/docker-compose.yml
+    fi
+}
+
 
 # Short Commands
 if [[ $1 == "backup" ]]; then
@@ -755,17 +764,16 @@ if [ ! -d "$DOCKERDIR" ] || [[ $1 == "part1" ]]; then
         "homeassistant" "HomeAssistant" ON \
         "influxdb18" "InfluxDB 1.8" OFF \
         "influxdb2" "InfluxDB 2" OFF \
+        "mosquitto" "MQTT Broker" ON \
         "motioneye" "MotionEye" OFF \
         "mqtt-explorer" "MQTT-explorer" ON \
         "nextcloudofficial" "Nextcloud" OFF \
         "nginxproxymanger" "NGINX Proxymanager" OFF \
         "paperlessngx" "PaperlessNGX" OFF \
         "pihole" "Pihole" OFF \
-        "portainer" "Portainer" ON \
         "tasmoadmin" "Tasmoadmin" OFF \
         "timescaledb" "Timescaledb" OFF \
         "traefik" "Traefik SSL Proxy " OFF \
-        "vscode" "VSCode ConfigEditor" ON \
         "wireguard" "Wireguard VPN-Server" OFF \
         "stufftext" "_________Extras" ON \
         "log2ram" "Log2RAM (SD-Card)" OFF \
@@ -911,15 +919,6 @@ if [ ! -d "$DOCKERDIR" ] || [[ $1 == "part1" ]]; then
     system_32bit
 
     if [[ $MYMENU != *"nodocker"* ]]; then
-        yml_build(){
-            printf "\n\n" >> "$DOCKERDIR/docker-compose.yml"
-            cat "$DOCKERDIR/compose_templates/$1.yml" >> "$DOCKERDIR/docker-compose.yml"
-            sudo sed -i -e "/$1/s/\"active\":false,/\"active\":true, /" $DOCKERDIR/volumes/ei23/web/static/programs.json
-            if [[ "$1" == *"nextcloudofficial"* ]]; then
-                sudo sed -i '/# custom_networks_here/ r '$DOCKERDIR/compose_templates/nextcloud-network.yml $DOCKERDIR/docker-compose.yml
-            fi
-        }
-
         for dockercontainer in awtrix bitwarden deconz domoticz duplicati ei23 esphome fhem fireflyiii gotify grafana grocy homeassistant homebridge influxdb18 influxdb2 iobroker mosquitto motioneye mqtt-explorer nextcloudofficial nextcloudpi nginxproxymanger octoprint openhab paperlessngx pihole portainer rhasspy tasmoadmin teamspeak timescaledb traefik vscode wireguard zigbee2mqtt; do
             if [[ $MYMENU == *"${dockercontainer}"* ]]; then
                 yml_build "${dockercontainer}"
