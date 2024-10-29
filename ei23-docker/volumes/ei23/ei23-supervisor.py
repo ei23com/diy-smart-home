@@ -378,7 +378,8 @@ def create_items():
     items = []
     for program in program_list:
         program_name = program['img'].split('/')[-1].split('.')[0] # "img/name.png" zu "name."
-        if (program_name in program_names and program['port'] in program_ports) or (program['custom_url'] != "" and program['active']) or (program_name in program_filterlist and program['active']):
+        # if (program_name in program_names and program['port'] in program_ports) or (program['custom_url'] != "" and program['active']) or (program_name in program_filterlist and program['active']):
+        if (program['active']): # Temporary fix - filter deactivated
             link = f"{request.url_root.rstrip('/')}:{program['port']}"
             link = program['custom_url'] if program['custom_url'] else link
             if program['custom_url'] == "https":
