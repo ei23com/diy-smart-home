@@ -32,7 +32,7 @@
         {"active":false,        "port" : "8384",                        "custom_url":"",                                        "name": "Syncthing",            "title": "Synchronisierung",            "img":"img/syncthing.png"},
         {"active":false,        "port" : "4000",                        "custom_url":"",                                        "name": "TeslaMate",            "title": "Tesla Statistik",             "img":"img/teslamate.png"},
         {"active":false,        "port" : "4004",                        "custom_url":"",                                        "name": "MQTT-Explorer",        "title": "MQTT-Explorer",               "img":"img/mqtt-explorer.png"},
-        {"active":false,        "port" : "2226",                        "custom_url":"",                                        "name": "PaperlessNGX",         "title": "Buchhaltung OCR",             "img":"img/paperlessng.png"},
+        {"active":false,        "port" : "2226",                        "custom_url":"",                                        "name": "PaperlessNGX",         "title": "Buchhaltung OCR",             "img":"img/paperlessngx.png"},
         {"active":true,         "port" : "",                            "custom_url":"/docs",                                   "name": "myDOCS",               "title": "Mein Smarthome",              "img":"img/docs.png"},
         {"active":true,         "port" : "",                            "custom_url":"https://diy-smart-home.ei23.de",          "name": "Handbuch",             "title": "offizielles Handbuch",        "img":"img/docs.png"}
         ]
