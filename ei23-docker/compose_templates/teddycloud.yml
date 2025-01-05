@@ -1,0 +1,16 @@
+  teddycloud:
+    container_name: teddycloud
+    hostname: teddycloud
+    image: ghcr.io/toniebox-reverse-engineering/teddycloud:latest
+    # ports:
+    #  - 8089:80 #optional (for the webinterface)
+    #  - 8443:8443 #optional (for the webinterface)
+    #  - 443:443 #Port is needed for the connection for the box, must not be changed!
+    volumes:
+      - ./volumes/teddycloud/certs:/teddycloud/certs
+      - ./volumes/teddycloud/config:/teddycloud/config
+      - ./volumes/teddycloud/content:/teddycloud/data/content
+      - ./volumes/teddycloud/library:/teddycloud/data/library
+      - ./volumes/teddycloud/firmware:/teddycloud/data/firmware
+      - ./volumes/teddycloud/cache:/teddycloud/data/cache
+    restart: unless-stopped
