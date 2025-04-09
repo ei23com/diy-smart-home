@@ -3,6 +3,7 @@ from flask import Flask, render_template, redirect, url_for, send_from_directory
 from ruamel.yaml import YAML
 from waitress import serve
 from humanize import naturalsize
+from urllib.parse import urlparse
 import requests
 import json, socket, subprocess, os
 import shutil
@@ -379,11 +380,14 @@ def create_items():
     for program in program_list:
         program_name = program['img'].split('/')[-1].split('.')[0] # "img/name.png" zu "name."
         # if (program_name in program_names and program['port'] in program_ports) or (program['custom_url'] != "" and program['active']) or (program_name in program_filterlist and program['active']):
-        if (program['active']): # Temporary fix - filter deactivated
-            link = f"{request.url_root.rstrip('/')}:{program['port']}"
+        if program['active']:
+            parsed_url = urlparse(request.url_root)
+            base_url = parsed_url.scheme + "://" + parsed_url.hostname
+            link = f"{base_url}:{program['port']}"  # Immer program['port'] verwenden
+            
             link = program['custom_url'] if program['custom_url'] else link
             if program['custom_url'] == "https":
-                link = f"https://{request.host}:{program['port']}"
+                link = f"https://{parsed_url.hostname}:{program['port']}"
 
             item_html = f'''
                 <section class="item-container">
