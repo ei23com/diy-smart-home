@@ -1,7 +1,15 @@
   music-assistant-server:
-    image: ghcr.io/music-assistant/server
+    image: ghcr.io/music-assistant/server:latest
     container_name: music-assistant-server
+    restart: unless-stopped
     network_mode: host
-    privileged: true
     volumes:
-      - ./volumes/music-assistant:/data
+      - ./volumes/music-assistant-server/data:/data/
+    cap_add:
+      - SYS_ADMIN
+      - DAC_READ_SEARCH
+    security_opt:
+      - apparmor:unconfined
+    environment:
+      # default=info, possible=(critical, error, warning, info, debug)
+      - LOG_LEVEL=info
