@@ -1,0 +1,25 @@
+homegear: # THIS IS UNTESTED
+    image: homegear/homegear:stable
+    container_name: homegear
+    restart: unless-stopped
+    environment:
+      - TZ=Europe/Berlin
+      # Set User/Group ID to match your host system (usually 1000) 
+      # to prevent permission issues with the volumes.
+      - HOST_USER_ID=1000
+      - HOST_USER_GID=1000
+    volumes:
+      - ./volumes/homegear/config:/etc/homegear
+      - ./volumes/homegear/lib:/var/lib/homegear
+      - ./volumes/homegear/log:/var/log/homegear
+    ports:
+      - "2001:2001" # XML-RPC (for Home Assistant, OpenHAB, etc.)
+      - "2002:2002" # SSL XML-RPC
+      - "2003:2003" # Binary RPC / Event Server
+    
+    # -----------------------------------------------------------
+    # ONLY IF USING A USB STICK (e.g. CUL or Flashed Cube via USB):
+    # -----------------------------------------------------------
+    # devices:
+    #   - /dev/ttyACM0:/dev/ttyACM0
+    # privileged: true # Sometimes needed for hardware access
