@@ -1,0 +1,16 @@
+  freshrss: # Host your own RSS Service
+    image: freshrss/freshrss:latest
+    # build:
+    #   context: https://github.com/FreshRSS/FreshRSS.git#latest
+    #   dockerfile: Docker/Dockerfile-Alpine
+    container_name: freshrss
+    hostname: freshrss
+    restart: unless-stopped
+    volumes:
+      - ./volumes/freshrss/data:/var/www/FreshRSS/data
+      - ./volumes/freshrss/extensions:/var/www/FreshRSS/extensions
+    ports:
+      - "2224:80"
+    environment:
+      TZ: Europe/Berlin # CHANGE TO YOUR TIMEZONE
+      CRON_MIN: 5

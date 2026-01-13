@@ -1,0 +1,8 @@
+  matchering: # Easy mastering music
+    container_name: matchering
+    image: sergree/matchering-web
+    ports:
+      - "8360:8360"
+    volumes:
+      - "./volumes/matchering:/app/data"
+    restart: no

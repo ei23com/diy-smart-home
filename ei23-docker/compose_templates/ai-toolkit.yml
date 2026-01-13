@@ -1,0 +1,27 @@
+  ai-toolkit: # for training Image-Gen Lora etc.
+    image: ostris/aitoolkit:latest
+    container_name: ai-toolkit
+    restart: unless-stopped
+    shm_size: '2gb'  # <--- DIESE ZEILE HINZUFÜGEN (2gb bis 8gb empfohlen)
+    ports:
+      - "8675:8675"
+    volumes:
+      - ~/.cache/huggingface/hub:/root/.cache/huggingface/hub
+      # - ./volumes/ai-toolkit/aitk_db.db:/app/ai-toolkit/aitk_db.db
+      - ./volumes/ai-toolkit/datasets:/app/ai-toolkit/datasets
+      - ./volumes/ai-toolkit/output:/app/ai-toolkit/output
+      - ./volumes/ai-toolkit/config:/app/ai-toolkit/config
+    environment:
+      - AI_TOOLKIT_AUTH=${AI_TOOLKIT_AUTH:-password}
+      - NODE_ENV=production
+      - TZ=UTC
+    # restart: no
+    # profiles:
+    #   - manual
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
