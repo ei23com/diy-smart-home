@@ -1,0 +1,17 @@
+  llama-swap:
+    image: ghcr.io/mostlygeek/llama-swap:cuda
+    container_name: llama-swap
+    restart: unless-stopped
+    ports:
+      - 9292:8080
+      - 10008:10008
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    volumes:
+      - ./volumes/llama-swap/config.yaml:/app/config.yaml
+      - ./volumes/llama-swap/models:/models:ro

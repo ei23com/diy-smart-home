@@ -1,0 +1,31 @@
+  litellm: # All LLMs in one Place with OpenAI compatible API
+    image: ghcr.io/berriai/litellm:main-latest
+    container_name: litellm
+    restart: always
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./volumes/litellm/config.yaml:/app/config.yaml
+    environment:
+        DATABASE_URL: "postgresql://llmproxy:dbpassword9090@litellm-db:5432/litellm"
+        STORE_MODEL_IN_DB: "True" # allows adding models to proxy via UI
+    command: --config /app/config.yaml --detailed_debug
+    depends_on:
+      - litellm-db
+
+
+  litellm-db:
+    image: postgres:16
+    container_name: litellm-db
+    restart: always
+    environment:
+      POSTGRES_DB: litellm
+      POSTGRES_USER: llmproxy
+      POSTGRES_PASSWORD: dbpassword9090
+    volumes:
+      - ./volumes/litellm/postgres_data:/var/lib/postgresql/data  # Persists Postgres data across container restarts
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d litellm -U llmproxy"]
+      interval: 1s
+      timeout: 5s
+      retries: 10
