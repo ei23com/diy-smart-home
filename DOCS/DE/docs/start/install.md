@@ -1,6 +1,31 @@
 ## Installation
 
-Dieses Projekt ist ein super einfaches, sauberes und schlankes Installations- und Wartungstool für eine große Anzahl von meist Docker-basierter Home-Automation- und Medien-Software, die leicht über ein sauberes, schlankes und anpassbares Web-Dashboard zugänglich ist. Es wurde für Debian und Raspberry OS entwickelt und funktioniert auf den meisten Architekturen. Vielleicht ist es nicht ganz so einfach zu konfigurieren wie zum Beispiel Home Assistant OS, aber dafür bietet es deutlich mehr Anpassungsoptionen und ermöglicht dir den Umgang mit der docker-compose.yml-Syntax zu erlernen, was ebenfalls ein großartiges Werkzeug ist. Und du musst nicht einmal Home Assistant verwenden, wenn du lieber OpenHAB oder IObroker nutzen möchtest – alles auf einem System.
+Dieses Projekt ist ein super einfaches, sauberes und schlankes Installations- und Wartungstool für eine große Anzahl von meist Docker-basierter Home-Automation- und Medien-Software, die leicht über ein sauberes, schlankes und anpassbares Web-Dashboard zugänglich ist.
+
+## Unterstützte Systeme
+
+Das Skript funktioniert auf den folgenden Betriebssystemen und Architekturen:
+
+- **Raspberry Pi OS** (armv7, arm64) - Getestet
+- **Debian 12** (arm64, amd64) - Getestet  
+- **Ubuntu / Pop!_OS** (arm64, amd64) - Getestet
+- **Fedora** (amd64) - Getestet
+- **Arch / Manjaro** (amd64) - Getestet
+- **CentOS / Rocky** (amd64) - Getestet
+
+!!!note "32-Bit Systeme"
+    Für 32-Bit Systeme (armv7) wird das `docker-compose` Kommando anstelle von `docker compose` verwendet. Einige neuere Docker-Images sind möglicherweise nicht verfügbar.
+
+Vielleicht ist es nicht ganz so einfach zu konfigurieren wie zum Beispiel Home Assistant OS, aber dafür bietet es deutlich mehr Anpassungsoptionen und ermöglicht dir den Umgang mit der docker-compose.yml-Syntax zu erlernen, was ebenfalls ein großartiges Werkzeug ist. Und du musst nicht einmal Home Assistant verwenden, wenn du lieber OpenHAB oder IObroker nutzen möchtest – alles auf einem System.
+
+## Hardware-Empfehlung
+
+!!!tip "Mini-PCs / ThinClients empfohlen"
+    Obwohl der Raspberry Pi einen sehr geringen Stromverbrauch hat, ist die **Performance pro Watt** bei gebrauchten Mini-PCs und ThinClients oft deutlich besser. Für um die 50-100€ erhältst du gebrauchte x86-Systeme, die alle Docker-Images unterstützen und mehr Leistung bieten.
+    
+    Beispiele: **HP T620/T630**, **Dell Wyse 5070**, **Lenovo ThinkCentre M700** oder ein **Intel N100 Mini-PC**.
+    
+    [Mehr Details auf der Hardware-Seite](/hardware/server/)
 
 Viel Spaß, werde smart und unabhängig!
 

@@ -1,109 +1,145 @@
-## How to Customize the Homepage with Programs and Add Your Own Programs?
+##  How do I customize the start page with the programs, can I add my own programs?</strong>
+Yes, you can add your own programs or network devices to the start page.
+To do this, you need to edit the file `/home/pi/ei23-docker/volumes/ei23/web/static/programs.json` line by line:
+Under `/home/pi/ei23-docker/volumes/ei23/web/static/programs_templates.json` you can also find newly added programs after an update.
+You can also add external pages to the dashboard — for example the IP 192.168.0.1:
+`{"active":true, "port" : "", "custom_url":"http://192.168.0.1", "name": "Router", "title": "Router", "img":"img/router.png"},`
+Note! The last line of this type must not end with a comma.
+The page is usually cached by the browser, so you may need to clear it first (with Ctrl-F5 or in the browser history settings).
+I also explain it briefly in the video: [Video about script v0.9](https://www.youtube.com/watch?v=pKUv_rXONas&t=140s)
 
-Yes, you can add your own programs or network devices to the homepage. To do this, you need to modify the file `/home/pi/ei23-docker/volumes/ei23/web/static/programs.json` line by line. You can also find newly added programs after an update under `/home/pi/ei23-docker/volumes/ei23/web/static/programs_templates.json`. External pages can also be added to the dashboard, for example, the IP `192.168.0.1`:
+##  How do I perform updates for programs?</strong>
+In the SSH terminal, run `bash ei23.sh` and then select "Complete Update" and press Enter. Very simple.
 
-```json
-{"active":true, "port" : "", "custom_url":"http://192.168.0.1", "name": "Router", "title": "Router", "img":"img/router.png"}
-```
+##  I want to install or remove programs afterwards</strong>
+See [Install Programs](docker-compose.md)
 
-Caution! The last line of this kind should not end with a comma. The page is usually cached by the browser, so you may need to clear it beforehand (with Ctrl-F5 or in the browser history settings). I also briefly explain this in the video: [Video zu Skript v0.9](https://www.youtube.com/watch?v=pKUv_rXONas&t=140s)
 
-## How to Perform Updates for Programs?
+##  Program XY doesn't work, how do I reset it without reinstalling?</strong>
 
-In the SSH terminal, run `bash ei23.sh` and then choose "Complete Update" and press Enter. It's that simple.
+!!!tip "Use Shortcuts"
+    You can also use the simple command `ei23 fullreset X`, where X is the container name. Example: `ei23 fullreset portainer`
 
-## How to Install or Remove Programs Later?
-
-See [install programs](docker-compose.md)
-
-## Program XYZ is not Working, How Do I Reset It Without Reinstalling?
-
-For example, to reset Portainer, you can use the following command (this works similarly for all other programs except for the ei23-Dashboard, Home Assistant, Mosquitto, and NodeRED):
-
+For example, Portainer is reset with the following command (this works analogously with all other programs **except** the ei23 Dashboard, Home Assistant, Mosquitto, and NodeRED):
 ```bash
-cd ei23-docker/; docker-compose stop portainer; docker-compose rm -f portainer; sudo rm -r volumes/portainer/; docker-compose up -d
+cd ei23-docker/
+docker compose stop portainer
+docker compose rm -f portainer
+sudo rm -r volumes/portainer/
+docker compose up -d
 ```
-
-For NextcloudPi, it would look like this:
-
+For NextcloudPi it would look like this:
 ```bash
-cd ei23-docker/; docker-compose stop nextcloudpi; docker-compose rm -f nextcloudpi; sudo rm -r volumes/nextcloudpi/; docker-compose up -d
+cd ei23-docker/
+docker compose stop nextcloudpi
+docker compose rm -f nextcloudpi
+sudo rm -r volumes/nextcloudpi/
+docker compose up -d
 ```
-
-Home Assistant can be reset as follows:
-
+Home Assistant is reset as follows:
 ```bash
-cd ei23-docker/; docker-compose stop homeassistant; docker-compose rm -f homeassistant; sudo rm -r volumes/homeassistant/config/.storage; sudo rm -r volumes/homeassistant/config/.cloud; sudo rm -r volumes/homeassistant/config/deps; sudo rm -r volumes/homeassistant/config/.storage; sudo rm -r volumes/homeassistant/config/tts; sudo rm volumes/homeassistant/config/home-assistant_v2.db; docker-compose up -d
+cd ei23-docker/
+docker compose stop homeassistant
+docker compose rm -f homeassistant
+sudo rm -r volumes/homeassistant/config/.storage
+sudo rm -r volumes/homeassistant/config/.cloud
+sudo rm -r volumes/homeassistant/config/deps
+sudo rm -r volumes/homeassistant/config/tts
+sudo rm volumes/homeassistant/config/home-assistant_v2.db
+docker compose up -d
 ```
+If NodeRED, for example, doesn't work, there's probably a different problem. See "Which devices and operating systems are supported?"
 
-If, for example, NodeRED is not working, there is likely another issue. See "Which devices and operating systems are supported?"
+##  How can I integrate a Zigbee / ConBee 2 stick or mount a USB stick?</strong>
+Since most programs are installed as Docker containers, the docker-compose.yml (under `/home/[user]/ei23-docker/docker-compose.yml`) must be edited for this.
 
-## How to Integrate a Zigbee/ConBee 2 Stick or Mount a USB Stick?
+A description of how to bind devices and folders of the host system into a Docker container can be found here: [Install Programs](docker-compose.md)
 
-Since most programs are installed as Docker containers, you need to edit the docker-compose.yml (located under `/home/[user]/ei23-docker/docker-compose.yml`). For a description of how to include devices (Devices) and folders (Volumes) of the host system in a Docker container, see [install programs](docker-compose.md)
+##  Which devices and operating systems are supported?</strong>
 
-## Which Devices and Operating Systems Are Supported?
+The script supports the following operating systems:
 
-Officially, I test and develop with a Raspberry Pi 4 (min 2GB) with a freshly installed Raspberry Pi OS and also with a virtual machine with Debian 12 64Bit. Due to the many variations that can arise through different language settings alone, there may be some small errors here and there. I do not offer free help and solutions for this because it remains a DIY project and not a service with warranty claims.
+| Operating System | Architectures | Status |
+|------------------|---------------|--------|
+| Raspberry Pi OS | armv7, arm64 | ✅ Tested |
+| Debian 12 | arm64, amd64 | ✅ Tested |
+| Ubuntu / Pop!_OS | arm64, amd64 | ✅ Tested |
+| Fedora | amd64 | ✅ Tested |
+| Arch / Manjaro | amd64 | ✅ Tested |
+| CentOS / Rocky | amd64 | ✅ Tested |
 
-## I Installed a Program Myself, Now Another One Doesn't Work!
+I officially test and develop with a Raspberry Pi 4 (min 2GB) and a Virtual Machine with Debian 12 64-bit. The distributions listed above have been successfully tested.
 
-There may be port overlaps - for example, examine the docker-compose.yml (in home/pi/ei23-docker). See [install programs](docker-compose.md) Generally, anything not installed via the script or following an ei23 guide can lead to problems, and even then, issues may arise. DIY rules here!
+!!!note "Docker Images"
+    Due to the many variations, not all Docker images may be available for all architectures. Check this if necessary on [hub.docker.com](https://hub.docker.com/).
 
-## The Command "grafana-cli" Doesn't Exist! / I Can't Find Apache/Nginx in the /var/www/ Directory (Running Commands in Docker Containers)
+!!!note "32-Bit Systems"
+    For 32-bit systems (armv7), the `docker-compose` command is used instead of `docker compose`. Some newer Docker images may not be available.
 
-All programs running in a Docker container are logically not directly accessible via the terminal, and the directories are also encapsulated from the host system. To run commands in a Docker container, the following must be added before the command: `docker exec -it Containername Command`. For example, for Grafana: `docker exec -it grafana /bin/bash`. `/bin/bash` is the command to start a bash session. `docker exec -it grafana grafana-cli` works as well. Alternatively, you can also start a terminal session for the respective container via Portainer.
+I do not offer free help and solutions for this, because it remains a DIY project and not a service with warranty claims.
 
-## I Can't Find NodeRED and the Software for the RTL-SDR DVB-T Stick in the Docker-Compose.yml or in the Templates!
+##  I installed a program myself, now another one doesn't work!</strong>
+There may be port overlaps — for example, check the docker-compose.yml (in home/pi/ei23-docker).
+See [Install Programs](docker-compose.md)
+In principle, anything that is not installed via the script or following an ei23 guide can cause problems, and even then problems can arise. DIY applies here!
 
-That's correct. NodeRED and the software for the RTL-SDR DVB-T stick are installed natively, not as Docker containers, during the initial installation. Not installing NodeRED is not an option in the ei23 script because NodeRED should generally be used earlier. It is just very good.
+##  The command grafana-cli doesn't exist! / I can't find apache / nginx in the /var/www/ directory (Running commands in Docker containers)</strong>
+All programs running in a Docker container are logically not directly accessible via the terminal and the directories are also encapsulated from the host system.
+To run commands in a Docker container, the following must be prepended to the command:
+`docker exec -it containername command` — for Grafana, for example, `docker exec -it grafana /bin/bash`
+/bin/bash is the command that starts a bash session.
+`docker exec -it grafana grafana-cli` also works.
+Alternatively, you can also start a terminal session for the respective container via Portainer.
 
-## Can You Include Program XYZ in the Script?
+##  I can't find NodeRED and the software for the RTL-SDR DVB-T stick in the Docker-Compose.yml or in the templates!</strong>
+That's correct. NodeRED and the software for the RTL-SDR DVB-T stick are installed natively during the initial installation, i.e. not as Docker containers. By the way, not installing NodeRED is not an option in the ei23 script, since you should use NodeRED sooner or later anyway. It's simply very good.
 
-Possibly, if it doesn't conflict with other programs, and I find the time, yes. However, it is advisable not to have all programs offered by the script running simultaneously. Almost no one will need OpenHAB, IOBroker, FHEM, and HomeAssistant all at once, and then the Pi won't sweat so much ;-)
+##  Can you also integrate program XY into the script?</strong>
+Possibly, if it doesn't conflict with other programs and I have the time for it, yes.
+However, it is advisable not to run all programs that the script offers at the same time. There will hardly be anyone who needs OpenHAB, IOBroker, FHEM, and HomeAssistant simultaneously, and then the Pi won't get so hot either ;-)
 
-## How Do I Change Passwords and Usernames?
+##  How do I change the passwords and usernames?</strong>
+You can do that with the script. Just run `ei23`.
 
-This can be done with the script. Simply run `ei23`.
-
-## Are There Shortcuts?
-
+##  Are there shortcuts?</strong>
 Yes! Just run `ei23 -h`.
 
-## Which Weather Stations and 433MHz Devices Can I Integrate with the RTL-SDR DVB Stick?
+##  Which weather stations and 433MHz devices can I integrate with the RTL-SDR DVB-T stick?</strong>
+You can find a list on the [project page](https://github.com/merbanan/rtl_433).
+Most unencrypted 433MHz devices should work.
 
-You can find a list on the [project page](https://github.com/merbanan/rtl_433). Most unencrypted 433MHz devices should work.
+##  Is transmission over unencrypted 433MHz secure? What is the range?</strong>
+No, unencrypted 433MHz should only be used for temperature sensors, weather stations, or contact sensors in non-critical areas, and you should be aware that the neighbor could theoretically log or clone/fake signals.
+So: Know your neighbor ;-)
+The big advantage is especially the price and the widespread availability.
+The range of 433MHz devices is unfortunately usually only marginally better than WiFi with 2.4GHz.
+WiFi, on the other hand, is usually encrypted, but requires more power (for battery operation) and is more expensive.
 
-## Is Transmission over Unencrypted 433MHz Secure? What Is the Range?
+##  Where do I find the configuration files for Home Assistant?</strong>
+The folder with the configuration files and the database of Home Assistant has the path:
+`/home/[user]/ei23-docker/volumes/homeassistant/config`
+If Home Assistant doesn't start properly because, for example, the "automations.yml" is missing, you can create the file with the following command and restart Home Assistant:
+`sudo echo "" > /home/pi/ei23-docker/volumes/homeassistant/config/automations.yml; cd ei23-docker/; docker-compose restart homeassistant; cd ~`
 
-No, unencrypted 433MHz should be used at most for temperature sensors, weather stations, or contact sensors in non-critical areas. One should be aware that neighbors could theoretically log or clone/fake signals. So, know your neighbor ;-) The big advantage is mainly the price and distribution. The range of 433MHz devices is unfortunately usually only slightly better than with 2.4GHz WLAN. In contrast, WLAN is usually encrypted but requires more power (for battery operation) and is more expensive.
+##  How do I install AddOns in Home Assistant?</strong>
+First, you must distinguish between Integrations / Frontend Addons and third-party Program Addons (like NodeRED, InfluxDB, Grafana, etc.):
+Integrations / Frontend Addons can be installed just like in HassIO via the [Community Store (HACS)](https://hacs.xyz/) or manually in `/home/pi/ei23-docker/volumes/homeassistant/config`.
+As mentioned before: The script originated from the need to offer more flexibility and customization options than the HassIO operating system. HassIO uses the Home Assistant Supervisor for installing third-party Program Addons. This type of addons are also typically installed as Docker containers in HassIO.
+Since the script largely takes over the functions of the Home Assistant Supervisor, the supervisor is not included for reasons of redundancy and compatibility. Instead, the script installs Home Assistant Core, and the script's functions serve as the supervisor. See also [Install Programs](docker-compose.md)
 
-## Where Can I Find the Configuration Files for Home Assistant?
+##  How do I connect Home Assistant with NodeRED?</strong>
+The pre-installed Home Assistant Addon for NodeRED simply needs to be configured.
+To do this, a long-lived token (Access Token) must be created in Home Assistant in the user settings, and this can then be used for the NodeRED Home Assistant Addon.
+As the URL, you should enter http://localhost:8123.
 
-The folder with the configuration files and the database for Home Assistant has the path: `/home/[user]/ei23-docker/volumes/homeassistant/config`. If Home Assistant does not start correctly because, for example, "automations.yml" is missing, you can create the file with the following command line command and restart Home Assistant:
+##  How do I integrate cameras into MotionEYE and which cameras work</strong>
+On [ispyconnect.com](https://www.ispyconnect.com/sources.aspx) there is a list of cameras with the corresponding URL for the video stream. This URL must be inserted into MotionEYE.
+If there is a URL for the video stream, the probability is very high that you can also integrate the camera into MotionEYE.
+There are good guides online, but I'll also make a video about it soon.
 
-```bash
-sudo echo "" > /home/pi/ei23-docker/volumes/homeassistant/config/automations.yml; cd ei23-docker/; docker-compose restart homeassistant; cd ~
-```
-
-## How Do I Install Add-On
-
-s in Home Assistant?
-
-First, a distinction must be made between integrations/frontend addons and third-party program addons (such as NodeRED, InfluxDB, Grafana, etc.): Integrations/frontend addons can be installed, as in HassIO, via the [Community Store (HACS)](https://hacs.xyz/) or manually in `/home/pi/ei23-docker/volumes/homeassistant/config`. As mentioned before: The script originated from the need to offer more flexibility and customization options than the HassIO operating system. HassIO uses the Home Assistant Supervisor for the installation of third-party program addons. These types of addons are usually installed as Docker containers, even in HassIO. Since the script largely takes over the functions of the Home Assistant Supervisor, it is not included for redundancy and compatibility reasons. See also [install programs](docker-compose.md)
-
-## How Do I Connect Home Assistant with NodeRED?
-
-The pre-installed Home Assistant addon for NodeRED just needs to be configured. For this, a long-term token (Access Token) must be created in Home Assistant in the user settings, and this token can then be used for the NodeRED Home Assistant addon. The URL should be entered as http://localhost:8123.
-
-## How Do I Integrate Cameras in MotionEYE, and Which Cameras Work?
-
-On [ispyconnect.com](https://www.ispyconnect.com/sources.aspx), there is a list of cameras with the corresponding URL for the video stream. This URL must be inserted into MotionEYE. If there is a URL for the video stream, there is a very high probability that you can also integrate the camera into MotionEYE. There are good tutorials online, but I will also make a video about it soon.
-
-## Why Don't You Create an Image, Wouldn't That Be Easier?
-
+##  Why don't you create an image, wouldn't that be easier?</strong>
 No!
 
-## When Will a Video on Voice Control / Axel Be Released?
-
-It's here! [![YT](https://ei23.de/bilder/YTthumbs/xYB2sl9Sav8.webp)](https://www.youtube.com/watch?v=xYB2sl9Sav8)
+##  When will a video about voice control / Axel come?</strong>
+It's here!
+[![YT](https://ei23.de/bilder/YTthumbs/xYB2sl9Sav8.webp)](https://www.youtube.com/watch?v=xYB2sl9Sav8)

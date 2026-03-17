@@ -1,10 +1,36 @@
 ## Changelog
 
 
+### v1.20
+#### Was gibt es Neues? Dokumentations-Update 🎉
+- **Komplett überarbeitete Dokumentation** (DE + EN) - Alle Seiten auf dem neuesten Stand
+- **Neue Software-Dokumentationen:**
+  - ArchiveBox, Firefly III, Frigate NVR, FreshRSS, Ghostfolio, go2rtc
+  - Jellyfin, llama-swap, Mealie, n8n, NocoDB
+  - Open WebUI, LLama-Swap Portainer, Syncthing
+- **Hardware-Dokumentation erstellt:**
+  - Server-Empfehlungen: Mini-PCs/ThinClients vs. Raspberry Pi (Performance/Watt Vergleich)
+  - Hardware-Struktur mit Architektur-Diagrammen
+  - Edge Devices Übersicht (Zigbee, WLAN, ESPHome, 433MHz)
+- **Dashboard-Dokumentation aktualisiert:**
+  - Live-Ressourcen (CPU/RAM/Disk) mit Echtzeit-Balken
+  - Server-Aktionen mit SSE-Terminal-Output
+  - Template-Manager für Docker-Programme
+  - Programme-Editor mit Drag & Drop
+  - Session-Badges und Reconnect-Funktion
+- **Sicherheit & Monitoring komplett überarbeitet:**
+  - Firewall (UFW) Konfiguration
+  - SSH absichern (Key-Auth, Fail2Ban)
+  - Monitoring mit Uptime Kuma
+  - Sicherheits-Checkliste
+- **Übersetzungs-Update:** Alle neuen Seiten auch auf Englisch
+
 ### v1.12
 #### Was gibt es Neues?
 - Bugfixes: Verbesserte Installation und Probleme mit Icons / Links auf dem ei23 Dashboard behoben
-- Neue Docker Templates: fooocus, archivebox, ollama, openedai-speech, pairdrop, perplexica, watchyourlan, whisper-webui
+- Erweiterte OS-Unterstützung: Ubuntu, Pop!_OS, Fedora, CentOS, Rocky, Arch/Manjaro
+- Neue Docker Templates: fooocus, archivebox, llama-swap, openedai-speech, pairdrop, perplexica, watchyourlan, whisper-webui
+- Weitere neue Templates: ai-toolkit, blocky, duplicati, fireflyiii, freepbx-asterisk, freshrss, frigate, ghostfolio, gitlab, go2rtc, grocy, heimdall, homeassistant-matterserver, homebridge, homegear, jellyfin, litellm, ollama, lyrionmusicserver, matchering, mealie, music-assistant-server, n8n, nextcloudpi, nginxssl, nocodb, open-webui, plex, portainer, rhasspy, stirling-pdf, syncthing, teddycloud, teslamate, theengs-gateway, uptime-kuma, wyoming-openwakeword, wyoming-piper, wyoming-whisper
 
 
 ### v1.11

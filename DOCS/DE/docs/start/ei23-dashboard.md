@@ -1,49 +1,198 @@
 # Das ei23 Dashboard / Der Supervisor
+
 ![ei23 Dashboard](https://ei23.de/bilder/dashboard01.jpg)
-Seit der Version 1.1 Von ei23 Smart Home Server hat sich das Dashboard grundlegend verändert. 
-Jetzt ist es nicht nur mehr die Anzeige der verfügbaren Programme, sondern auch ein Supervisor. Zumindest ist der Unterbau schon mal so weit. Das heißt, mit dem Dashboard kann man bald auch einige Programme nachinstallieren und auch Systemfunktionen verwalten.
 
-## Programme im Dashboard anpassen
+Das ei23 Dashboard ist mehr als nur eine Anzeige - es ist ein vollwertiger **Server-Supervisor**. Es bietet Live-Monitoring, einen Programme-Editor, Template-Management und Server-Aktionen mit Echtzeit-Terminal-Output.
 
-Um Programme und externe Links wie z.B. Kameras oder andere Geräte oder auch Webseiten auf dem Dashboard zu verknüpfen, gibt es die Möglichkeit, die programs.json anzupassen.
-Die Datei befindet sich unter `/home/[user]/ei23-docker/volumes/ei23/web/static/programs.json`
-!!!note
-    [user] muss an dieser Stelle durch deinen Nutzernamen ersetzt werden.
+## Übersicht
+
+Das Dashboard besteht aus vier Hauptseiten:
+
+| Seite | URL | Beschreibung |
+|-------|-----|--------------|
+| **Dashboard** | `/` | Programme-Übersicht mit Icons |
+| **Netzwerk** | `/localnet` | Netzwerk-Scanner |
+| **Server** | `/server` | Server-Administration |
+| **Speicher** | `/tree` | Ordnergrößen-Analyse |
+
+## Dashboard-Seite (/)
+
+Die Startseite zeigt alle aktiven Programme als Kacheln. Jede Kachel ist verlinkt und kann mit einem Klick geöffnet werden.
+
+## Server-Seite (/server)
+
+Die Server-Seite ist das Herzstück der Administration:
+
+### Live Ressourcen-Anzeige
+
+Oben siehst du in Echtzeit:
+
+- **CPU** - Aktuelle CPU-Auslastung in Prozent
+- **RAM** - Belegter und gesamter Arbeitsspeicher
+- **Disk** - Belegter und gesamter Festplattenspeicher
+
+Die Balken aktualisieren sich alle 5 Sekunden automatisch.
+
+### Server-Aktionen
+
+Mit einem Klick kannst du wichtige Server-Befehle ausführen:
+
+| Aktion | Beschreibung | Befehl |
+|--------|--------------|--------|
+| 📊 **Docker Status** | Zeigt alle Container an | `docker ps -a` |
+| 🔄 **Docker Compose** | Startet/Restartet alle Container | `ei23 dc` |
+| ⬆️ **Docker Update** | Updated alle Docker-Images | `ei23 du` |
+| 🧹 **Aufräumen** | Löscht ungenutzte Images | `docker image prune -a -f` |
+| 📄 **Docs erzeugen** | Baut die Dokumentation | `ei23 docs` |
+| 🏠 **HA Addons** | Updated Home Assistant Addons | `ei23 ha-addons` |
+| 📦 **APT Update** | Updated System-Pakete | `apt-get update && upgrade` |
+| 🔧 **ei23 Update** | Updated nur das ei23-Skript | `ei23 ei23update` |
+| 🚀 **Full Update** | Komplettes System-Update | `ei23 update` |
+| ⚡ **Neustart** | Startet den Server neu | `sudo reboot` |
+
+#### Terminal-Output
+
+Nach dem Start einer Aktion öffnet sich ein Terminal-Fenster mit Echtzeit-Output:
+
+- **Auto-Scroll** kann an/ausgeschaltet werden
+- Fehlerzeilen werden rot markiert
+- Erfolgreiche Zeilen werden grün markiert
+- Warnungen werden cyan markiert
+
+#### Session-Badges
+
+Laufende Aktionen zeigen einen animierten Punkt ● neben dem Button. Nach Abschluss wird kurz ✓ (Erfolg) oder ✗ (Fehler) angezeigt.
+
+!!!tip "Aktionen laufen weiter"
+    Server-Aktionen laufen auch weiter, wenn du die Seite verlässt. Nach dem Zurückkehren siehst du den aktuellen Status.
+
+### Docker Container
+
+Alle Container aus der docker-compose.yml werden als Karten angezeigt:
+
+| Status | Farbe | Bedeutung |
+|--------|-------|-----------|
+| **HTTP Available** | 🟢 Grün | Weboberfläche erreichbar |
+| **Host Mode** | 🟣 Lila | Host-Netzwerk-Modus |
+| **Port Active** | 🔵 Blau | Port ist geöffnet |
+| **Internal** | ⚫ Grau | Nur intern erreichbar |
+
+Klicke auf **"Container scannen"** um den Status zu aktualisieren.
+
+### Docker Programme hinzufügen
+
+!!!tip "Neues Feature"
+    Programme können jetzt direkt über das Dashboard hinzugefügt werden!
+
+Das Template-Panel ist einklappbar (klicke auf die Überschrift):
+
+1. Klappe das Panel auf
+2. Alle verfügbaren Templates werden angezeigt
+3. Bereits installierte Templates sind ausgegraut
+4. Klicke **"+ Hinzufügen"** um ein Template anzuhängen
+5. Führe anschließend **"Docker Compose"** aus um den Container zu starten
+
+!!!warning "Hinweis"
+    Duplikate und Port-Konflikte können zu Fehlern führen. Überprüfe die docker-compose.yml bei Bedarf manuell.
+
+### Dashboard-Verknüpfungen bearbeiten
+
+Der Programme-Editor bietet volle Kontrolle über das Dashboard:
+
+#### Programme hinzufügen
+
+1. Klicke auf **"+ Neu"**
+2. Fülle die Felder aus:
+    - **Name*** (Pflichtfeld)
+    - **Titel** (Untertitel)
+    - **Port** (z.B. 8080)
+    - **Icon** (z.B. `img/nodered.png`)
+    - **Eigene URL** (optional, überschreibt Port)
+    - **Aktiv** (Sichtbar im Dashboard)
+3. Klicke auf **"Hinzufügen"**
+4. **"Speichern"** nicht vergessen!
+
+#### Programme bearbeiten
+
+- **Aktiv/Inaktiv**: Schalter umschalten
+- **Felder**: Direkt im Formular bearbeiten
+- **Sortieren**: Drag & Drop mit ⋮⋮ Handle
+- **Löschen**: ✕ Button (mit Bestätigung)
+
+#### Vorlagen importieren
+
+Klicke auf **"Vorlagen"** um fehlende Programme aus `programs_templates.json` hinzuzufügen. Diese werden als inaktiv importiert.
 
 ### Erklärung der `programs.json`
 
+Die Datei befindet sich unter `/home/[user]/ei23-docker/volumes/ei23/web/static/programs.json`
+
 ```json
 {"programs": [
-{"active": true,    "port": "",     "custom_url": "http://10.1.1.11:1880",  "name": "NodeRED",          "title": "Garage",              "img": "img/nodered.png"}, // (1)
-{"active": true,    "port": "4004", "custom_url": "",                       "name": "MQTT-Explorer",    "title": "MQTT-Explorer",       "img": "img/mqtt-explorer.png"}, // (2)
-{"active": false,   "port": "",     "custom_url": "http://10.1.1.12",       "name": "Kamera Garten",    "title": "Schöner Garten",      "img": "img/camera.png"}, // (3)
-{"active": true,    "port": "3000", "custom_url": "",                       "name": "Grafana",          "title": "Datenvisualisierung", "img": "img/grafana.png"} // (4)
+{"active": true,    "port": "",     "custom_url": "http://10.1.1.11:1880",  "name": "NodeRED",          "title": "Garage",              "img": "img/nodered.png"},
+{"active": true,    "port": "4004", "custom_url": "",                       "name": "MQTT-Explorer",    "title": "MQTT-Explorer",       "img": "img/mqtt-explorer.png"},
+{"active": false,   "port": "",     "custom_url": "http://10.1.1.12",       "name": "Kamera Garten",    "title": "Schöner Garten",      "img": "img/camera.png"},
+{"active": true,    "port": "3000", "custom_url": "",                       "name": "Grafana",          "title": "Datenvisualisierung", "img": "img/grafana.png"}
 ]}
 ```
 
-1.   Hier ist "http://10.1.1.11:1880" eine Custom URL, diese kann auch eine externe Adresse sein.
-2.   Wenn keine Custom URL gesetzt ist, wird der Port mit IP-Adresse des Geräts kombiniert. Beispielsweise http://10.1.1.2:4004
-3.   Da Active auf False gesetzt ist, wird dieser Eintrag nicht gezeigt. Außerdem wird hier ein generisches Icon genutzt. Davon stehen einige im img Ordner zur Verfügung.
-4.   Im letzten Eintrag ist es wichtig, dass kein Komma hinter der geschweiften Klammer angehängt wird.
+1. `"http://10.1.1.11:1880"` ist eine Custom URL - kann auch eine externe Adresse sein
+2. Ohne Custom URL wird der Port mit der IP-Adresse kombiniert (z.B. `http://10.1.1.2:4004`)
+3. `"active": false` blendet den Eintrag aus
+4. Das letzte Element darf kein Komma am Ende haben
 
-!!!note
-    1. Hier ist "http://10.1.1.11:1880" eine Custom URL, diese kann auch eine externe Adresse sein.
-    2. Wenn keine Custom URL gesetzt ist, wird der Port mit IP-Adresse des Geräts kombiniert. Beispielsweise http://10.1.1.2:4004
-    3. Da Active auf False gesetzt ist, wird dieser Eintrag nicht gezeigt. Außerdem wird hier ein generisches Icon genutzt. Davon stehen einige im img Ordner zur Verfügung.
-    4. Im letzten Eintrag ist es wichtig, dass kein Komma hinter der geschweiften Klammer angehängt wird.
-
-
-## Netzwerk: Geräte im Netzwerk auflisten und kontrollieren
+## Netzwerk-Seite (/localnet)
 
 ![ei23 Dashboard](https://ei23.de/bilder/dashboard02.jpg)
-Auf der Netzwerkseite gibt es die Möglichkeit, Geräte im Netzwerk zu scannen, deren Hostname, IP-Adresse, MAC-Adresse anzuzeigen und eine Herstellerinfo. Wenn ein Webport 80 erkannt wird, das heißt, dass das Gerät eine Weboberfläche zur Verfügung stellt, wird diese direkt verlinkt und das Gerät blau markiert.
 
-## Server: Installierte Docker Compose Programme überprüfen
+Der Netzwerk-Scanner zeigt alle Geräte im lokalen Netzwerk:
 
-![ei23 Dashboard](https://ei23.de/bilder/dashboard03.jpg)
-In dieser Ansicht wird automatisch die [docker-compose.yml](docker-compose.md) nach installierten und laufenden Containern bzw. Programmen durchsucht und damit eine Liste erstellt und angezeigt.
-Ist ein Webport erkannt worden, wird das Programm dementsprechend markiert und kann auch direkt aufgerufen werden.
-Dies kann praktisch sein, um einen schnellen Überblick der konfigurierten Programme und deren Ports zu bekommen oder die Weboberfläche direkt zu erreichen oder zu prüfen, ob das Programm läuft.
-Auch wenn es automatisch passiert, kann es hilfreich sein, den Button für die Aktualisierung zu nutzen. So werden die Programme neu eingelesen und geprüft.
+- **Hostname** - Gerätename (wenn auflösbar)
+- **IP-Adresse** - Direkt verlinkt wenn Weboberfläche erkannt
+- **MAC-Adresse** - Hardware-Adresse
+- **Hersteller** - Gerätehersteller
 
-Außerdem kann unter dieser Ansicht auf die Schnelle die eigene Dokumentation für den Home-Server neu generiert werden.
+!!!tip "HTTP-Erkennung"
+    Wenn ein Gerät Port 80 offen hat, wird es blau markiert und die IP ist direkt verlinkt.
+
+Klicke auf **"Scannen"** um das Netzwerk neu zu scannen.
+
+## Speicher-Seite (/tree)
+
+Zeigt die Speicherbelegung nach Ordnern an - praktisch um große Verzeichnisse zu finden.
+
+## Konfiguration
+
+### Port ändern
+
+Erstelle/Editiere `/home/[user]/ei23-docker/volumes/ei23/config.ini`:
+
+```ini
+[DEFAULT]
+Port = 80
+PeriodicScan = true
+```
+
+Dann den Supervisor neustarten:
+
+```bash
+sudo systemctl restart ei23.service
+```
+
+### Status prüfen
+
+```bash
+# Service-Status
+sudo systemctl status ei23.service
+
+# Logs anzeigen
+journalctl -u ei23.service -f
+```
+
+## Hinweise
+
+- Das Dashboard läuft als Python-Flask-Server mit Waitress
+- Der Service startet automatisch beim Boot (`ei23.service`)
+- Das Dashboard erreichst du über Port 80 (konfigurierbar)
+- Programme-Icons liegen unter `/home/[user]/ei23-docker/volumes/ei23/web/static/img/`
+- Eigene Icons: 128x128 PNG mit transparentem Hintergrund

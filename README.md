@@ -1,105 +1,194 @@
 # The ei23 DIY Smart Home (Server)
-This project is a dead-easy, clean and slim **installation** and **maintenance** tool for a huge amount of mostly Docker-based home automation and media software, easily accessible on a clean, slim and customizable web dashboard.
-Made for Debian and Raspberry OS, working on most architectures.
-Maybe it's not as easy to configure as the Home Assisstant OS, for example, but you get a lot more customization options and get in touch with the docker-compose.yml notation, which is also a great tool.
+
+A dead-easy, clean and slim **installation** and **maintenance** tool for a huge amount of Docker-based home automation and media software, easily accessible on a clean, slim and customizable web dashboard.
+
+**Supports:** Debian, Raspberry Pi OS, Ubuntu, Pop!_OS, Fedora, CentOS, Rocky, Arch/Manjaro | **Architectures:** armv7, arm64, amd64
+
+Maybe it's not as easy to configure as the Home Assistant OS, but you get a lot more customization options and get in touch with the docker-compose.yml notation, which is also a great tool.
 And you don't even have to use Home Assistant if you prefer OpenHAB or IObroker for example. All on one system.
 
-Have fun, get smart and independent!
+**Have fun, get smart and independent!**
 
 ![ei23 Dashboard](https://ei23.de/bilder/ei23-terminal.gif)
 
 ![ei23 Counter](https://ei23.de/bilder/svg-stats.svg)
 
-## What's included
-Have a loook in the **[compose_templates](ei23-docker/compose_templates)** and the **[ei23.sh](ei23.sh)** script itself.
-Batteries are not included.
+---
+
+## ✨ Features
+
+- 🚀 **One-Command Installation** - Script handles everything
+- 🐳 **Docker-Based** - 90+ pre-configured templates
+- 📊 **Web Dashboard** - Live monitoring, container management, template installer
+- 🔄 **Easy Updates** - `ei23 update` for full system update
+- 💾 **Backup System** - Integrated backup for all services
+- 🌐 **Multi-OS** - Debian, Ubuntu, Fedora, Arch, and more
+- 🏠 **Multi-Arch** - ARM (32/64-bit) and x86-64 support
 
 ![ei23 Dashboard](https://ei23.de/bilder/ei23-dashboard.jpg)
 
-## Documentation and official website
-- [[DE] DOCS - diy-smart-home.ei23.de](https://diy-smart-home.ei23.de)
-- [[EN] DOCS - diy-smart-home.ei23.com](https://diy-smart-home.ei23.com)
+---
 
-You should find much more about this project there. 
-If you want to edit pages or add stuff [read the guidelines](DOCS/guidelines.md)
+## 📦 What's Included
 
-## Introduction
-In 2017, I planned to install a self-built smart home system that would control some retrofit devices. There were various options to choose from, and I was unsure about which program was right for me. It was also clear that I would be running a computer 24/7, in this case a Raspberry Pi. It would have been a shame if only a single application ran on it. At that time, I had already conducted some experiments with NodeRED and appreciated the advantages of the Raspberry Pi's GPIOs.
+### Smart Home & IoT
+[Home Assistant](https://www.home-assistant.io/) · [Node-RED](https://nodered.org/) · [ESPHome](https://esphome.io/) · [Mosquitto](https://mosquitto.org/) · [Zigbee2MQTT](https://www.zigbee2mqtt.io/)
 
-[You can watch a video about my journey back then](https://www.youtube.com/watch?v=6FkINyLcLnU)
-[![YT](https://ei23.de/bilder/YTthumbs/6FkINyLcLnU.webp)](https://www.youtube.com/watch?v=6FkINyLcLnU)
+### Media & Entertainment
+[Jellyfin](https://jellyfin.org/) · [Immich](https://immich.app/) · [Lyrion Music Server](https://lyrion.org/) · [Music Assistant](https://music-assistant.io/)
 
-Although I liked the Home Assistant OS overall, using it meant giving up the flexibility of a conventional Linux system. Therefore, I created a compromise: My installation script takes care of installing and configuring all necessary programs and settings. When possible, all programs run in Docker containers. This significantly simplifies system maintenance and experiments while providing more convenience.
+### AI & Machine Learning
+[llama-swap](https://github.com/mostlygeek/llama-swap) · [Ollama](https://ollama.ai/) · [Open WebUI](https://openwebui.com/) · [LiteLLM](https://litellm.ai/) · [Frigate](https://frigate.video/)
 
-So, the script originated from the need to offer more flexibility, customization options, and programs than the Home Assistant operating system. For those who want to expand their system without running another server/Raspberry Pi or virtual machines in parallel, this script provides a solution. First, necessary and useful programs and frameworks like Docker, Python, etc., are installed on the raw Raspbian OS or Debian. Then, NodeRED is installed in its native form, not as a Docker container. This offers additional features and easier configuration without cumbersome workarounds. Additionally, Log2Ram (to reduce SD card write operations), RTL_SDR software (for example, for 433MHz sensors), and rpiClone (for easy backups) can be installed directly. The script currently automates the installation of those programs and also includes some addons (custom extensions are, of course, possible).
+### Productivity
+[Nextcloud](https://nextcloud.com/) · [Paperless-ngx](https://docs.paperless-ngx.com/) · [Mealie](https://mealie.io/) · [FreshRSS](https://freshrss.org/) · [ArchiveBox](https://archivebox.io/) · [NocoDB](https://nocodb.com/) · [Stirling-PDF](https://github.com/Frooodle/Stirling-PDF) · [Syncthing](https://syncthing.net/) · [PairDrop](https://pairdrop.net/)
 
-## System requirements
-Originally, the system was only available for the Raspberry Pi (armv7 / 32-bit). In the meantime, however, I recommend using a 64-bit system (arm64). The script is also functional on Debian 12 (tested) and AMD64 architectures.
-(Docker images may not be available for all system architectures)
+### Security & Infrastructure
+[Vaultwarden](https://github.com/dani-garcia/vaultwarden) · [Traefik](https://traefik.io/) · [WireGuard](https://www.wireguard.com/) · [AdGuard Home](https://adguard.com/en/adguard-home/overview.html) · [Duplicati](https://www.duplicati.com/)
 
-If you only plan to run home automation software like [Home Assistant Docker](https://github.com/home-assistant/docker), [NodeRED](https://github.com/node-red/node-red) and a password manager like [Vaultwarden / Bitwarden](https://github.com/dani-garcia/vaultwarden), a Raspberry Pi 4 with 2GB is already sufficient.
-If you also want to run compute-intensive software like a media center or photo cloud apps like [Immich](https://immich.app/) or [Nextcloud](https://nextcloud.com/), consider using an low-end thinclient with an Intel i5 and 8GB RAM or similar.
+### Telephony
+[FreePBX / Asterisk](https://www.freepbx.org/)
 
-SSD storage may works best for you.
-Always backup important data.
+### Monitoring & Data
+[Grafana](https://grafana.com/) · [InfluxDB](https://www.influxdata.com/) · [Uptime Kuma](https://uptime.kuma.pet/) · [Portainer](https://www.portainer.io/)
 
-## Installation
+**And many more...** Have a look in the [compose_templates](ei23-docker/compose_templates) folder!
 
-### Easy installation:
-The easy-installation is self-explanatory. 
-After registering for the newsletter ([ENGLISH NEWSLETTER](https://ei23.com/newsletter) / [GERMAN NEWSLETTER](https://ei23.de/newsletter)), you will receive two command lines, which you must execute via the input console or over SSH. 
-The first line downloads the script (bash script) and the second line executes it.
+---
 
-*C'mon! Why newsletter?*
-1. I can inform you quickly about security vulnerabilities and interesting new features
-2. Community building gets easier
-3. Some advertising for my work and the project itself is possible
-4. And I can secretly inject malicious code on your script and create a botnet from a large number of servers... NOT! - seriously! I won't do that, or do you think i would? I'm confused... Why should i do that, should I do it? Now you're confused? Just don't make trouble! Ok back to topic xD
+## 🖥️ Supported Hardware
 
-The files are identical to ones you see here with the exeption of a uniqe USERID for downloading files from my server and automatically set LANGFILE dependent on which newsletter you choose.
-Also I won't bother you unnecessarily, if you think you can use a trash mail.
+| Hardware | Price | Power | Performance | Recommendation |
+|----------|-------|-------|-------------|----------------|
+| **Raspberry Pi 4/5** | 50-80€ | 3-8W | Good | For light use |
+| **Intel N100 Mini-PC** | ~150€ | 6-10W | Very Good | ⭐ Recommended |
+| **HP/Dell/Lenovo ThinClient** | 50-100€ | 10-25W | Excellent | ⭐ Best value |
+| **Intel NUC (i3/i5)** | 200-400€ | 15-35W | Superior | For demanding use |
 
-### Manual installation:
-1. Clone the files to a folder.
-2. Insert the language file of your choice (de-file.txt / en-file.txt) into [ei23.sh](ei23.sh) and replace "LANGFILE_PLACEHOLDER"
-3. Install a fresh Debian / Rasbian system, login via ssh or terminal and create a user like this "useradd -m ei23" (or another name)
-4. Copy the entire "ei23-docker" folder into your users home directory (with root privileges)
-5. Copy the [ei23.sh](ei23.sh) into your user home directory
-6. run "bash [ei23.sh](ei23.sh) part1"
-7. follow instructions
-8. after you done the reboot, run "ei23", the script then will finish the installation
+> 💡 **Mini-PCs recommended:** For best performance per watt, we recommend used ThinClients or Mini-PCs with x86 architecture. They support all Docker images and offer significantly more power than Raspberry Pis.
 
+---
 
-- ei23 updates won't work with manual installation (USERID from newsletter is needed)
-- you won't see a version number and will not get info about new versions (USERID from newsletter is needed)
-- everything else works like normal
+## 📖 Documentation
 
-## Reporting issues
-Please use the [issues](https://github.com/ei23com/diy-smart-home/issues) tab to report issues or make suggestions for new features or containers.
-Or reach out to the [Community (see below)](#community)
+- 🇩🇪 **[German Docs](https://diy-smart-home.ei23.de)** - Complete documentation in German
+- 🇬🇧 **[English Docs](https://diy-smart-home.ei23.com)** - Complete documentation in English
 
-## Contribution
-Thanks for asking!
+---
 
-If you want, you can pull request and edit or add doc files [(read guidelines)](DOCS/guidelines.md) or edit and add [compose_templates](ei23-docker/compose_templates)
-or any other files as well.
-If you want to have icons added for the dashboard, have a look [here](ei23-docker/volumes/ei23/web/img). Please use 128x128 PNG with transparent background.
+## 🚀 Installation
 
-## Great Open Source Projects
+### Easy Installation:
+
+After registering for the newsletter, you'll receive two commands to execute via SSH:
+
+1. **[English Newsletter](https://ei23.com/newsletter)** / **[German Newsletter](https://ei23.de/newsletter)**
+2. Execute the received commands on your server
+3. Follow the interactive menu
+
+*Why newsletter?*
+- Security updates and important announcements
+- Community building
+- Support the project
+- Your email stays private (trash mail is fine!)
+
+The script downloads a USERID for updates and sets the correct language file based on your newsletter choice.
+
+### Manual Installation:
+
+```bash
+# 1. Clone repository
+git clone https://github.com/ei23com/diy-smart-home.git
+cd diy-smart-home
+
+# 2. Insert language file into ei23.sh (replace LANGFILE_PLACEHOLDER)
+
+# 3. Create user on fresh Debian/Raspberry Pi OS
+sudo useradd -m ei23
+
+# 4. Copy files
+sudo cp -r ei23-docker /home/ei23/
+sudo cp ei23.sh /home/ei23/
+sudo chown -R ei23:ei23 /home/ei23/
+
+# 5. Run installation
+su - ei23
+bash ei23.sh part1
+
+# 6. After reboot
+ei23  # Finishes installation
+```
+
+**Note:** Manual installation doesn't support auto-updates (USERID required).
+
+---
+
+## 🎛️ Dashboard
+
+The ei23 Dashboard is a full **server supervisor** with:
+
+- 📊 **Live Monitoring** - CPU, RAM, Disk usage in real-time
+- 🐳 **Container Management** - View status, access web interfaces
+- 📋 **Template Manager** - Install new programs with one click
+- ✏️ **Program Editor** - Drag & drop dashboard customization
+- 🖥️ **Server Actions** - Updates, backups, reboots with live terminal
+- 🌐 **Network Scanner** - Discover devices on your network
+
+Access: `http://[your-server-ip]`
+
+---
+
+## 🔧 Common Commands
+
+```bash
+ei23                  # Open menu
+ei23 update           # Full system update
+ei23 dc               # Docker Compose (restart containers)
+ei23 du               # Docker Update (pull new images)
+ei23 backup           # Create backup
+ei23 dstats           # Show Docker container status
+ei23 docs             # Build documentation
+ei23 -h               # Show all shortcuts
+```
+
+---
+
+## 🤝 Contributing
+
+Pull requests are welcome! You can:
+
+- Edit or add [documentation files](DOCS/guidelines.md)
+- Add new [compose templates](ei23-docker/compose_templates)
+- Add dashboard icons (128x128 PNG with transparent background)
+
+---
+
+## 🌟 Great Open Source Projects
+
 I love open source projects - [here is my best of list](https://ei23.com/opensource/)
+
 Consider supporting them!
 
-## Community
-[YouTube](https://youtube.com/ei23-de)<br>
-[Discord](https://discord.gg/pS9cZTBUfs)<br>
-[Telegram (DE)](https://t.me/ei23de)<br>
-[Forum (DE)](https://forum.ei23.de/)<br>
+---
 
+## 👥 Community
 
-## Donations
-[(EN) ei23.com/donate](https://ei23.com/donate/)<br>
-[(DE) ei23.de/donate](https://ei23.de/donate/)<br>
-You can expect special percs there.
+[![YouTube](https://img.shields.io/badge/YouTube-ei23-red?style=for-the-badge&logo=youtube)](https://youtube.com/ei23-de)
+[![Discord](https://img.shields.io/badge/Discord-ei23-blue?style=for-the-badge&logo=discord)](https://discord.gg/pS9cZTBUfs)
+[![Telegram](https://img.shields.io/badge/Telegram-ei23_DE-blue?style=for-the-badge&logo=telegram)](https://t.me/ei23de)
+[![Forum](https://img.shields.io/badge/Forum-ei23-orange?style=for-the-badge)](https://forum.ei23.de/)
 
+---
 
-Thanks!
+## 💰 Donations
+
+[![Donate EN](https://img.shields.io/badge/Donate-EN-green?style=for-the-badge)](https://ei23.com/donate/)
+[![Donate DE](https://img.shields.io/badge/Donate-DE-green?style=for-the-badge)](https://ei23.de/donate/)
+
+You can expect special perks there. Thanks!
+
+---
+
+## 📄 License
+
+This project is licensed - see [LICENSE](LICENSE) for details.

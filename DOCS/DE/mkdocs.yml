@@ -22,23 +22,45 @@ nav:
     - Sicherheit & Monitoring: start/security-monitoring.md
     - Akzeptanz der Mitbewohner: start/acceptance.md
   - Software:
-    # - Überblick: software/overview.md
+    - Überblick: software/overview.md
+    - AdGuard Home: software/adguardhome.md
+    - ArchiveBox: software/archivebox.md
+    - Duplicati: software/duplicati.md
     - ESPHome: software/esphome.md
+    - Firefly III: software/fireflyiii.md
+    - FreePBX / Asterisk: software/freepbx.md
+    - Frigate NVR: software/frigate.md
+    - FreshRSS: software/freshrss.md
+    - Ghostfolio: software/ghostfolio.md
+    - go2rtc: software/go2rtc.md
     - Grafana: software/grafana.md
-    - Home Assinstant: software/homeassistant.md
+    - Home Assistant: software/homeassistant.md
+    - Immich: software/immich.md
     - InfluxDB: software/influx.md
-    - Immich.app lokale Foto Cloud: software/immich.md
-    - Logitech Media Server & Squeezelite: software/lms.md
-    - MQTT-Explorer: software/mqttexplorer.md
+    - Jellyfin: software/jellyfin.md
+    - LiteLLM: software/litellm.md
+    - llama-swap: software/llama-swap.md
+    - Lyrion Music Server: software/lms.md
+    - Mealie: software/mealie.md
+    - MQTT Explorer: software/mqttexplorer.md
+    - Music Assistant: software/music-assistant.md
+    - n8n: software/n8n.md
+    - NocoDB: software/nocodb.md
     - Nextcloud: software/nextcloud.md
     - Nginx Proxy Manager: software/nginxproxy.md
-    - NodeRED: software/nodered.md
+    - Node-RED: software/nodered.md
+    - Ollama: software/ollama.md
+    - Open WebUI: software/open-webui.md
+    - PairDrop: software/pairdrop.md
     - PaperlessNGX: software/paperlessngx.md
+    - Portainer: software/portainer.md
+    - Stirling-PDF: software/stirling-pdf.md
+    - Syncthing: software/syncthing.md
     - Traefik: software/traefik.md
     - Uptime Kuma: software/uptimekuma.md
-    - Vaultwarden/Bitwarden: software/vaultwarden.md
+    - Vaultwarden: software/vaultwarden.md
     - VSCode: software/vscode.md
-    - WireguardVPN: software/wireguard.md
+    - WireGuard: software/wireguard.md
   - Hardware:
     - Struktur: hardware/structure.md
     - Server: hardware/server.md

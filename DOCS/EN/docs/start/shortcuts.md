@@ -1,14 +1,17 @@
-You can use this shortcuts
+You can use these shortcuts
 --------------------------
 - `ei23 backup`            - creates a backup
-- `ei23 dc`                - runs Docker compose
-- `ei23 docs`              - builds your own docs
-- `ei23 dstats`            - show Docker status
+- `ei23 dc`                - runs Docker Compose
+- `ei23 docs`              - creates your own documents
+- `ei23 dstats`            - shows Docker status
 - `ei23 du`                - updates Docker images
-- `ei23 ei23update`        - updates ei23-script only
-- `ei23 fullreset X`       - reinstall container X and delete all its data
-- `ei23 ha-addons`         - updates Home Assistant custom addons
-- `ei23 install-rtl-sdr`   - install RTL-SDR software
-- `ei23 newfunctions`      - add new functions from script-updates
-- `ei23 setip`             - set new default IP
-- `ei23 update`            - run full update
+- `ei23 ei23update`        - updates only the ei23 script
+- `ei23 ei23upgrade`       - necessary for a version change with major changes
+- `ei23 fullreset X`       - reinstalls container X and deletes all data!!
+- `ei23 ha-addons`         - updates Home Assistant Custom Addons
+- `ei23 install-rtl-sdr`   - installs RTL-SDR software
+- `ei23 newfunctions`      - adds new functions from script updates
+- `ei23 setip`             - sets a new default IP
+- `ei23 update`            - performs a full update
+- `ei23 no-docker-update`  - performs an update without Docker images
+- `ei23 nodockerupdate`    - performs the ei23 update without Docker update
