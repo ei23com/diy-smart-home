@@ -95,29 +95,19 @@ After registering for the newsletter, you'll receive two commands to execute via
 The script downloads a USERID for updates and sets the correct language file based on your newsletter choice.
 
 ### Manual Installation:
+1. Clone the files to a folder.
+2. Insert the language file of your choice (de-file.txt / en-file.txt) into [ei23.sh](ei23.sh) and replace "LANGFILE_PLACEHOLDER"
+3. Install a fresh Debian / Rasbian system, login via ssh or terminal and create a user like this "useradd -m ei23" (or another name)
+4. Copy the entire "ei23-docker" folder into your users home directory (with root privileges)
+5. Copy the [ei23.sh](ei23.sh) into your user home directory
+6. run "bash [ei23.sh](ei23.sh) part1"
+7. follow instructions
+8. after you done the reboot, run "ei23", the script then will finish the installation
 
-```bash
-# 1. Clone repository
-git clone https://github.com/ei23com/diy-smart-home.git
-cd diy-smart-home
 
-# 2. Insert language file into ei23.sh (replace LANGFILE_PLACEHOLDER)
-
-# 3. Create user on fresh Debian/Raspberry Pi OS
-sudo useradd -m ei23
-
-# 4. Copy files
-sudo cp -r ei23-docker /home/ei23/
-sudo cp ei23.sh /home/ei23/
-sudo chown -R ei23:ei23 /home/ei23/
-
-# 5. Run installation
-su - ei23
-bash ei23.sh part1
-
-# 6. After reboot
-ei23  # Finishes installation
-```
+- ei23 updates won't work with manual installation (USERID from newsletter is needed)
+- you won't see a version number and will not get info about new versions (USERID from newsletter is needed)
+- everything else works like normal
 
 **Note:** Manual installation doesn't support auto-updates (USERID required).
 
