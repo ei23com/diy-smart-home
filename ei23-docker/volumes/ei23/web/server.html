@@ -4,47 +4,684 @@
 <head>
     <title>SmartHome-Server | Server</title>
     {{ header | safe}}
+    <style>
+        /* Container Cards */
+        .program-card {
+            background-color: rgba(0, 0, 0, 0.4);
+            border: 1px solid #555;
+            border-radius: 10px;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            color: #fff;
+            transition: border-color 0.2s;
+        }
+        .program-card:hover { border-color: #0dcaf0; }
+        .program-card.inactive { opacity: 0.45; }
+        .program-card .form-label { color: #999; font-size: 0.75rem; margin-bottom: 1px; }
+        .program-card .form-control {
+            background-color: #333; border: 1px solid #555; color: #fff;
+            font-size: 0.85rem; padding: 4px 8px; height: auto;
+        }
+        .program-card .form-control:focus {
+            background-color: #3a3a3a; border-color: #0dcaf0; color: #fff;
+            box-shadow: 0 0 0 0.15rem rgba(13, 202, 240, 0.25);
+        }
+        .program-img-preview {
+            width: 40px; height: 40px; object-fit: contain;
+            border-radius: 5px; background-color: rgba(255,255,255,0.1); padding: 3px;
+        }
+        .drag-handle { cursor: grab; color: #555; font-size: 1.2rem; padding: 0 6px; user-select: none; line-height: 40px; }
+        .drag-handle:active { cursor: grabbing; }
+        .program-card.dragging { opacity: 0.4; border: 2px dashed #0dcaf0; }
+        .program-card.drag-over { border-top: 3px solid #0dcaf0; }
+        .switch-active { width: 2.4em; height: 1.2em; cursor: pointer; }
+
+        /* Section Headers */
+        .section-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin: 25px 0 12px 0; padding-bottom: 8px; border-bottom: 1px solid #666;
+        }
+        .section-header h5 { color: #fff; margin: 0; }
+        .action-buttons .btn { font-size: 0.8rem; padding: 4px 10px; margin-left: 4px; }
+
+        /* Container Status */
+        .container-status { font-size: 0.75rem; padding: 2px 8px; border-radius: 4px; }
+        .status-http { background: #198754; color: #fff; }
+        .status-host { background: #6f42c1; color: #fff; }
+        .status-port { background: #0d6efd; color: #fff; }
+        .status-internal { background: #495057; color: #ccc; }
+
+        /* Resource Bars */
+        .resource-bars { display: flex; gap: 12px; margin-bottom: 10px; flex-wrap: wrap; }
+        .res-bar-wrap {
+            flex: 1; min-width: 180px; background: rgba(0,0,0,0.4); border: 1px solid #555;
+            border-radius: 8px; padding: 10px 14px;
+        }
+        .res-bar-label { display: flex; justify-content: space-between; color: #ccc; font-size: 0.8rem; margin-bottom: 4px; }
+        .res-bar-track { height: 14px; background: #333; border-radius: 7px; overflow: hidden; }
+        .res-bar-fill { height: 100%; border-radius: 7px; transition: width 0.5s ease; }
+        .res-bar-fill.cpu { background: linear-gradient(90deg, #0dcaf0, #0d6efd); }
+        .res-bar-fill.ram { background: linear-gradient(90deg, #198754, #20c997); }
+        .res-bar-fill.disk { background: linear-gradient(90deg, #6f42c1, #d63384); }
+
+        /* Templates Dropdown */
+        .templates-toggle {
+            cursor: pointer; color: #888; font-size: 0.85rem; padding: 4px 0;
+        }
+        .templates-toggle:hover { color: #0dcaf0; }
+        .templates-panel { display: none; }
+        .templates-panel.open { display: block; }
+
+        /* Server Actions */
+        .action-group { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+        .action-btn {
+            background: rgba(0,0,0,0.4); border: 1px solid #555; color: #fff;
+            padding: 8px 14px; border-radius: 8px; cursor: pointer; font-size: 0.85rem;
+            transition: all 0.2s; display: flex; align-items: center; gap: 6px;
+        }
+        .action-btn:hover { border-color: #0dcaf0; background: rgba(13,202,240,0.1); }
+        .action-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .action-btn .icon { font-size: 1.1rem; }
+
+        /* Terminal */
+        #terminal-container {
+            display: none; margin-top: 10px;
+            background: #1a1a1a; border: 1px solid #444; border-radius: 10px;
+            overflow: hidden;
+        }
+        #terminal-header {
+            background: #2a2a2a; padding: 8px 14px; display: flex;
+            justify-content: space-between; align-items: center; border-bottom: 1px solid #444;
+        }
+        #terminal-title { color: #0dcaf0; font-weight: bold; font-size: 0.9rem; }
+        #terminal-close { background: none; border: none; color: #888; font-size: 1.2rem; cursor: pointer; }
+        #terminal-close:hover { color: #fff; }
+        #terminal-output {
+            padding: 12px; max-height: 400px; overflow-y: auto;
+            font-family: 'Courier New', monospace; font-size: 0.8rem;
+            color: #0f0; white-space: pre-wrap; word-break: break-all; line-height: 1.4;
+        }
+        #terminal-output .error-line { color: #f44; }
+        #terminal-output .success-line { color: #0f0; }
+        #terminal-output .info-line { color: #0df; }
+        #terminal-status {
+            padding: 6px 14px; background: #2a2a2a; border-top: 1px solid #444;
+            font-size: 0.8rem; color: #888; display: flex; align-items: center; gap: 8px;
+        }
+        .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid #555; border-top-color: #0dcaf0; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Compose Templates */
+        .template-item {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: rgba(0,0,0,0.4); border: 1px solid #555; border-radius: 8px;
+            padding: 6px 12px; margin: 3px; color: #fff; font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        .template-item:hover { border-color: #0dcaf0; }
+        .template-item.installed { opacity: 0.5; }
+        .template-item .tpl-name { font-weight: bold; }
+        .template-item .tpl-badge {
+            font-size: 0.65rem; padding: 1px 6px; border-radius: 8px; font-weight: bold;
+        }
+        .tpl-badge-notinstalled { background: #198754; color: #fff; }
+        .tpl-badge-installed { background: #6c757d; color: #fff; }
+        .tpl-add-btn {
+            background: none; border: 1px solid #198754; color: #198754;
+            border-radius: 4px; padding: 1px 8px; cursor: pointer; font-size: 0.75rem;
+        }
+        .tpl-add-btn:hover { background: #198754; color: #fff; }
+
+        /* Session Badges */
+        .session-badge {
+            display: inline-block; font-size: 0.65rem; padding: 1px 6px; border-radius: 8px;
+            margin-left: 4px; vertical-align: middle; font-weight: bold;
+        }
+        .badge-running { background: #0dcaf0; color: #000; animation: pulse-badge 1.5s infinite; }
+        .badge-success { background: #198754; color: #fff; }
+        .badge-error { background: #dc3545; color: #fff; }
+        @keyframes pulse-badge { 0%,100% { opacity:1; } 50% { opacity:0.5; } }
+    </style>
 </head>
 
 <body>
     <div id="app" class="bg">
         {{ navbar | safe}}
         <div class="content">
-            <div class="d-flex justify-content-center">
-                <div class="col-md-4 mx-auto">
-                    <div class="content">
-                        <a href="/refresh_programs" class="btn btn-info btn-block" style="margin-top: 20px;">Dashboard aktualisieren</a>
-                        <a href="/make_docs" class="btn btn-info btn-block" style="margin-top: 20px;">Docs neu erzeugen</a>
-                        <a href="/tree" class="btn btn-info btn-block" style="margin-top: 20px;">Strukturierte Speicherbelegung zeigen*</a>
-                        <small style="color: #fff; text-align: center">*Langsam - Wenn du viele Dateien hast</small>
+            <div class="container py-3">
+
+                <!-- Ressourcen-Anzeige -->
+                <div class="resource-bars">
+                    <div class="res-bar-wrap">
+                        <div class="res-bar-label"><span>CPU</span><span id="res-cpu-val">--%</span></div>
+                        <div class="res-bar-track"><div class="res-bar-fill cpu" id="res-cpu-bar" style="width:0%"></div></div>
+                    </div>
+                    <div class="res-bar-wrap">
+                        <div class="res-bar-label"><span>RAM</span><span id="res-ram-val">-- / --</span></div>
+                        <div class="res-bar-track"><div class="res-bar-fill ram" id="res-ram-bar" style="width:0%"></div></div>
+                    </div>
+                    <div class="res-bar-wrap">
+                        <div class="res-bar-label"><span>Disk</span><span id="res-disk-val">-- / --</span></div>
+                        <div class="res-bar-track"><div class="res-bar-fill disk" id="res-disk-bar" style="width:0%"></div></div>
                     </div>
                 </div>
+
+                <!-- Server Aktionen -->
+                <div class="section-header">
+                    <h5>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" style="vertical-align: text-top; margin-right: 5px;">
+                            <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                        </svg>
+                        Server Aktionen
+                    </h5>
+                </div>
+                <div class="action-group" id="action-buttons">
+                    <button class="action-btn" data-action="dstats" onclick="runAction('dstats')" title="Docker Container Status">
+                        <span class="icon">📊</span> Docker Status
+                    </button>
+                    <button class="action-btn" data-action="dc" onclick="runAction('dc')" title="Docker Compose neu starten">
+                        <span class="icon">🔄</span> Docker Compose
+                    </button>
+                    <button class="action-btn" data-action="du" onclick="runAction('du')" title="Docker Images updaten">
+                        <span class="icon">⬆️</span> Docker Update
+                    </button>
+                    <button class="action-btn" data-action="docker-prune" onclick="runAction('docker-prune')" title="Ungenutzte Images löschen">
+                        <span class="icon">🧹</span> Aufräumen
+                    </button>
+                    <button class="action-btn" data-action="docs" onclick="runAction('docs')" title="Dokumentation erzeugen">
+                        <span class="icon">📄</span> Docs erzeugen
+                    </button>
+                    <button class="action-btn" data-action="ha-addons" onclick="runAction('ha-addons')" title="Home Assistant Addons updaten">
+                        <span class="icon">🏠</span> HA Addons
+                    </button>
+                    <button class="action-btn" data-action="apt-update" onclick="runAction('apt-update')" title="System-Pakete updaten">
+                        <span class="icon">📦</span> APT Update
+                    </button>
+                    <button class="action-btn" data-action="ei23update" onclick="runAction('ei23update')" title="ei23 Script updaten">
+                        <span class="icon">🔧</span> ei23 Update
+                    </button>
+                    <button class="action-btn" data-action="update" onclick="runAction('update')" title="Komplettes System-Update">
+                        <span class="icon">🚀</span> Full Update
+                    </button>
+                    <button class="action-btn" data-action="reboot" onclick="if(confirm('Server wirklich neustarten?')) runAction('reboot')" title="Server neustarten" style="border-color:#dc3545;">
+                        <span class="icon">⚡</span> Neustart
+                    </button>
+                </div>
+
+                <!-- Terminal Output -->
+                <div id="terminal-container">
+                    <div id="terminal-header">
+                        <span id="terminal-title">Terminal</span>
+                        <div style="display:flex;gap:8px;align-items:center;">
+                            <label style="color:#888;font-size:0.75rem;margin:0;cursor:pointer;display:flex;align-items:center;gap:4px;">
+                                <input type="checkbox" id="auto-scroll" checked style="margin:0;"> Auto-Scroll
+                            </label>
+                            <button id="terminal-close" onclick="closeTerminal()">✕</button>
+                        </div>
+                    </div>
+                    <div id="terminal-output"></div>
+                    <div id="terminal-status">
+                        <span class="spinner" id="terminal-spinner"></span>
+                        <span id="terminal-status-text">Läuft...</span>
+                    </div>
+                </div>
+
+                <!-- Docker Container Status -->
+                <div class="section-header">
+                    <h5>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" style="vertical-align: text-top; margin-right: 5px;">
+                            <path d="M0 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3zm5.5 1a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h5a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-5z"/>
+                        </svg>
+                        Docker Container
+                    </h5>
+                    <div class="action-buttons">
+                        <a href="/refresh_programs" class="btn btn-outline-info btn-sm">Container scannen</a>
+                    </div>
+                </div>
+                <div class="row g-2 mb-3">{{ container_cards | safe}}</div>
+
+                <!-- Compose Templates (einklappbar) -->
+                <div class="section-header" style="cursor:pointer;" onclick="toggleTemplatesPanel()">
+                    <h5>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16" style="vertical-align: text-top; margin-right: 4px;" id="templates-arrow">
+                            <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+                        </svg>
+                        Docker Programme hinzufügen
+                    </h5>
+                </div>
+                <div class="templates-panel mb-3" id="templates-panel">
+                    <div class="alert alert-warning py-2 mb-2" style="font-size:0.8rem;">
+                        ⚠️ Achtung: Duplikate und Mehrfachnutzung identischer Ports kann zu Fehlern führen und muss manuell überprüft werden.
+                    </div>
+                    <div id="templates-container">
+                        <small class="text-white-50">Lade Templates...</small>
+                    </div>
+                </div>
+
+                <!-- Dashboard Programme bearbeiten -->
+                <div class="section-header">
+                    <h5>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" style="vertical-align: text-top; margin-right: 5px;">
+                            <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0zM9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1zM4.5 9a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1h-7zM4 10.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 1 0-1h4a.5.5 0 0 1 0 1h-4z"/>
+                        </svg>
+                        Dashboard Verknüpfungen
+                    </h5>
+                    <div class="action-buttons">
+                        <button class="btn btn-outline-secondary btn-sm" onclick="fillFromTemplates()" title="Fehlende Programme aus Vorlagen hinzufügen">Vorlagen</button>
+                        <button class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#addProgramModal">+ Neu</button>
+                        <button class="btn btn-success btn-sm" onclick="savePrograms()">Speichern</button>
+                    </div>
+                </div>
+
+                <div id="programs-container"></div>
+
+                <div class="mb-5 mt-2">
+                    <small class="text-white-50">⋮⋮ Sortieren · Schalter = Aktiv · Felder bearbeiten · "Speichern"</small>
+                </div>
+
             </div>
-                <div class="d-flex justify-content-center" style="margin-top: 20px;">
-                    <div class="col-md-4 mx-auto">
-                        <div class="content">
-                            <table class="table table-striped">
-                                <tr>
-                                    <th>Container</th>
-                                    <th>Port</th>
-                                    <th>HTTP*</th>
-                                </tr>
-                                {{ table | safe}}
-                            </table>
-                            <div style="color: #fff; text-align: center">*zeigt Status über aktiven HTTP Port</div>
-                        </div>
-                    </div>
-                </div>
-                <!-- <div class="d-flex justify-content-center">
-                    <div class="col-md-4 mx-auto">
-                        <div class="content">
-                            <a href="/update" class="btn btn-info btn-block" style="margin-top: 20px;">Update</a>
-                        </div>
-                    </div>
-                </div> -->
         </div>
         {{ bottom_logo | safe}}
     </div>
-</body>
 
+    <!-- Modal: Neues Programm -->
+    <div class="modal fade" id="addProgramModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Neues Programm</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addProgramForm">
+                        <div class="mb-3"><label class="form-label">Name *</label><input type="text" class="form-control" id="new_name" required placeholder="z.B. HomeAssistant"></div>
+                        <div class="mb-3"><label class="form-label">Titel</label><input type="text" class="form-control" id="new_title" placeholder="z.B. Hausautomation"></div>
+                        <div class="row">
+                            <div class="col-6 mb-3"><label class="form-label">Port</label><input type="text" class="form-control" id="new_port" placeholder="8080"></div>
+                            <div class="col-6 mb-3"><label class="form-label">Icon</label><input type="text" class="form-control" id="new_img" placeholder="img/app.png"></div>
+                        </div>
+                        <div class="mb-3"><label class="form-label">Eigene URL</label><input type="text" class="form-control" id="new_custom_url" placeholder="http://..."></div>
+                        <div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="new_active" checked><label class="form-check-label">Aktiv</label></div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+                    <button type="button" class="btn btn-info" onclick="addProgram()">Hinzufügen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="saveToast" class="toast" role="alert">
+            <div class="toast-header"><strong class="me-auto" id="toastTitle">Info</strong><button type="button" class="btn-close" data-bs-dismiss="toast"></button></div>
+            <div class="toast-body" id="toastBody"></div>
+        </div>
+    </div>
+
+    <script>
+        // ===== Programme Editor =====
+        let programs = [];
+        let draggedElement = null;
+
+        document.addEventListener('DOMContentLoaded', loadPrograms);
+
+        function loadPrograms() {
+            fetch('/api/programs')
+                .then(r => r.json())
+                .then(data => { programs = data.programs; renderPrograms(); })
+                .catch(err => showToast('Fehler', 'Konnte Programme nicht laden', 'error'));
+        }
+
+        function renderPrograms() {
+            const c = document.getElementById('programs-container');
+            c.innerHTML = '';
+            programs.forEach((p, i) => {
+                const card = document.createElement('div');
+                card.className = 'program-card' + (p.active ? '' : ' inactive');
+                card.draggable = true;
+                card.dataset.index = i;
+                card.innerHTML = `
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="drag-handle">⋮⋮</span>
+                        <div class="form-check form-switch m-0">
+                            <input class="form-check-input switch-active" type="checkbox" ${p.active?'checked':''} onchange="toggleActive(${i})">
+                        </div>
+                        <img src="static/${esc(p.img)}" class="program-img-preview" onerror="this.src='static/img/docs.png'">
+                        <div style="flex:1; min-width:0;">
+                            <div class="row g-1">
+                                <div class="col-md-2 col-6"><label class="form-label">Name</label><input class="form-control" value="${esc(p.name)}" onchange="upd(${i},'name',this.value)"></div>
+                                <div class="col-md-2 col-6"><label class="form-label">Titel</label><input class="form-control" value="${esc(p.title)}" onchange="upd(${i},'title',this.value)"></div>
+                                <div class="col-md-1 col-4"><label class="form-label">Port</label><input class="form-control" value="${esc(p.port)}" onchange="upd(${i},'port',this.value)"></div>
+                                <div class="col-md-2 col-8"><label class="form-label">Eigene URL</label><input class="form-control" value="${esc(p.custom_url||'')}" onchange="upd(${i},'custom_url',this.value)"></div>
+                                <div class="col-md-2 col-6"><label class="form-label">Icon</label><input class="form-control" value="${esc(p.img)}" onchange="upd(${i},'img',this.value);renderPrograms()"></div>
+                                <div class="col-md-1 col-2 d-flex align-items-end"><button class="btn btn-outline-danger btn-sm" onclick="delProg(${i})" title="Löschen">✕</button></div>
+                            </div>
+                        </div>
+                    </div>`;
+                card.addEventListener('dragstart', e => { draggedElement = card; card.classList.add('dragging'); });
+                card.addEventListener('dragend', () => { card.classList.remove('dragging'); document.querySelectorAll('.program-card').forEach(c=>c.classList.remove('drag-over')); });
+                card.addEventListener('dragover', e => { e.preventDefault(); if(card!==draggedElement) card.classList.add('drag-over'); });
+                card.addEventListener('dragleave', () => card.classList.remove('drag-over'));
+                card.addEventListener('drop', e => {
+                    e.preventDefault(); card.classList.remove('drag-over');
+                    if(draggedElement !== card) {
+                        const from = +draggedElement.dataset.index, to = +card.dataset.index;
+                        const item = programs.splice(from,1)[0];
+                        programs.splice(to,0,item);
+                        renderPrograms();
+                    }
+                });
+                c.appendChild(card);
+            });
+        }
+
+        function upd(i, f, v) { programs[i][f] = v; }
+        function toggleActive(i) { programs[i].active = !programs[i].active; renderPrograms(); }
+        function delProg(i) {
+            const p = programs[i];
+            const warn = p.active
+                ? `"${p.name}" löschen?\n\n⚠️ Dieses Programm ist AKTIV und wird nach dem Speichern aus dem Dashboard entfernt.`
+                : `"${p.name}" löschen?`;
+            if(confirm(warn)) {
+                programs.splice(i,1);
+                renderPrograms();
+            }
+        }
+
+        function addProgram() {
+            const name = document.getElementById('new_name').value.trim();
+            if(!name) { alert('Name fehlt'); return; }
+            programs.push({
+                active: document.getElementById('new_active').checked,
+                port: document.getElementById('new_port').value.trim(),
+                custom_url: document.getElementById('new_custom_url').value.trim(),
+                name: name,
+                title: document.getElementById('new_title').value.trim(),
+                img: document.getElementById('new_img').value.trim() || 'img/docs.png'
+            });
+            renderPrograms();
+            bootstrap.Modal.getInstance(document.getElementById('addProgramModal')).hide();
+            document.getElementById('addProgramForm').reset();
+            document.getElementById('new_active').checked = true;
+            showToast('Hinzugefügt', name + ' – vergiss nicht zu speichern!', 'success');
+        }
+
+        function savePrograms() {
+            fetch('/api/programs', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({programs: programs})
+            })
+            .then(r => r.json())
+            .then(data => {
+                if(data.success) showToast('Gespeichert', 'Programme wurden gespeichert!', 'success');
+                else showToast('Fehler', data.error || 'Unbekannt', 'error');
+            })
+            .catch(err => showToast('Fehler', String(err), 'error'));
+        }
+
+        // ===== Ressourcen Echtzeitanzeige =====
+        function pollResources() {
+            fetch('/api/resources')
+                .then(r => r.json())
+                .then(d => {
+                    document.getElementById('res-cpu-val').textContent = d.cpu.toFixed(1) + '%';
+                    document.getElementById('res-cpu-bar').style.width = d.cpu + '%';
+                    document.getElementById('res-ram-val').textContent = d.ram_used + ' / ' + d.ram_total;
+                    document.getElementById('res-ram-bar').style.width = d.ram_pct + '%';
+                    document.getElementById('res-disk-val').textContent = d.disk_used + ' / ' + d.disk_total;
+                    document.getElementById('res-disk-bar').style.width = d.disk_pct + '%';
+                })
+                .catch(() => {});
+            setTimeout(pollResources, 5000);
+        }
+        document.addEventListener('DOMContentLoaded', pollResources);
+
+        // ===== Templates Toggle =====
+        function toggleTemplatesPanel() {
+            const panel = document.getElementById('templates-panel');
+            const arrow = document.getElementById('templates-arrow');
+            panel.classList.toggle('open');
+            if(panel.classList.contains('open')) {
+                arrow.style.transform = 'rotate(180deg)';
+                loadComposeTemplates();
+            } else {
+                arrow.style.transform = '';
+            }
+        }
+
+        function loadComposeTemplates() {
+            fetch('/api/compose-templates')
+                .then(r => r.json())
+                .then(data => {
+                    const c = document.getElementById('templates-container');
+                    if(!data.templates || data.templates.length === 0) {
+                        c.innerHTML = '<small class="text-white-50">Keine Templates gefunden.</small>';
+                        return;
+                    }
+                    c.innerHTML = '';
+                    data.templates.forEach(tpl => {
+                        const item = document.createElement('span');
+                        item.className = 'template-item' + (tpl.installed ? ' installed' : '');
+                        const badge = tpl.installed
+                            ? '<span class="tpl-badge tpl-badge-installed">installiert</span>'
+                            : '<button class="tpl-add-btn" onclick="addComposeTemplate(\'' + esc(tpl.file) + '\')">+ Hinzufügen</button>';
+                        item.innerHTML = '<span class="tpl-name">' + esc(tpl.name) + '</span>' + badge;
+                        c.appendChild(item);
+                    });
+                })
+                .catch(() => {
+                    document.getElementById('templates-container').innerHTML = '<small class="text-white-50">Fehler beim Laden.</small>';
+                });
+        }
+
+        function addComposeTemplate(filename) {
+            if(!confirm('Template "' + filename.replace('.yml','') + '" an docker-compose.yml anhängen?\n\nNach dem Anhängen "Docker Compose" ausführen, um den Container zu starten.')) return;
+            fetch('/api/compose-templates/' + filename, { method: 'POST' })
+                .then(r => r.json())
+                .then(data => {
+                    if(data.success) {
+                        showToast('Template', filename.replace('.yml','') + ' wurde angehängt!', 'success');
+                        loadComposeTemplates();
+                    } else {
+                        showToast('Fehler', data.error || 'Unbekannt', 'error');
+                    }
+                })
+                .catch(err => showToast('Fehler', String(err), 'error'));
+        }
+
+        function fillFromTemplates() {
+            fetch('/api/programs/fill-from-templates', { method: 'POST' })
+                .then(r => r.json())
+                .then(data => {
+                    if(data.success) {
+                        if(data.added && data.added.length > 0) {
+                            loadPrograms();
+                            showToast('Vorlagen', data.added.length + ' Programme hinzugefügt: ' + data.added.join(', '), 'success');
+                        } else {
+                            showToast('Vorlagen', 'Alle Vorlagen sind bereits vorhanden.', 'success');
+                        }
+                    } else {
+                        showToast('Fehler', data.error || 'Unbekannt', 'error');
+                    }
+                })
+                .catch(err => showToast('Fehler', String(err), 'error'));
+        }
+
+        function esc(t) { const d = document.createElement('div'); d.textContent = t || ''; return d.innerHTML; }
+
+        function showToast(title, msg, type) {
+            document.getElementById('toastTitle').textContent = title;
+            document.getElementById('toastBody').textContent = msg;
+            const t = document.getElementById('saveToast');
+            t.classList.remove('bg-success','bg-danger','text-white');
+            if(type==='success') t.classList.add('bg-success','text-white');
+            if(type==='error') t.classList.add('bg-danger','text-white');
+            new bootstrap.Toast(t).show();
+        }
+
+        // ===== Server Aktionen mit SSE + Session-Reconnect =====
+        let currentEventSource = null;
+        let currentAction = null;
+
+        // Beim Laden: prüfen ob laufende Sessions existieren
+        document.addEventListener('DOMContentLoaded', checkSessions);
+
+        function checkSessions() {
+            fetch('/api/server-sessions')
+                .then(r => r.json())
+                .then(data => {
+                    // Badges an Buttons anheften
+                    document.querySelectorAll('.action-btn[data-action]').forEach(btn => {
+                        // Alte Badges entfernen
+                        const oldBadge = btn.querySelector('.session-badge');
+                        if(oldBadge) oldBadge.remove();
+
+                        const action = btn.dataset.action;
+                        const session = data.sessions.find(s => s.id === action);
+                        if(session) {
+                            const badge = document.createElement('span');
+                            badge.className = 'session-badge';
+                            if(session.running) {
+                                badge.classList.add('badge-running');
+                                badge.textContent = '● läuft';
+                            } else if(session.status === 'success') {
+                                badge.classList.add('badge-success');
+                                badge.textContent = '✓';
+                            } else if(session.status === 'error') {
+                                badge.classList.add('badge-error');
+                                badge.textContent = '✗';
+                            }
+                            btn.appendChild(badge);
+                        }
+                    });
+
+                    // Falls eine Session gerade läuft, Terminal anzeigen und einsteigen
+                    const runningSession = data.sessions.find(s => s.running);
+                    if(runningSession && !currentEventSource) {
+                        runAction(runningSession.id);
+                    }
+
+                    // Auto-Polling für Badges alle 5 Sekunden
+                    setTimeout(checkSessions, 5000);
+                })
+                .catch(() => setTimeout(checkSessions, 10000));
+        }
+
+        function runAction(action) {
+            if(currentEventSource) {
+                currentEventSource.close();
+            }
+            currentAction = action;
+
+            const container = document.getElementById('terminal-container');
+            const output = document.getElementById('terminal-output');
+            const title = document.getElementById('terminal-title');
+            const spinner = document.getElementById('terminal-spinner');
+            const statusText = document.getElementById('terminal-status-text');
+
+            container.style.display = 'block';
+            output.innerHTML = '';
+            spinner.style.display = 'inline-block';
+            statusText.textContent = 'Verbinde...';
+            title.textContent = 'Terminal';
+
+            currentEventSource = new EventSource('/api/server-action/' + action);
+
+            currentEventSource.onmessage = function(event) {
+                const data = JSON.parse(event.data);
+
+                if(data.start) {
+                    title.textContent = data.label;
+                    statusText.textContent = 'Läuft...';
+                    updateBadge(action, 'running');
+                }
+
+                if(data.line !== undefined) {
+                    const lineEl = document.createElement('div');
+                    let lineText = data.line;
+
+                    if(lineText.match(/error|fehler|fail/i)) {
+                        lineEl.className = 'error-line';
+                    } else if(lineText.match(/success|erfolg|done|ok|fertig|started/i)) {
+                        lineEl.className = 'success-line';
+                    } else if(lineText.match(/warn|hinweis/i)) {
+                        lineEl.className = 'info-line';
+                    }
+
+                    lineText = lineText.replace(/\x1B\[[0-9;]*[a-zA-Z]/g, '');
+                    lineEl.textContent = lineText || ' ';
+                    output.appendChild(lineEl);
+                    if(document.getElementById('auto-scroll').checked) {
+                        output.scrollTop = output.scrollHeight;
+                    }
+                }
+
+                if(data.done) {
+                    spinner.style.display = 'none';
+                    if(data.status === 'success') {
+                        statusText.innerHTML = '<span style="color:#0f0;">✓ Fertig</span>';
+                        updateBadge(action, 'success');
+                    } else {
+                        statusText.innerHTML = '<span style="color:#f44;">✗ Fehler (Exit: ' + data.exit_code + ')</span>';
+                        updateBadge(action, 'error');
+                    }
+                    currentEventSource.close();
+                    currentEventSource = null;
+                    currentAction = null;
+                }
+            };
+
+            currentEventSource.onerror = function() {
+                // Bei Fehler: evtl. Server noch nicht bereit, kurz warten und Session-Polling übernimmt
+                spinner.style.display = 'none';
+                statusText.innerHTML = '<span style="color:#f44;">✗ Verbindungsfehler</span>';
+                currentEventSource.close();
+                currentEventSource = null;
+                currentAction = null;
+                updateBadge(action, 'error');
+            };
+        }
+
+        function updateBadge(action, state) {
+            const btn = document.querySelector(`.action-btn[data-action="${action}"]`);
+            if(!btn) return;
+            const oldBadge = btn.querySelector('.session-badge');
+            if(oldBadge) oldBadge.remove();
+
+            const badge = document.createElement('span');
+            badge.className = 'session-badge';
+            if(state === 'running') {
+                badge.classList.add('badge-running');
+                badge.textContent = '● läuft';
+            } else if(state === 'success') {
+                badge.classList.add('badge-success');
+                badge.textContent = '✓';
+            } else if(state === 'error') {
+                badge.classList.add('badge-error');
+                badge.textContent = '✗';
+            }
+            btn.appendChild(badge);
+
+            // Erfolg/Fehler-Badge nach 8 Sekunden entfernen
+            if(state !== 'running') {
+                setTimeout(() => {
+                    const b = btn.querySelector('.session-badge');
+                    if(b && !b.classList.contains('badge-running')) b.remove();
+                }, 8000);
+            }
+        }
+
+        function closeTerminal() {
+            if(currentEventSource) {
+                currentEventSource.close();
+                currentEventSource = null;
+            }
+            currentAction = null;
+            document.getElementById('terminal-container').style.display = 'none';
+        }
+    </script>
+</body>
 </html>
