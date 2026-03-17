@@ -199,7 +199,7 @@ Pull requests are welcome! You can:
 
 ## 🌟 Great Open Source Projects
 
-I love open source projects - [here is my best of list](https://ei23.com/opensource/)
+I love open source projects - [here is my best of list](https://diy-smart-home.ei23.com/software/overview/)
 
 Consider supporting them!
 
