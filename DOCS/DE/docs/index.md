@@ -31,11 +31,55 @@ Die Weiterentwicklung, Wartung und der Support von Softwareprojekten kosten viel
 
 Denkt daher also über selbstlose Unterstützung dieses (oder anderer) Projekte nach. Das kann in Form von nützlichen Beiträgen, Hinweisen oder auch einfach in finanzieller Form passieren. [Das geht hier](https://ei23.de/donate/).
 
+---
+
+## 🏠 Alles kann automatisiert werden
+
+Was ist überhaupt möglich mit einem Smart Home? Hier ein paar Beispiele:
+
+- 🚗 Garagentor öffnet sich, wenn sich das Auto nähert
+- 🔔 Türklingel lässt Telefone klingeln und öffnet optional die Haustür
+- 📬 Nachricht mit Bild aufs Handy, wenn die Post da war
+- 👕 Nachricht, wenn die Waschmaschine fertig ist (über Stromverbrauchsmessung)
+- ⏰ Lichter mit dem Handy-Wecker koppeln
+- ☀️ Lichthelligkeit an die Photovoltaik-Erzeugung anpassen
+- 👤 Lichter über Anwesenheit steuern
+- 📹 Kameras als Bewegungsmelder nutzen
+- ⚡ Wenn der Stromzähler zu viel Verbrauch zeigt – Licht zur Warnung anschalten (und noch mehr Strom verbrauchen 😄)
+
+Ja, jede noch so dämliche Spielerei ist denkbar. Oder wie ich gerne scherze – **die moderne Modelleisenbahn im Keller**.
+
+### Ist das alles nötig?
+
+Auf keinen Fall. Nur wenn es wirklich Energie oder Zeit spart – und damit auch Geld.
+
+**Werde nicht zum Feature-Creep.** Die Dinge einfach zu halten, ist eine Kunst. Wenn dir etwas ständig Probleme macht, verlierst du die Lust. Aber wenn du bereit bist, ein bisschen Zeit zu investieren und dir ein paar neue Dinge beizubringen, ist **unendlich viel möglich**.
+
+Und du wirst smart und unabhängig. Das ist sehr wertvoll.
+
+---
+
+## 🔓 Warum das alles wichtig ist
+
+Mir geht es nicht nur um coole Spielereien. Mir geht es darum, ein bestimmtes Szenario zu **verhindern**.
+
+Schaut euch an, was gerade passiert: Smarte Lautsprecher, smarte Thermostate, smarte Kameras – alles wird über die Cloud von wenigen großen Konzernen betrieben. Amazon, Google, Apple. Die haben die Kontrolle, die bekommen die Daten und haben die Macht. Wir werden immer mehr abhängig davon.
+
+**Das ist der Weg in ein Cyberpunk-Szenario.** Megacorps, die über die Infrastruktur deines Alltags bestimmen. Features, die einfach verschwinden. Preise, die steigen. Daten, die du nicht kontrollierst. Dienste, die plötzlich eingestellt werden.
+
+Das können wir nur verhindern, wenn **so viele wie möglich smart und unabhängig werden**. Mit eigener Hardware. Mit Open Source Software. Ohne monatliche Gebühren. Ohne Cloud-Zwang. Ohne Big Tech.
+
+**Dein Zuhause gehört dir. Deine Daten gehören dir. Deine Automatisierungen gehören dir.**
+
+Und genau dafür steht ei23.
+
+---
+
 ## Statistik
 
 ![ei23 Counter](https://ei23.de/bilder/svg-stats.svg)
 
-Viel Spaß beim Tüfteln und unabhängig bleiben!
+*Viel Spaß beim Tüfteln – und lasst euch die Kontrolle nicht wegnehmen!* 🏠🔓
 
 ```
 Viele Grüße
