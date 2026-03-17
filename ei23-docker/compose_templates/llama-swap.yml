@@ -1,3 +1,4 @@
+  # tut das selbe wie ollama, nur besser und mehr freiheiten bei der konfiguration und modellauswahl (huggingface, op
   llama-swap:
     image: ghcr.io/mostlygeek/llama-swap:cuda
     container_name: llama-swap

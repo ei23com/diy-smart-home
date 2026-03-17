@@ -13,3 +13,5 @@ Du kannst diese Kurzbefehle nutzen
 - `ei23 newfunctions`      - fügt neue Funktionen aus Skript-Updates hinzu
 - `ei23 setip`             - setzt neue Standard-IP
 - `ei23 update`            - führt ein vollständiges Update durch
+- `ei23 no-docker-update`  - führt ein Update ohne Docker-Images durch
+- `ei23 nodockerupdate`    - führt das ei23-Update ohne Docker-Update durch

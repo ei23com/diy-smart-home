@@ -16,22 +16,66 @@ siehe [Programme Installieren](docker-compose.md)
 
 
 ##  Programm XY funktioniert nicht, wie setze ich es ohne Neuinstallation zurück?</strong>
+
+!!!tip "Shortcuts nutzen"
+    Du kannst auch den einfachen Befehl `ei23 fullreset X` verwenden, wobei X der Containername ist. Beispiel: `ei23 fullreset portainer`
+
 Portainer wird beispielsweise mit folgendem Befehl zurückgesetzt (Das klappt analog mit allen anderen Programmen <strong>außer</strong> mit dem ei23-Dashboard, Home Assistant, Mosquitto und NodeRED):
-`cd ei23-docker/; docker-compose stop portainer; docker-compose rm -f portainer; sudo rm -r volumes/portainer/; docker-compose up -d`
-Für NextcloudPi sähe es so aus
-`cd ei23-docker/; docker-compose stop nextcloudpi; docker-compose rm -f nextcloudpi; sudo rm -r volumes/nextcloudpi/; docker-compose up -d`
+```bash
+cd ei23-docker/
+docker compose stop portainer
+docker compose rm -f portainer
+sudo rm -r volumes/portainer/
+docker compose up -d
+```
+Für NextcloudPi sähe es so aus:
+```bash
+cd ei23-docker/
+docker compose stop nextcloudpi
+docker compose rm -f nextcloudpi
+sudo rm -r volumes/nextcloudpi/
+docker compose up -d
+```
 Home Assistant wird wie folgt zurückgesetzt:
-`cd ei23-docker/; docker-compose stop homeassistant; docker-compose rm -f homeassistant; sudo rm -r volumes/homeassistant/config/.storage; sudo rm -r volumes/homeassistant/config/.cloud; sudo rm -r volumes/homeassistant/config/deps; sudo rm -r volumes/homeassistant/config/.storage; sudo rm -r volumes/homeassistant/config/tts; sudo rm volumes/homeassistant/config/home-assistant_v2.db; docker-compose up -d`
-Sollte beispielsweise NodeRED nicht funktionieren liegt wahrscheinlich ein anderes Problem vor. Siehe "Welche Geräte und Betriebssysteme werde unterstützt?"
+```bash
+cd ei23-docker/
+docker compose stop homeassistant
+docker compose rm -f homeassistant
+sudo rm -r volumes/homeassistant/config/.storage
+sudo rm -r volumes/homeassistant/config/.cloud
+sudo rm -r volumes/homeassistant/config/deps
+sudo rm -r volumes/homeassistant/config/tts
+sudo rm volumes/homeassistant/config/home-assistant_v2.db
+docker compose up -d
+```
+Sollte beispielsweise NodeRED nicht funktionieren liegt wahrscheinlich ein anderes Problem vor. Siehe "Welche Geräte und Betriebssysteme werden unterstützt?"
 
 ##  Wie kann ich einen Zigbee / ConBee 2 Stick ingegrieren oder einen USB-Stick mounten</strong>
-Da der großteil der Programme als Docker Container installiert sind, muss dafür die docker-compose.yml (unter `/home/[user]/ei23-dockerdocker-compose.md.yml` ) bearbeitet werden.
+Da der Großteil der Programme als Docker Container installiert sind, muss dafür die docker-compose.yml (unter `/home/[user]/ei23-docker/docker-compose.yml`) bearbeitet werden.
 
 Eine Beschreibung wie man Geräte (Devices) und Ordner (Volumes) des Host-Systems in einen Docker-Container einbindet, findest du hier [Programme Installieren](docker-compose.md) 
 
 ##  Welche Geräte und Betriebssysteme werden unterstützt?</strong>
-Offiziell teste und entwickle ich mit einem Raspberry Pi 4 (min 2GB) mit einem frisch installiertem Raspberry Pi OS und dazu noch einer Virtuellem Maschine mit Debian 12 64Bit.
-Auf Grund der vielen Variationen, die allein durch Verschiedene Spracheinstellungen auftreten können. Kann es hier und da zu kleinen Fehlern kommen.
+
+Das Skript unterstützt folgende Betriebssysteme:
+
+| Betriebssystem | Architekturen | Status |
+|----------------|---------------|--------|
+| Raspberry Pi OS | armv7, arm64 | ✅ Getestet |
+| Debian 12 | arm64, amd64 | ✅ Getestet |
+| Ubuntu / Pop!_OS | arm64, amd64 | ✅ Getestet |
+| Fedora | amd64 | ✅ Getestet |
+| Arch / Manjaro | amd64 | ✅ Getestet |
+| CentOS / Rocky | amd64 | ✅ Getestet |
+
+Offiziell teste und entwickle ich mit einem Raspberry Pi 4 (min 2GB) und einer Virtuellen Maschine mit Debian 12 64Bit. Die oben genannten Distributionen wurden erfolgreich getestet.
+
+!!!note "Docker Images"
+    Auf Grund der vielen Variationen kann es vorkommen, dass nicht alle Docker-Images für alle Architekturen verfügbar sind. Überprüfe dies ggf. auf [hub.docker.com](https://hub.docker.com/).
+
+!!!note "32-Bit Systeme"
+    Für 32-Bit Systeme (armv7) wird das `docker-compose` Kommando anstelle von `docker compose` verwendet. Einige neuere Docker-Images sind möglicherweise nicht verfügbar.
+
 Dafür biete ich keine kostenlose Hilfe und Lösungen an, denn es ist und bleibt ein DIY-Projekt und keine Dienstleistung mit Garantieansprüchen.
 
 ##  Ich habe selbst ein Programm installiert, jetzt geht ein anderes nicht mehr!</strong>

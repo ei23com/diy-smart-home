@@ -4,17 +4,24 @@ getData(){
     wget "https://ei23.de/softwarehub/smarthome/USERID/DEVICEID/VERSIONNR/ei23-update.zip" -O ei23-update.zip
     sudo rm -r $HOME/ei23-docker/compose_templates/
     sudo unzip -o ei23-update.zip -d $HOME/ei23-docker/
-    sudo systemctl stop ei23.service; sudo systemctl start ei23.service
+}
+restart_ei23_service() {
+    # Restart the ei23 service after a short delay so this script can finish cleanly.
+    # systemd-run detaches the restart command from the current process tree,
+    # preventing it from being killed when the service stops.
+    nohup bash -c "sleep 2 && sudo systemctl restart ei23.service" >/dev/null 2>&1 &
 }
 if [[ $1 == "nodockerupdate" ]]; then
     getData
     bash ei23.sh "no-docker-update"
+    restart_ei23_service
     exit 1
 fi
 if [[ $1 == "fullupdate" ]] || [[ $1 == "" ]]; then
     [[ $1 == "fullupdate" ]] && command="fullup2" || command="part2"
     getData
     bash $HOME/ei23-docker/update.sh $command
+    # Note: part2/fullup2 handles its own restart
     exit 1
 fi
 if [[ $1 == "part2" ]] || [[ $1 == "fullup2" ]]; then
@@ -28,5 +35,6 @@ if [[ $1 == "part2" ]] || [[ $1 == "fullup2" ]]; then
         bash ei23.sh "fullupdate"
     fi
     sudo rm ei23-update.zip
+    restart_ei23_service
     exit 1
 fi
