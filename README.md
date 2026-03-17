@@ -7,7 +7,51 @@ A dead-easy, clean and slim **installation** and **maintenance** tool for a huge
 Maybe it's not as easy to configure as the Home Assistant OS, but you get a lot more customization options and get in touch with the docker-compose.yml notation, which is also a great tool.
 And you don't even have to use Home Assistant if you prefer OpenHAB or IObroker for example. All on one system.
 
-**Have fun, get smart and independent!**
+---
+
+## 🏠 Everything Can Be Automated
+
+What's actually possible with a smart home? Here are some examples:
+
+- 🚗 Garage door opens when your car approaches
+- 🔔 Doorbell rings your phones and optionally unlocks the front door
+- 📬 Notification with image to your phone when mail arrives
+- 👕 Notification when the washing machine is done (via power consumption monitoring)
+- 🕐 Lights synced with your phone alarm
+- ☀️ Brightness adjusted to your solar panel output
+- 👤 Lights controlled by presence detection
+- 📹 Cameras used as motion detectors
+- ⚡ Warning light when power consumption is too high (using even more power 😄)
+
+Yes, even the most ridiculous idea is possible. Or as I like to joke: **the modern model railroad in the basement.**
+
+### Is All This Necessary?
+
+Absolutely not. Only if it actually saves energy or time – and therefore money.
+
+**Don't become a feature-creep.** Keeping things simple is an art. If something constantly causes problems, you'll lose the fun. But if you're willing to invest a bit of time and learn a few new things, **endlessly much is possible**.
+
+And you become smart and independent. That is very valuable.
+
+---
+
+## 🔓 Why This All Matters
+
+This isn't just about cool gadgets. It's about **preventing a scenario**.
+
+Look at what's happening right now: Smart speakers, smart thermostats, smart cameras – everything runs through the cloud, controlled by a few big corporations. Amazon, Google, Apple. They have the control, they get the data, they have the power. We're becoming more and more dependent on them.
+
+**This is the path to a cyberpunk scenario.** Megacorps determining the infrastructure of your daily life. Features that simply disappear. Prices that go up. Data you don't control. Services that get shut down overnight.
+
+We can only prevent this if **as many people as possible become smart and independent**. With your own hardware. With open source software. Without monthly fees. Without cloud dependency. Without big tech.
+
+**Your home belongs to you. Your data belongs to you. Your automations belong to you.**
+
+That's what ei23 stands for.
+
+---
+
+**Have fun, get smart and independent!** 🏠🔓
 
 ![ei23 Dashboard](https://ei23.de/bilder/ei23-terminal.gif)
 
