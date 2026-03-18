@@ -8,7 +8,7 @@ Hi und danke für dein Interesse an der Dokumentation! Damit du dir schnell eine
 !!!warning "WICHTIGER SICHERHEITSHINWEIS"
     **Dieses Skript wurde für vertrauenswürdige Umgebungen entwickelt**, in denen der Nutzer die Sicherheitsimplikationen vollständig versteht. Es ist **NICHT für den Einsatz in produktiven oder öffentlich zugänglichen Umgebungen** ohne zusätzliche Sicherheitsmaßnahmen geeignet.
 
-    **Kritisch by Design:** SSH Root-Login aktiviert, Sudo ohne Passwort. Das sind bewusste Entscheidungen für einfache Bedienung in isolierten Labornetzwerken. **Du musst das System härten**, wenn es ungeschützten Netzwerken ausgesetzt ist. Siehe Sicherheitsaudit für Details und Härtungsanleitungen.
+    **Kritisch by Design:** SSH Root-Login aktiviert, Sudo ohne Passwort. Das sind bewusste Entscheidungen für einfache Bedienung in isolierten Labornetzwerken. **Du musst das System härten**, wenn es ungeschützten Netzwerken ausgesetzt ist. Siehe [Sicherheitsaudit](https://github.com/ei23com/diy-smart-home/blob/main/security_audit_de.md) für Details und Härtungsanleitungen.
 
 ---
 
