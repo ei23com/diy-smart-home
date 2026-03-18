@@ -1,6 +1,6 @@
 # Sicherheitsaudit: ei23.sh Smart Home Server Installationsskript
 
-**Datum:** 12.3.2024
+**Datum:** 12.3.2026
 **Version:** 0  
 **Status:** Kritische Sicherheitsprüfung
 
