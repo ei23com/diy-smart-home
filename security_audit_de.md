@@ -1,5 +1,9 @@
 # Sicherheitsaudit: ei23.sh Smart Home Server Installationsskript
 
+**Datum:** 12.3.2024
+**Version:** 0  
+**Status:** Kritische Sicherheitsprüfung
+
 ## ⚠️ WICHTIGER SICHERHEITSHINWEIS
 
 Dieses Skript wurde für **vertrauenswürdige Umgebungen** entwickelt, in denen der Nutzer die Sicherheitsimplikationen vollständig versteht. Es ist **NICHT** für den Einsatz in produktiven oder öffentlich zugänglichen Umgebungen ohne zusätzliche Sicherheitsmaßnahmen geeignet.
