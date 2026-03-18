@@ -15,7 +15,7 @@ And you don't even have to use Home Assistant if you prefer OpenHAB or IObroker 
 >
 > **Critical by design:** SSH root login enabled, sudo without password. These are intentional decisions for ease of use in isolated lab networks. **You must harden the system** if exposed to untrusted networks.
 >
-> 📄 See [Security Audit](security_audit.md) for details and hardening instructions.
+> 📄 See [Security Audit](security_audit_en.md) for details and hardening instructions.
 
 ---
 
