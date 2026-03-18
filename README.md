@@ -9,6 +9,16 @@ And you don't even have to use Home Assistant if you prefer OpenHAB or IObroker 
 
 ---
 
+## ⚠️ IMPORTANT SECURITY NOTICE
+
+> **This script was developed for trusted environments** where the user fully understands the security implications. It is **NOT suitable** for use in production or publicly accessible environments without additional security measures.
+>
+> **Critical by design:** SSH root login enabled, sudo without password. These are intentional decisions for ease of use in isolated lab networks. **You must harden the system** if exposed to untrusted networks.
+>
+> 📄 See [Security Audit](security_audit.md) for details and hardening instructions.
+
+---
+
 ## 🏠 Everything Can Be Automated
 
 What's actually possible with a smart home? Here are some examples:
