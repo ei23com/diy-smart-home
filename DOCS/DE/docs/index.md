@@ -3,6 +3,15 @@
 Hi und danke für dein Interesse an der Dokumentation! Damit du dir schnell einen Überblick verschaffen kannst, habe ich den bisherigen Stand meines Smart Home Skripts in einem Video zusammengefasst:
 [![YT](https://ei23.de/bilder/ei23-dashboard.jpg)](https://www.youtube.com/watch?v=pKUv_rXONas)
 
+---
+
+!!!warning "WICHTIGER SICHERHEITSHINWEIS"
+    **Dieses Skript wurde für vertrauenswürdige Umgebungen entwickelt**, in denen der Nutzer die Sicherheitsimplikationen vollständig versteht. Es ist **NICHT für den Einsatz in produktiven oder öffentlich zugänglichen Umgebungen** ohne zusätzliche Sicherheitsmaßnahmen geeignet.
+
+    **Kritisch by Design:** SSH Root-Login aktiviert, Sudo ohne Passwort. Das sind bewusste Entscheidungen für einfache Bedienung in isolierten Labornetzwerken. **Du musst das System härten**, wenn es ungeschützten Netzwerken ausgesetzt ist. Siehe Sicherheitsaudit für Details und Härtungsanleitungen.
+
+---
+
 ## Warum brauchst du das Skript?
 
 Zuerst zur Motivation hinter meinem Skript und seiner Veröffentlichung:

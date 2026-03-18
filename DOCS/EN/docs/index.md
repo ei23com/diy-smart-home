@@ -4,6 +4,16 @@ Made for Debian and Raspberry OS, working on most architectures.
 Maybe it's not as easy to configure as the Home Assistant OS, for example, but you get a lot more customization options and get in touch with the docker-compose.yml notation, which is also a great tool.
 And you don't even have to use Home Assistant if you prefer OpenHAB or IObroker for example. All on one system.
 
+---
+
+!!!warning "IMPORTANT SECURITY NOTICE"
+
+    **This script was developed for trusted environments** where the user fully understands the security implications. It is **NOT suitable** for use in production or publicly accessible environments without additional security measures.
+
+    **Critical by design:** SSH root login enabled, sudo without password. These are intentional decisions for ease of use in isolated lab networks. **You must harden the system** if exposed to untrusted networks. See Security Audit for details and hardening instructions.
+
+---
+
 ![ei23 terminal](https://ei23.de/bilder/ei23-terminal.gif)
 
 ![ei23 Dashboard](https://ei23.de/bilder/ei23-dashboard.jpg)
