@@ -3,7 +3,7 @@
 [Ollama](https://ollama.ai/) allows you to run Large Language Models (LLMs) locally on your server.
 
 !!!tip "Personal Recommendation: llama-swap"
-    I personally use [llama-swap](llama-swap.md) instead of Ollama. It offers better performance, direct HuggingFace support, and finer control over models. However, Ollama is easier for beginners.
+    Personally, I use [llama-swap](llama-swap.md) instead of Ollama. It offers better performance, direct HuggingFace support, and finer control over the models. There are also indications that the Ollama developers are simply copying the work of the llama.cpp developers, and therefore features often appear later. However, Ollama is easier to get started with. I don't recommend it, though.
 
 ## Installation
 

@@ -143,7 +143,7 @@ Intel N100 Mini-PC
 - **Server:** i5 Mini-PC mit GPU - ~400€
 - **Edge Devices:** 50+ Geräte - ~300€
 - **Media:** Jellyfin mit Hardware-Transkodierung
-- **KI:** Lokale LLMs mit Ollama/llama-swap
+- **KI:** Lokale LLMs mit llama-swap
 - **Überwachung:** Frigate mit 4+ Kameras
 
 ## Sicherheitsarchitektur

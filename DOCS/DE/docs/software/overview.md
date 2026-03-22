@@ -34,7 +34,6 @@ Diese Seite gibt dir einen Überblick über alle mit dem ei23-Skript verfügbare
 | Programm | Beschreibung | Port | Docker |
 |----------|--------------|------|--------|
 | [llama-swap](llama-swap.md) | Lokale LLMs (llama.cpp) | 9292 | ✅ |
-| [Ollama](ollama.md) | Lokale LLMs | 11434 | ✅ |
 | [Open WebUI](open-webui.md) | Chat-Oberfläche für LLMs | 2280 | ✅ |
 | [LiteLLM](litellm.md) | LLM-API-Proxy | 4000 | ✅ |
 
