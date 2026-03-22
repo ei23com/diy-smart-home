@@ -92,7 +92,7 @@ That's what ei23 stands for.
 [Jellyfin](https://jellyfin.org/) · [Immich](https://immich.app/) · [Lyrion Music Server](https://lyrion.org/) · [Music Assistant](https://music-assistant.io/)
 
 ### AI & Machine Learning
-[llama-swap](https://github.com/mostlygeek/llama-swap) · [Ollama](https://ollama.ai/) · [Open WebUI](https://openwebui.com/) · [LiteLLM](https://litellm.ai/) · [Frigate](https://frigate.video/)
+[llama-swap](https://github.com/mostlygeek/llama-swap) · [Open WebUI](https://openwebui.com/) · [LiteLLM](https://litellm.ai/) · [Frigate](https://frigate.video/)
 
 ### Productivity
 [Nextcloud](https://nextcloud.com/) · [Paperless-ngx](https://docs.paperless-ngx.com/) · [Mealie](https://mealie.io/) · [FreshRSS](https://freshrss.org/) · [ArchiveBox](https://archivebox.io/) · [NocoDB](https://nocodb.com/) · [Stirling-PDF](https://github.com/Frooodle/Stirling-PDF) · [Syncthing](https://syncthing.net/) · [PairDrop](https://pairdrop.net/)

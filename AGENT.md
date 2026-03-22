@@ -179,17 +179,6 @@ When adding new software:
    - Notes
    - Further information links
 
-### Personal Recommendations
-
-The project maintainer (Felix) has personal preferences that should be documented:
-
-- **llama-swap** over Ollama (better performance, more control)
-- **Node-RED** over n8n (more powerful, better HA integration)
-- **Portfolio Performance** over Ghostfolio (more detailed, offline)
-- **PostgreSQL** over InfluxDB (future-proof, "Postgres for everything")
-
-When documenting these tools, include a tip box with the recommendation.
-
 ### Language
 
 - **Code & Comments:** English

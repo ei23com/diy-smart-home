@@ -1,6 +1,6 @@
 # Open WebUI
 
-[Open WebUI](https://openwebui.com/) ist eine benutzerfreundliche Chat-Oberfläche für Large Language Models (LLMs). Sie ist kompatibel mit [Ollama](ollama.md), [llama-swap](llama-swap.md) und der OpenAI-API.
+[Open WebUI](https://openwebui.com/) ist eine benutzerfreundliche Chat-Oberfläche für Large Language Models (LLMs). Sie ist kompatibel mit [Ollama](ollama.md), [llama-swap/llama.cpp](llama-swap.md) und der OpenAI-API.
 
 !!!note "Dies ist NUR die Weboberfläche"
     Open WebUI ist nur eine Benutzeroberfläche. Du benötigst zusätzlich einen LLM-Server wie Ollama oder llama-swap, um Modelle zu laden und Anfragen zu verarbeiten.

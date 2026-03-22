@@ -106,10 +106,10 @@ setsshlogo(){
 noderedUpdate(){
     what=$1
     cd ~
-    sudo npm install -g npm
+    # sudo npm install -g npm
     printstatus "$what NodeJS $L_AND NodeRed"
     # Documentation - https://nodered.org/docs/getting-started/raspberrypi
-    bash <(curl -sL https://raw.githubusercontent.com/node-red/linux-installers/master/deb/update-nodejs-and-nodered) --confirm-install --confirm-pi --node20 --update-nodes
+    bash <(curl -sL https://raw.githubusercontent.com/node-red/linux-installers/master/deb/update-nodejs-and-nodered) --confirm-install --confirm-pi --update-nodes
     printstatus "$what Nodes $L_PLEASEWAIT"
     cd ~/.node-red/
     # Update preselected Addons
