@@ -41,6 +41,7 @@ import threading
 import time
 from datetime import datetime
 from urllib.parse import urlparse
+from typing import Union
 
 import psutil
 import requests
@@ -183,7 +184,7 @@ def check_http(ip: str, port: int) -> bool:
         return False
 
 
-def get_default_interface() -> str | None:
+def get_default_interface() -> Union[str, None]:
     """Detect the network interface used for the default route."""
     try:
         output = subprocess.check_output(["ip", "route", "show", "default"]).decode()
@@ -620,7 +621,7 @@ def make_docs_cmd():
 # Server Actions API (SSE with Session Tracking)
 # ---------------------------------------------------------------------------
 
-def start_server_session(action: str) -> str | None:
+def start_server_session(action: str) -> Union[str, None]:
     """Start a server action as a background process with session tracking.
 
     Returns the session ID (same as action name), or None if action is unknown.
