@@ -109,7 +109,7 @@ noderedUpdate(){
     # sudo npm install -g npm
     printstatus "$what NodeJS $L_AND NodeRed"
     # Documentation - https://nodered.org/docs/getting-started/raspberrypi
-    bash <(curl -sL https://raw.githubusercontent.com/node-red/linux-installers/master/deb/update-nodejs-and-nodered) --confirm-install --confirm-pi --update-nodes
+    bash <(curl -sL https://raw.githubusercontent.com/node-red/linux-installers/master/deb/update-nodejs-and-nodered) --confirm-install --confirm-pi --update-nodes --node24
     printstatus "$what Nodes $L_PLEASEWAIT"
     cd ~/.node-red/
     # Update preselected Addons
@@ -255,6 +255,14 @@ dockerCompose(){
     composeCMD "up -d"
     sleep 10
     cleanDockerImages
+    printmsg "$L_DOCKERSUCCESS"
+    if [[ $1 != "first" ]]; then
+        exit 0
+    fi
+}
+
+dockerComposeDown(){
+    composeCMD "down"
     printmsg "$L_DOCKERSUCCESS"
     if [[ $1 != "first" ]]; then
         exit 0
@@ -485,7 +493,8 @@ show_shortcuts(){
     echo "You can use this shortcuts"
     echo "--------------------------"
     echo "ei23 backup            - creates a backup"
-    echo "ei23 dc                - runs Docker compose"
+    echo "ei23 dc                - runs docker compose up"
+    echo "ei23 dcd               - runs docker compose down"
     echo "ei23 docs              - builds your own docs"
     echo "ei23 dstats            - show Docker status"
     echo "ei23 du                - updates Docker images"
@@ -516,6 +525,10 @@ fi
 
 if [[ $1 == "dc" ]]; then
     dockerCompose
+fi
+
+if [[ $1 == "dcd" ]]; then
+    dockerComposeDown
 fi
 
 if [[ $1 == "docs" ]]; then
