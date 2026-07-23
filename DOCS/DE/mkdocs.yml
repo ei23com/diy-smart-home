@@ -7,6 +7,7 @@ site_description: >-
 nav:
   - ei23 Smart Home Server:
     - Los gehts: index.md
+    - Architektur Entscheidungshilfe: start/architecture.md
     - Installation & erster Start: start/install.md
     - Programme installieren & anpassen (Docker-Compose): start/docker-compose.md
     - Shortcuts: start/shortcuts.md
@@ -20,6 +21,7 @@ nav:
   - Smart Home Allgemein:
     - Fernzugriff: start/remote-access.md
     - Sicherheit & Monitoring: start/security-monitoring.md
+    - Automatischer Systemneustart (ASR): start/watchdog.md
     - Akzeptanz der Mitbewohner: start/acceptance.md
   - Software:
     - Überblick: software/overview.md
