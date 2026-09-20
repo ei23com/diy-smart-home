@@ -1,6 +1,25 @@
 ## Changelog
 
 
+### v1.21
+#### What's New? Icon Picker, Auto-Save & Quick Add 🎉
+- **Icon picker in the server dashboard:** Next to every icon field (program card and "+ New" dialog) a button opens an overview of **all** icons from `web/static/img/`
+  - Search (e.g. `router`, `camera`, `grafana`) and preview on the dashboard background
+  - **✓** marks icons that are already used in the dashboard – new API `/api/icons`
+- **Changes are saved automatically:** The save button is gone
+  - Status indicator "Saving…" / "✓ Saved" / "⚠ Not saved" with **Retry**
+  - Saving happens for fields, active toggles, sorting, adding, deleting and icon selection
+  - Warns before leaving the page while changes are still pending
+- **Quick Add for Docker containers:** Every container card has a **"+ Dashboard"** button
+  - adds the service with an icon suggestion, host port and active state, then jumps to the new entry
+  - services that are already present show **"✓ Dashboard"** and jump to the existing entry
+- **Icons for all Docker templates:** Every template now has a matching 128x128 icon – including Home Assistant, ESPHome, Music Assistant, Zigbee2MQTT, Ollama, Open WebUI, n8n, Mealie, FreshRSS, Ghostfolio, go2rtc, LiteLLM, Matchering – plus generic icons for routers, cameras, NAS, printers, sensors, power plugs, lights, WLAN access points and more
+- **New Docker templates:** `searxng` (meta search engine) and `rsshub` (RSS feeds for almost every website)
+- **Documentation:** The dashboard page (DE + EN) now covers icon picker, auto-save and quick add
+
+!!!tip "Update"
+    After a manual update, restart the supervisor once so the new icon API is active: `sudo systemctl restart ei23.service`
+
 ### v1.20
 #### What's New? Documentation Update 🎉
 - **Completely revised documentation** (DE + EN) - All pages up to date

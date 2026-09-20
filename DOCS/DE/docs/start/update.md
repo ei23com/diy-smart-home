@@ -1,6 +1,25 @@
 ## Changelog
 
 
+### v1.21
+#### Was gibt es Neues? Icon-Picker, Auto-Speichern & Quick Add 🎉
+- **Icon-Picker im Server-Dashboard:** Neben jedem Icon-Feld (Programm-Karte und "+ Neu"-Dialog) öffnet ein Button eine Übersicht **aller** Icons aus `web/static/img/`
+  - Suche (z.B. `router`, `camera`, `grafana`) und Vorschau auf dem Dashboard-Hintergrund
+  - **✓** markiert Icons, die bereits im Dashboard verwendet werden – neue API `/api/icons`
+- **Änderungen werden automatisch gespeichert:** Der Speichern-Button ist weg
+  - Statusanzeige „Speichert…" / „✓ Gespeichert" / „⚠ Nicht gespeichert" mit **Erneut versuchen**
+  - Gespeichert wird bei Feldern, Aktiv-Schalter, Sortieren, Hinzufügen, Löschen und Icon-Auswahl
+  - Warnung beim Verlassen der Seite, solange Änderungen offen sind
+- **Quick Add für Docker-Container:** Jede Container-Karte hat einen **„+ Dashboard"**-Button
+  - legt den Service mit Icon-Vorschlag, Host-Port und aktiv als Verknüpfung an und springt zum neuen Eintrag
+  - bereits vorhandene Dienste zeigen **„✓ Dashboard"** und springen zum vorhandenen Eintrag
+- **Icons für alle Docker-Templates:** Jedes Template hat jetzt ein passendes 128x128-Icon – u.a. Home Assistant, ESPHome, Music Assistant, Zigbee2MQTT, Ollama, Open WebUI, n8n, Mealie, FreshRSS, Ghostfolio, go2rtc, LiteLLM, Matchering – dazu generische Icons für Router, Kamera, NAS, Drucker, Sensoren, Steckdosen, Licht, WLAN-Access-Points und mehr
+- **Neue Docker-Templates:** `searxng` (Meta-Suchmaschine) und `rsshub` (RSS-Feeds für fast jede Website)
+- **Dokumentation:** Die Dashboard-Seite (DE + EN) wurde um Icon-Picker, Auto-Speichern und Quick Add erweitert
+
+!!!tip "Update"
+    Nach einem manuellen Update den Supervisor einmal neu starten, damit die neue Icon-API aktiv ist: `sudo systemctl restart ei23.service`
+
 ### v1.20
 #### Was gibt es Neues? Dokumentations-Update 🎉
 - **Komplett überarbeitete Dokumentation** (DE + EN) - Alle Seiten auf dem neuesten Stand
