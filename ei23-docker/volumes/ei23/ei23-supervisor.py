@@ -34,12 +34,14 @@ import asyncio
 import configparser
 import json
 import os
+import re
 import shutil
 import socket
 import subprocess
 import threading
 import time
 from datetime import datetime
+from html import escape as html_escape
 from urllib.parse import urlparse
 from typing import Union
 
@@ -379,6 +381,71 @@ def create_items() -> str:
 
 
 # ---------------------------------------------------------------------------
+# Dashboard icons / quick add
+# ---------------------------------------------------------------------------
+
+IMG_DIR = os.path.join(SUPERVISOR_DIR, "web", "static", "img")
+ICON_EXTENSIONS = (".png", ".svg", ".jpg", ".jpeg", ".webp", ".gif")
+FALLBACK_ICON = "img/app.png"
+
+
+def get_icon_file_names() -> list:
+    """Return all icon file names available in web/static/img."""
+    try:
+        return sorted(
+            f
+            for f in os.listdir(IMG_DIR)
+            if f.lower().endswith(ICON_EXTENSIONS) and os.path.isfile(os.path.join(IMG_DIR, f))
+        )
+    except Exception:
+        return []
+
+
+def _icon_key(name: str) -> str:
+    """Lowercase name without separators: 'music-assistant' -> 'musicassistant'."""
+    return re.sub(r"[^a-z0-9]", "", os.path.splitext(name)[0].lower())
+
+
+def find_icon_for_service(service_name: str, icons: list = None) -> str:
+    """Best-effort icon path (as used in programs.json) for a compose service name.
+
+    Tries an exact normalized match first, then a unique prefix match in either
+    direction, and falls back to the generic app icon.
+    """
+    icons = get_icon_file_names() if icons is None else icons
+    if not icons:
+        return FALLBACK_ICON
+
+    by_key = {}
+    for icon in icons:
+        by_key.setdefault(_icon_key(icon), icon)
+
+    needle = re.sub(r"[^a-z0-9]", "", service_name.lower())
+    if needle in by_key:
+        return f"img/{by_key[needle]}"
+
+    if len(needle) >= 4:
+        hits = {
+            icon
+            for key, icon in by_key.items()
+            if min(len(key), len(needle)) >= 4 and (key.startswith(needle) or needle.startswith(key))
+        }
+        if len(hits) == 1:
+            return f"img/{hits.pop()}"
+
+    return FALLBACK_ICON
+
+
+def get_dashboard_program_names() -> set:
+    """Lowercased names of the programs currently configured in programs.json."""
+    try:
+        with open(PROGRAMS_JSON, "r") as f:
+            return {str(p.get("name", "")).strip().lower() for p in json.load(f).get("programs", [])}
+    except Exception:
+        return set()
+
+
+# ---------------------------------------------------------------------------
 # HTML Page Routes
 # ---------------------------------------------------------------------------
 
@@ -415,6 +482,8 @@ def server():
     # Build deduplicated container cards from docker-compose services
     container_cards = ""
     seen: set[str] = set()
+    icons = get_icon_file_names()
+    on_dashboard = get_dashboard_program_names()
 
     for pi in sorted(programs, key=lambda x: x.name):
         if pi.name in seen:
@@ -448,6 +517,20 @@ def server():
             link = ""
 
         status_html = f'<span class="container-status {status_cls}">{status_txt}</span>'
+
+        # Quick add: place this compose service on the dashboard with one click
+        service_attr = html_escape(pi.name, quote=True)
+        host_port = html_escape(pi.ports[0] if pi.ports else "", quote=True)
+        icon = find_icon_for_service(pi.name, icons)
+        is_added = pi.name.strip().lower() in on_dashboard
+        quick_add = (
+            f'<button type="button" class="quick-add-btn{" added" if is_added else ""}" '
+            f'data-service="{service_attr}" data-port="{host_port}" data-icon="{icon}" '
+            f'onclick="quickAddService(this)" '
+            f'title="{"Zum Eintrag springen" if is_added else "Als Verknüpfung zum Dashboard hinzufügen"}">'
+            f'{"✓ Dashboard" if is_added else "+ Dashboard"}</button>'
+        )
+
         container_cards += f'''
             <div class="col-md-3 col-6">
                 <div class="card" style="background:rgba(0,0,0,0.4);border:1px solid #555;">
@@ -457,6 +540,7 @@ def server():
                             <small style="color:#999;">{port_label}</small><br>
                             {status_html}
                         </a>
+                        {quick_add}
                     </div>
                 </div>
             </div>'''
@@ -787,6 +871,44 @@ def api_save_programs():
         return jsonify({"success": True})
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
+
+
+@app.route("/api/icons")
+def api_icons():
+    """List every dashboard icon available in web/static/img.
+
+    Paths are returned the way they are referenced in programs.json
+    (e.g. "img/router.png") so the icon picker in server.html can use them directly.
+    """
+    img_dir = os.path.join(SUPERVISOR_DIR, "web", "static", "img")
+    allowed = (".png", ".svg", ".jpg", ".jpeg", ".webp", ".gif")
+    try:
+        paths = sorted(
+            f"img/{f}"
+            for f in os.listdir(img_dir)
+            if f.lower().endswith(allowed) and os.path.isfile(os.path.join(img_dir, f))
+        )
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+    # How often is each icon currently used in the dashboard?
+    used: dict = {}
+    try:
+        with open(PROGRAMS_JSON, "r") as f:
+            for program in json.load(f).get("programs", []):
+                img = str(program.get("img", "")).lstrip("/")
+                if img:
+                    used[img] = used.get(img, 0) + 1
+    except Exception:
+        pass
+
+    return jsonify(
+        {
+            "success": True,
+            "count": len(paths),
+            "icons": [{"path": p, "name": os.path.basename(p), "used": used.get(p, 0)} for p in paths],
+        }
+    )
 
 
 @app.route("/api/programs/fill-from-templates", methods=["POST"])

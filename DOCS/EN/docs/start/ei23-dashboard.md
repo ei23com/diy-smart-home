@@ -81,9 +81,6 @@ Click **"Scan Containers"** to update the status.
 
 ### Add Docker Programs
 
-!!!tip "New Feature"
-    Programs can now be added directly from the dashboard!
-
 The template panel is collapsible (click on the heading):
 
 1. Expand the panel
@@ -95,9 +92,18 @@ The template panel is collapsible (click on the heading):
 !!!warning "Note"
     Duplicates and port conflicts can cause errors. Check the docker-compose.yml manually if needed.
 
+#### Quick Add: put a container on the dashboard
+
+Every container card has a **"+ Dashboard"** button. One click creates the link with a sensible icon suggestion (`img/[service-name].png`, otherwise the generic `img/app.png`), the first host port and **active** state – the page then jumps to the new entry, where you can still adjust title, icon and port.
+
+If the service is already on the dashboard, the button shows **"✓ Dashboard"** and jumps to the existing entry when clicked.
+
 ### Edit Dashboard Links
 
 The program editor offers full control over the dashboard:
+
+!!!tip "Changes are saved automatically"
+    There is no save button anymore: every change (fields, toggles, sorting, adding, deleting, icon selection) is saved automatically after a short delay. On the right of the header you see the status: "Saving…", "✓ Saved" or – if something goes wrong – "⚠ Not saved" with a **Retry** button.
 
 #### Add Programs
 
@@ -106,16 +112,25 @@ The program editor offers full control over the dashboard:
     - **Name*** (required)
     - **Title** (subtitle)
     - **Port** (e.g. 8080)
-    - **Icon** (e.g. `img/nodered.png`)
+    - **Icon** (e.g. `img/nodered.png`) – the button next to it opens the **icon picker**
     - **Custom URL** (optional, overrides port)
     - **Active** (visible in dashboard)
-3. Click **"Add"**
-4. Don't forget to **"Save"**!
+3. Click **"Add"** – it is saved automatically
+
+#### Icon Picker
+
+Next to every icon field (in the "+ New" dialog and in each program card, where you can also click the icon preview) the image button opens an overview of **all** icons from `web/static/img/`. There you can:
+
+- scroll the list or **search** at the top (e.g. `router`, `camera`, `grafana`)
+- apply an icon with one click – a **✓** marks icons that are already used in the dashboard
+- still fill in the icon field **manually**, e.g. for an external URL or your own image
+
+The preview in the picker shows the icons on the dashboard background so that white symbols stay visible.
 
 #### Edit Programs
 
 - **Active/Inactive**: Toggle switch
-- **Fields**: Edit directly in the form
+- **Fields**: Edit directly in the form (saved automatically)
 - **Sort**: Drag & Drop with ⋮⋮ handle
 - **Delete**: ✕ button (with confirmation)
 

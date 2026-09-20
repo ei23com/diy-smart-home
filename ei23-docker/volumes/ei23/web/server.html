@@ -141,6 +141,49 @@
         .badge-success { background: #198754; color: #fff; }
         .badge-error { background: #dc3545; color: #fff; }
         @keyframes pulse-badge { 0%,100% { opacity:1; } 50% { opacity:0.5; } }
+
+        /* Icon Picker */
+        .icon-picker-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(86px, 1fr));
+            gap: 8px; max-height: 55vh; overflow-y: auto; padding: 2px;
+        }
+        .icon-tile {
+            background: #f1f3f5; border: 1px solid #ced4da; border-radius: 8px;
+            padding: 6px 4px 4px; cursor: pointer; text-align: center;
+            font-size: 0.68rem; color: #495057; line-height: 1.15; overflow: hidden;
+        }
+        .icon-tile:hover { border-color: #0dcaf0; background: #e1f5fb; }
+        .icon-tile.selected { border-color: #0aa2c0; background: #d3f1f8; box-shadow: 0 0 0 2px rgba(13,202,240,0.35); }
+        /* Vorschau auf dem Dashboard-Hintergrund, damit weiße Icons sichtbar sind */
+        .icon-tile img {
+            width: 44px; height: 44px; object-fit: contain; display: block;
+            margin: 0 auto 4px; background: #424242; border-radius: 6px; padding: 3px;
+        }
+        .icon-tile .nm { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .icon-tile .used { color: #0aa2c0; font-weight: bold; }
+        .icon-picker-hint { font-size: 0.75rem; color: #6c757d; }
+        /* Icon-Vorschau im hellen Modal ebenfalls auf dunklem Grund */
+        #new_img_preview { background-color: #424242; }
+
+        /* Automatisches Speichern */
+        .save-status { font-size: 0.75rem; color: #999; display: inline-flex; align-items: center; gap: 6px; min-height: 28px; }
+        .save-status.saved { color: #4cd07d; }
+        .save-status.error { color: #ff6b6b; }
+        .save-status.invalid { color: #ffc107; }
+
+        /* Quick Add in den Docker-Container-Karten */
+        .quick-add-btn {
+            margin-top: 6px; background: transparent; border: 1px solid #0dcaf0; color: #0dcaf0;
+            border-radius: 6px; padding: 1px 8px; font-size: 0.72rem; line-height: 1.5;
+        }
+        .quick-add-btn:hover { background: #0dcaf0; color: #000; }
+        .quick-add-btn.added { border-color: #198754; color: #4cd07d; }
+        .quick-add-btn.added:hover { background: #198754; color: #fff; }
+        .program-card.flash { animation: flash-card 1.8s ease-out; }
+        @keyframes flash-card {
+            0%, 30% { border-color: #0dcaf0; box-shadow: 0 0 14px rgba(13,202,240,0.7); }
+            100% { border-color: #555; box-shadow: none; }
+        }
     </style>
 </head>
 
@@ -269,14 +312,14 @@
                     <div class="action-buttons">
                         <button class="btn btn-outline-secondary btn-sm" onclick="fillFromTemplates()" title="Fehlende Programme aus Vorlagen hinzufügen">Vorlagen</button>
                         <button class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#addProgramModal">+ Neu</button>
-                        <button class="btn btn-success btn-sm" onclick="savePrograms()">Speichern</button>
+                        <span class="save-status" id="save-status"></span>
                     </div>
                 </div>
 
                 <div id="programs-container"></div>
 
                 <div class="mb-5 mt-2">
-                    <small class="text-white-50">⋮⋮ Sortieren · Schalter = Aktiv · Felder bearbeiten · "Speichern"</small>
+                    <small class="text-white-50">⋮⋮ Sortieren · Schalter = Aktiv · Felder bearbeiten – Änderungen werden automatisch gespeichert</small>
                 </div>
 
             </div>
@@ -298,7 +341,16 @@
                         <div class="mb-3"><label class="form-label">Titel</label><input type="text" class="form-control" id="new_title" placeholder="z.B. Hausautomation"></div>
                         <div class="row">
                             <div class="col-6 mb-3"><label class="form-label">Port</label><input type="text" class="form-control" id="new_port" placeholder="8080"></div>
-                            <div class="col-6 mb-3"><label class="form-label">Icon</label><input type="text" class="form-control" id="new_img" placeholder="img/app.png"></div>
+                            <div class="col-6 mb-3">
+                                <label class="form-label">Icon</label>
+                                <div class="d-flex gap-1 align-items-center">
+                                    <input type="text" class="form-control" id="new_img" placeholder="img/app.png" oninput="updateNewIconPreview()">
+                                    <button type="button" class="btn btn-outline-info btn-sm" onclick="openIconPicker({kind:'new'})" title="Icon aus Liste wählen">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" viewBox="0 0 16 16"><path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/><path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z"/></svg>
+                                    </button>
+                                    <img id="new_img_preview" src="static/img/app.png" class="program-img-preview" alt="" style="visibility:hidden;" onerror="this.style.visibility='hidden'">
+                                </div>
+                            </div>
                         </div>
                         <div class="mb-3"><label class="form-label">Eigene URL</label><input type="text" class="form-control" id="new_custom_url" placeholder="http://..."></div>
                         <div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="new_active" checked><label class="form-check-label">Aktiv</label></div>
@@ -307,6 +359,32 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
                     <button type="button" class="btn btn-info" onclick="addProgram()">Hinzufügen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Icon Picker -->
+    <div class="modal fade" id="iconPickerModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Icon wählen <span class="icon-picker-hint" id="iconPickerCount"></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">🔍</span>
+                        <input type="text" class="form-control" id="iconPickerSearch" placeholder="Suchen… z.B. router, camera, grafana" autocomplete="off" oninput="renderIconGrid(this.value)">
+                        <button class="btn btn-outline-secondary" type="button" onclick="document.getElementById('iconPickerSearch').value='';renderIconGrid('')">×</button>
+                    </div>
+                    <div class="icon-picker-grid" id="iconPickerGrid"></div>
+                    <div class="icon-picker-hint mt-2" id="iconPickerEmpty" style="display:none;">Keine Icons gefunden.</div>
+                    <div class="icon-picker-hint mt-2">✓ = Icon wird bereits im Dashboard verwendet · Vorschau jeweils auf dem Dashboard-Hintergrund</div>
+                </div>
+                <div class="modal-footer">
+                    <span class="me-auto icon-picker-hint" id="iconPickerCurrent"></span>
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Abbrechen</button>
                 </div>
             </div>
         </div>
@@ -330,7 +408,7 @@
         function loadPrograms() {
             fetch('/api/programs')
                 .then(r => r.json())
-                .then(data => { programs = data.programs; renderPrograms(); })
+                .then(data => { programs = data.programs; renderPrograms(); setSaveStatus('idle'); })
                 .catch(err => showToast('Fehler', 'Konnte Programme nicht laden', 'error'));
         }
 
@@ -348,14 +426,22 @@
                         <div class="form-check form-switch m-0">
                             <input class="form-check-input switch-active" type="checkbox" ${p.active?'checked':''} onchange="toggleActive(${i})">
                         </div>
-                        <img src="static/${esc(p.img)}" class="program-img-preview" onerror="this.src='static/img/docs.png'">
+                        <img src="static/${esc(p.img)}" class="program-img-preview" style="cursor:pointer;" title="Icon wählen" onclick="openIconPicker({kind:'prog',index:${i}})" onerror="this.src='static/img/docs.png'">
                         <div style="flex:1; min-width:0;">
                             <div class="row g-1">
-                                <div class="col-md-2 col-6"><label class="form-label">Name</label><input class="form-control" value="${esc(p.name)}" onchange="upd(${i},'name',this.value)"></div>
-                                <div class="col-md-2 col-6"><label class="form-label">Titel</label><input class="form-control" value="${esc(p.title)}" onchange="upd(${i},'title',this.value)"></div>
-                                <div class="col-md-1 col-4"><label class="form-label">Port</label><input class="form-control" value="${esc(p.port)}" onchange="upd(${i},'port',this.value)"></div>
-                                <div class="col-md-2 col-8"><label class="form-label">Eigene URL</label><input class="form-control" value="${esc(p.custom_url||'')}" onchange="upd(${i},'custom_url',this.value)"></div>
-                                <div class="col-md-2 col-6"><label class="form-label">Icon</label><input class="form-control" value="${esc(p.img)}" onchange="upd(${i},'img',this.value);renderPrograms()"></div>
+                                <div class="col-md-2 col-6"><label class="form-label">Name</label><input class="form-control" value="${esc(p.name)}" oninput="upd(${i},'name',this.value)"></div>
+                                <div class="col-md-2 col-6"><label class="form-label">Titel</label><input class="form-control" value="${esc(p.title)}" oninput="upd(${i},'title',this.value)"></div>
+                                <div class="col-md-1 col-4"><label class="form-label">Port</label><input class="form-control" value="${esc(p.port)}" oninput="upd(${i},'port',this.value)"></div>
+                                <div class="col-md-2 col-8"><label class="form-label">Eigene URL</label><input class="form-control" value="${esc(p.custom_url||'')}" oninput="upd(${i},'custom_url',this.value)"></div>
+                                <div class="col-md-2 col-6">
+                                    <label class="form-label">Icon</label>
+                                    <div class="d-flex gap-1">
+                                        <input class="form-control" value="${esc(p.img)}" onchange="upd(${i},'img',this.value);renderPrograms();scheduleSave()">
+                                        <button type="button" class="btn btn-outline-info btn-sm" onclick="openIconPicker({kind:'prog',index:${i}})" title="Icon aus Liste wählen">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" viewBox="0 0 16 16"><path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/><path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z"/></svg>
+                                        </button>
+                                    </div>
+                                </div>
                                 <div class="col-md-1 col-2 d-flex align-items-end"><button class="btn btn-outline-danger btn-sm" onclick="delProg(${i})" title="Löschen">✕</button></div>
                             </div>
                         </div>
@@ -371,22 +457,25 @@
                         const item = programs.splice(from,1)[0];
                         programs.splice(to,0,item);
                         renderPrograms();
+                        scheduleSave();
                     }
                 });
                 c.appendChild(card);
             });
+            updateQuickAddButtons();
         }
 
-        function upd(i, f, v) { programs[i][f] = v; }
-        function toggleActive(i) { programs[i].active = !programs[i].active; renderPrograms(); }
+        function upd(i, f, v) { programs[i][f] = v; scheduleSave(); }
+        function toggleActive(i) { programs[i].active = !programs[i].active; renderPrograms(); scheduleSave(); }
         function delProg(i) {
             const p = programs[i];
             const warn = p.active
-                ? `"${p.name}" löschen?\n\n⚠️ Dieses Programm ist AKTIV und wird nach dem Speichern aus dem Dashboard entfernt.`
+                ? `"${p.name}" löschen?\n\n⚠️ Dieses Programm ist AKTIV und wird aus dem Dashboard entfernt.`
                 : `"${p.name}" löschen?`;
             if(confirm(warn)) {
                 programs.splice(i,1);
                 renderPrograms();
+                scheduleSave();
             }
         }
 
@@ -405,10 +494,62 @@
             bootstrap.Modal.getInstance(document.getElementById('addProgramModal')).hide();
             document.getElementById('addProgramForm').reset();
             document.getElementById('new_active').checked = true;
-            showToast('Hinzugefügt', name + ' – vergiss nicht zu speichern!', 'success');
+            updateNewIconPreview();
+            scheduleSave(0);
+            showToast('Hinzugefügt', name + ' wurde zum Dashboard hinzugefügt.', 'success');
+        }
+
+        // ===== Automatisches Speichern =====
+        let saveTimer = null;
+        let saveInFlight = false;
+        let saveAgain = false;
+        let saveFailed = false;
+        let saveBlocked = null;   // 'Name'/'Icon', solange ein Pflichtfeld leer ist
+
+        function setSaveStatus(state, info) {
+            const el = document.getElementById('save-status');
+            if (!el) return;
+            el.className = 'save-status' + (state === 'saved' ? ' saved' : state === 'error' ? ' error' : state === 'invalid' ? ' invalid' : '');
+            if (state === 'pending') {
+                el.innerHTML = '<span class="spinner"></span> Speichert…';
+            } else if (state === 'saved') {
+                el.innerHTML = '✓ Gespeichert ' + new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+            } else if (state === 'invalid') {
+                el.innerHTML = '⚠ ' + info + ' fehlt – wird gespeichert, sobald ausgefüllt';
+            } else if (state === 'error') {
+                el.innerHTML = '⚠ Nicht gespeichert <button class="btn btn-outline-danger btn-sm py-0 ms-1" onclick="savePrograms()">Erneut versuchen</button>';
+            } else {
+                el.innerHTML = 'Änderungen werden automatisch gespeichert';
+            }
+        }
+
+        // Kurz warten, damit beim Tippen nicht jeder Tastendruck einen Request auslöst
+        function scheduleSave(delay) {
+            setSaveStatus('pending');
+            clearTimeout(saveTimer);
+            saveTimer = setTimeout(savePrograms, delay === undefined ? 700 : delay);
+        }
+
+        // Pflichtfelder prüfen: ein gerade geleertes Feld ist kein Fehler, sondern unfertig
+        function missingRequiredField() {
+            if (programs.some(p => !String(p.name || '').trim())) return 'Name';
+            if (programs.some(p => !String(p.img || '').trim())) return 'Icon';
+            return null;
         }
 
         function savePrograms() {
+            clearTimeout(saveTimer);
+            saveTimer = null;
+            const missing = missingRequiredField();
+            if (missing) {
+                saveBlocked = missing;
+                setSaveStatus('invalid', missing);
+                return;
+            }
+            if (saveInFlight) { saveAgain = true; return; }
+            saveInFlight = true;
+            saveFailed = false;
+            setSaveStatus('pending');
             fetch('/api/programs', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -416,10 +557,171 @@
             })
             .then(r => r.json())
             .then(data => {
-                if(data.success) showToast('Gespeichert', 'Programme wurden gespeichert!', 'success');
-                else showToast('Fehler', data.error || 'Unbekannt', 'error');
+                saveInFlight = false;
+                if (data.success) {
+                    saveBlocked = null;
+                    setSaveStatus('saved');
+                    if (saveAgain) { saveAgain = false; savePrograms(); }
+                } else {
+                    saveFailed = true;
+                    setSaveStatus('error');
+                    showToast('Nicht gespeichert', data.error || 'Unbekannter Fehler', 'error');
+                }
             })
-            .catch(err => showToast('Fehler', String(err), 'error'));
+            .catch(err => {
+                saveInFlight = false;
+                saveFailed = true;
+                setSaveStatus('error');
+                showToast('Nicht gespeichert', String(err), 'error');
+            });
+        }
+
+        // Beim Verlassen warnen, wenn noch etwas offen oder fehlgeschlagen ist
+        window.addEventListener('beforeunload', (e) => {
+            if (saveTimer || saveInFlight || saveFailed || saveBlocked) {
+                e.preventDefault();
+                e.returnValue = '';
+                return '';
+            }
+        });
+
+        // ===== Quick Add: Docker-Service aufs Dashboard =====
+        function quickAddService(btn) {
+            const name = btn.dataset.service;
+            const existing = programs.findIndex(p => (p.name || '').trim().toLowerCase() === name.trim().toLowerCase());
+            if (existing >= 0) {
+                jumpToProgram(existing);
+                showToast('Bereits vorhanden', name + ' ist schon auf dem Dashboard.', 'success');
+                return;
+            }
+            programs.push({
+                active: true,
+                name: name,
+                title: '',
+                port: btn.dataset.port || '',
+                custom_url: '',
+                img: btn.dataset.icon || 'img/app.png'
+            });
+            renderPrograms();
+            scheduleSave(0);
+            jumpToProgram(programs.length - 1);
+            showToast('Zum Dashboard hinzugefügt', name + ' – Icon, Titel und Aktiv-Status kannst du unten anpassen.', 'success');
+        }
+
+        function jumpToProgram(i) {
+            const card = document.querySelector('.program-card[data-index="' + i + '"]');
+            if (!card) return;
+            card.scrollIntoView({behavior:'smooth', block:'center'});
+            card.classList.add('flash');
+            setTimeout(() => card.classList.remove('flash'), 1800);
+        }
+
+        // "+ Dashboard" / "✓ Dashboard" an den Container-Karten aktualisieren
+        function updateQuickAddButtons() {
+            document.querySelectorAll('.quick-add-btn').forEach(btn => {
+                const name = (btn.dataset.service || '').trim().toLowerCase();
+                const exists = programs.some(p => (p.name || '').trim().toLowerCase() === name);
+                btn.classList.toggle('added', exists);
+                btn.textContent = exists ? '✓ Dashboard' : '+ Dashboard';
+                btn.title = exists ? 'Bereits auf dem Dashboard – zum Eintrag springen' : 'Als Verknüpfung zum Dashboard hinzufügen';
+            });
+        }
+
+        // ===== Icon Picker =====
+        let availableIcons = null;   // null = noch nicht geladen
+        let iconPickerTarget = null; // {kind:'new'} oder {kind:'prog', index:n}
+
+        // Escaping für Namen/Pfade aus dem Dateisystem
+        const pkEsc = (s) => String(s).replace(/[&<>"']/g, (ch) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+
+        function loadIcons(force) {
+            if (availableIcons && !force) return Promise.resolve(availableIcons);
+            return fetch('/api/icons')
+                .then(r => r.json())
+                .then(data => {
+                    availableIcons = (data.icons || []).slice().sort((a,b) => a.name.localeCompare(b.name));
+                    return availableIcons;
+                })
+                .catch(() => { availableIcons = []; return availableIcons; });
+        }
+
+        function openIconPicker(target) {
+            iconPickerTarget = target;
+            const addModalEl = document.getElementById('addProgramModal');
+            const start = () => {
+                loadIcons().then(() => {
+                    document.getElementById('iconPickerSearch').value = '';
+                    renderIconGrid('');
+                    const pickerEl = document.getElementById('iconPickerModal');
+                    // Wird der Picker ohne Auswahl geschlossen, zurück zum "Neues Programm"-Dialog
+                    pickerEl.addEventListener('hidden.bs.modal', () => {
+                        const wasNew = iconPickerTarget && iconPickerTarget.kind === 'new';
+                        iconPickerTarget = null;
+                        if (wasNew) bootstrap.Modal.getOrCreateInstance(addModalEl).show();
+                    }, {once:true});
+                    bootstrap.Modal.getOrCreateInstance(pickerEl).show();
+                    setTimeout(() => document.getElementById('iconPickerSearch').focus(), 300);
+                });
+            };
+            // Das "Neues Programm"-Modal schließen, damit sich die Modals nicht überlagern
+            if (target && target.kind === 'new' && addModalEl.classList.contains('show')) {
+                addModalEl.addEventListener('hidden.bs.modal', start, {once:true});
+                bootstrap.Modal.getInstance(addModalEl).hide();
+            } else {
+                start();
+            }
+        }
+
+        function pickerValue() {
+            if (!iconPickerTarget) return '';
+            if (iconPickerTarget.kind === 'new') return document.getElementById('new_img').value.trim();
+            const p = programs[iconPickerTarget.index];
+            return p ? (p.img || '').trim() : '';
+        }
+
+        function renderIconGrid(filter) {
+            const grid = document.getElementById('iconPickerGrid');
+            const icons = availableIcons || [];
+            const current = pickerValue();
+            const f = (filter || '').trim().toLowerCase();
+            const hits = f ? icons.filter(ic => ic.path.toLowerCase().includes(f)) : icons;
+
+            document.getElementById('iconPickerCount').textContent = `(${icons.length} verfügbar)`;
+            document.getElementById('iconPickerCurrent').textContent = current ? 'Aktuell: ' + current : 'Kein Icon gesetzt';
+            document.getElementById('iconPickerEmpty').style.display = hits.length ? 'none' : 'block';
+
+            grid.innerHTML = hits.map(ic => {
+                const path = pkEsc(ic.path);
+                return `
+                <div class="icon-tile${ic.path === current ? ' selected' : ''}" data-path="${path}" onclick="pickIcon(this.dataset.path)" title="${path}${ic.used ? ' – wird verwendet' : ''}">
+                    <img src="static/${path}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">
+                    <span class="nm">${pkEsc(ic.name.replace(/\.(png|svg|jpe?g|webp|gif)$/i,''))}${ic.used ? ' <span class="used">✓</span>' : ''}</span>
+                </div>`;
+            }).join('');
+        }
+
+        function pickIcon(path) {
+            const target = iconPickerTarget;
+            iconPickerTarget = null;   // vor dem Schließen leeren: kein Rücksprung zum Neu-Dialog
+            if (target && target.kind === 'new') {
+                const input = document.getElementById('new_img');
+                input.value = path;
+                updateNewIconPreview();
+            } else if (target && target.kind === 'prog') {
+                const p = programs[target.index];
+                if (p) { p.img = path; renderPrograms(); scheduleSave(); }
+            }
+            const pickerEl = document.getElementById('iconPickerModal');
+            const inst = bootstrap.Modal.getInstance(pickerEl);
+            if (inst) inst.hide();
+        }
+
+        function updateNewIconPreview() {
+            const value = document.getElementById('new_img').value.trim();
+            const img = document.getElementById('new_img_preview');
+            if (!value) { img.style.visibility = 'hidden'; return; }
+            img.style.visibility = 'visible';
+            img.src = 'static/' + value.replace(/^\/?(static\/)?/, '');
         }
 
         // ===== Ressourcen Echtzeitanzeige =====

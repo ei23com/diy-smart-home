@@ -81,9 +81,6 @@ Klicke auf **"Container scannen"** um den Status zu aktualisieren.
 
 ### Docker Programme hinzufügen
 
-!!!tip "Neues Feature"
-    Programme können jetzt direkt über das Dashboard hinzugefügt werden!
-
 Das Template-Panel ist einklappbar (klicke auf die Überschrift):
 
 1. Klappe das Panel auf
@@ -95,9 +92,18 @@ Das Template-Panel ist einklappbar (klicke auf die Überschrift):
 !!!warning "Hinweis"
     Duplikate und Port-Konflikte können zu Fehlern führen. Überprüfe die docker-compose.yml bei Bedarf manuell.
 
+#### Quick Add: Container direkt aufs Dashboard
+
+Jede Container-Karte hat einen **"+ Dashboard"**-Button. Ein Klick legt den Service mit einem sinnvollen Icon-Vorschlag (`img/[servicename].png`, sonst das generische `img/app.png`), dem ersten Host-Port und **aktiv** als Verknüpfung an – die Seite springt danach zum neuen Eintrag, wo du Titel, Icon und Port noch anpassen kannst.
+
+Ist der Service schon auf dem Dashboard, zeigt der Button **"✓ Dashboard"** und springt beim Klick zum vorhandenen Eintrag.
+
 ### Dashboard-Verknüpfungen bearbeiten
 
 Der Programme-Editor bietet volle Kontrolle über das Dashboard:
+
+!!!tip "Änderungen werden automatisch gespeichert"
+    Es gibt keinen Speichern-Button mehr: Jede Änderung (Felder, Schalter, Sortieren, Hinzufügen, Löschen, Icon-Auswahl) wird kurz verzögert automatisch gespeichert. Rechts in der Kopfzeile siehst du den Status: „Speichert…", „✓ Gespeichert" oder – falls etwas schiefgeht – „⚠ Nicht gespeichert" mit einem **Erneut versuchen**-Button.
 
 #### Programme hinzufügen
 
@@ -106,16 +112,25 @@ Der Programme-Editor bietet volle Kontrolle über das Dashboard:
     - **Name*** (Pflichtfeld)
     - **Titel** (Untertitel)
     - **Port** (z.B. 8080)
-    - **Icon** (z.B. `img/nodered.png`)
+    - **Icon** (z.B. `img/nodered.png`) – über den Button daneben öffnet sich der **Icon-Picker**
     - **Eigene URL** (optional, überschreibt Port)
     - **Aktiv** (Sichtbar im Dashboard)
-3. Klicke auf **"Hinzufügen"**
-4. **"Speichern"** nicht vergessen!
+3. Klicke auf **"Hinzufügen"** – gespeichert wird automatisch
+
+#### Icon-Picker
+
+Neben jedem Icon-Feld (im "+ Neu"-Dialog und in jeder Programm-Karte, dort auch per Klick auf die Icon-Vorschau) öffnet der Bild-Button eine Übersicht **aller** Icons aus `web/static/img/`. Dort kannst du:
+
+- durch die Liste scrollen oder oben **suchen** (z.B. `router`, `camera`, `grafana`)
+- das Icon mit einem Klick übernehmen – ein **✓** markiert Icons, die bereits im Dashboard verwendet werden
+- das Icon-Feld weiterhin **manuell** ausfüllen, z.B. für eine externe URL oder ein eigenes Bild
+
+Die Vorschau in der Auswahl zeigt die Icons auf dem Dashboard-Hintergrund, damit auch weiße Symbole gut sichtbar sind.
 
 #### Programme bearbeiten
 
 - **Aktiv/Inaktiv**: Schalter umschalten
-- **Felder**: Direkt im Formular bearbeiten
+- **Felder**: Direkt im Formular bearbeiten (wird automatisch gespeichert)
 - **Sortieren**: Drag & Drop mit ⋮⋮ Handle
 - **Löschen**: ✕ Button (mit Bestätigung)
 
