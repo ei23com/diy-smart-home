@@ -1,0 +1,13 @@
+  # Note: the perplexica template already ships its own searxng service (port 4000).
+  # Use only one of them, both share the container name "searxng".
+  searxng: # Privacy friendly meta search engine - bundles results from Google, Bing, Wikipedia & more
+    image: docker.io/searxng/searxng:latest
+    container_name: searxng
+    restart: unless-stopped
+    ports:
+      - 4002:8080 # change 4002 to your needs
+    volumes:
+      - ./volumes/searxng:/etc/searxng:rw
+    environment:
+      - TZ=Europe/Berlin # CHANGE TO YOUR TIMEZONE
+      # - SEARXNG_BASE_URL=http://10.1.1.10:4002/ # only needed behind a reverse proxy or for the browser search plugin

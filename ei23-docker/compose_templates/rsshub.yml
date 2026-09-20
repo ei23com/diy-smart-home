@@ -1,0 +1,10 @@
+  rsshub: # RSS feeds for almost every website that does not offer one itself
+    image: diygod/rsshub:latest
+    container_name: rsshub
+    restart: unless-stopped
+    ports:
+      - 8202:1200 # change 8202 to your needs
+    environment:
+      - NODE_ENV=production
+      - CACHE_TYPE=memory
+      - TZ=Europe/Berlin # CHANGE TO YOUR TIMEZONE
