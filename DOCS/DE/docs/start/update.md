@@ -16,6 +16,7 @@
 - **Icons für alle Docker-Templates:** Jedes Template hat jetzt ein passendes 128x128-Icon – u.a. Home Assistant, ESPHome, Music Assistant, Zigbee2MQTT, Ollama, Open WebUI, n8n, Mealie, FreshRSS, Ghostfolio, go2rtc, LiteLLM, Matchering – dazu generische Icons für Router, Kamera, NAS, Drucker, Sensoren, Steckdosen, Licht, WLAN-Access-Points und mehr
 - **Neue Docker-Templates:** `searxng` (Meta-Suchmaschine) und `rsshub` (RSS-Feeds für fast jede Website)
 - **Dokumentation:** Die Dashboard-Seite (DE + EN) wurde um Icon-Picker, Auto-Speichern und Quick Add erweitert
+- **Watchdog-Doku (DE + EN) überarbeitet:** Neue Installations-Skripte für Debian/Intel und Raspberry Pi – inkl. `retry-timeout` (Fehlertoleranz), 5-Minuten-Schonfrist nach dem Boot, Sicherheits-Trockenlauf, `softdog`-Fallback, Start erst nach `ssh.service` und Notfall-Tabelle (`systemctl mask watchdog`)
 
 !!!tip "Update"
     Nach einem manuellen Update den Supervisor einmal neu starten, damit die neue Icon-API aktiv ist: `sudo systemctl restart ei23.service`
