@@ -62,6 +62,7 @@ nav:
     - Uptime Kuma: software/uptimekuma.md
     - Vaultwarden: software/vaultwarden.md
     - VSCode: software/vscode.md
+    - Whisper API Proxy: software/whisper-api-proxy.md
     - WireGuard: software/wireguard.md
   - Hardware:
     - Struktur: hardware/structure.md

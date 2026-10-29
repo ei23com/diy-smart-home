@@ -78,6 +78,12 @@ Das ei23-Skript installiert HACS automatisch. Manuelle Installation:
 | **ApexCharts** | Erweiterte Diagramme |
 | **Auto Entities** | Dynamische Listen |
 
+## Sprachsteuerung mit Assist
+
+Für lokale Sprachbefehle kombinierst du Home Assistant mit einem Speech-to-Text-Dienst. Der [Whisper API Proxy](whisper-api-proxy.md) stellt dafür eine OpenAI-kompatible API bereit, die sich über die HACS-Integration **OpenAI Whisper Cloud** als STT-Engine in die Assist-Pipeline einbinden lässt. Die Transkription läuft auf deinem Server; Cloud-Dienste sind optional.
+
+Die vollständige Anleitung inklusive Einrichtung der Integration steht unter [Whisper API Proxy](whisper-api-proxy.md).
+
 ## Automatisierungen
 
 ### Beispiel: Licht bei Bewegung

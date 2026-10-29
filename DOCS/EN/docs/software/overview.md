@@ -37,6 +37,7 @@ This page gives you an overview of all Docker containers available with the ei23
 | [Ollama](ollama.md) | Local LLMs | 11434 | ✅ |
 | [Open WebUI](open-webui.md) | Chat UI for LLMs | 2280 | ✅ |
 | [LiteLLM](litellm.md) | LLM API proxy | 4000 | ✅ |
+| [Whisper API Proxy](whisper-api-proxy.md) | OpenAI-compatible STT proxy (Assist) | 5431 | ✅ |
 
 ## 📊 Data & Visualization
 

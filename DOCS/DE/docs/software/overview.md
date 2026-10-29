@@ -36,6 +36,7 @@ Diese Seite gibt dir einen Überblick über alle mit dem ei23-Skript verfügbare
 | [llama-swap](llama-swap.md) | Lokale LLMs (llama.cpp) | 9292 | ✅ |
 | [Open WebUI](open-webui.md) | Chat-Oberfläche für LLMs | 2280 | ✅ |
 | [LiteLLM](litellm.md) | LLM-API-Proxy | 4000 | ✅ |
+| [Whisper API Proxy](whisper-api-proxy.md) | OpenAI-kompatibler STT-Proxy (Assist) | 5431 | ✅ |
 
 ## 📊 Daten & Visualisierung
 

@@ -78,6 +78,12 @@ The ei23 script installs HACS automatically. Manual installation:
 | **ApexCharts** | Advanced charts |
 | **Auto Entities** | Dynamic lists |
 
+## Voice control with Assist
+
+For local voice commands, combine Home Assistant with a speech-to-text service. The [Whisper API Proxy](whisper-api-proxy.md) provides an OpenAI-compatible API that can be added to the Assist pipeline as an STT engine via the **OpenAI Whisper Cloud** HACS integration. Transcription runs on your server; cloud services are optional.
+
+The complete guide, including integration setup, is available under [Whisper API Proxy](whisper-api-proxy.md).
+
 ## Automations
 
 ### Example: Light on Motion
