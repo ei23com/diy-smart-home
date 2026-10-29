@@ -1,5 +1,7 @@
   # OpenAI-compatible transcription proxy for Home Assistant Assist.
-  # Create ./volumes/whisper-proxy/config.py from config.example.py before the first start:
+  # On first start the container creates
+  # ./volumes/whisper-proxy/config/config.py from config.example.py.
+  # Adjust API keys/clients there and restart.
   # https://github.com/ei23fxg/WhisperAPIProxy
   whisper-proxy:
     image: ghcr.io/ei23fxg/whisperapiproxy
@@ -10,8 +12,10 @@
     environment:
       NEEDLE_TELEMETRY: "0"
       TZ: Europe/Berlin
+      # Directory mount: the container writes config.py itself on first start.
+      CONFIG_PATH: /app/config/config.py
     volumes:
-      - ./volumes/whisper-proxy/config.py:/app/config.py:ro
+      - ./volumes/whisper-proxy/config:/app/config
       - ./volumes/whisper-proxy/recordings:/app/recordings
       - ./volumes/whisper-proxy/client_logs:/app/client_logs
       - ./volumes/whisper-proxy/proxy_logs:/app/logs

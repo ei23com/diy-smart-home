@@ -18,34 +18,51 @@ Whisper-WebUI (lokal, idealerweise GPU)  →  Parakeet (CPU)  →  Whistle (CPU)
 - **Whistle** – lokale CPU-Engine, nur ca. 17 MB, sehr schnell, 7 Sprachen.
 - **OpenAI** – wird nur genutzt, wenn für den Client `allow_openai = True` gesetzt ist und ein API-Key hinterlegt wurde.
 
+!!!tip "Lokale Sprachsteuerung ohne GPU"
+    Parakeet und Whistle eignen sich hervorragend für die Ausführung auf der CPU und benötigen keine Grafikkarte. Damit ermöglichen sie lokale Sprachsteuerung auch auf einfachen Geräten wie Mini-PCs oder Thin Clients – je nach Hardware dauert die Transkription etwas länger als auf einer GPU.
+
 Die Nutzung wird pro Client in `client_logs/` statistisch erfasst. Auf Wunsch speichert der Proxy die Aufnahmen als Opus-Datei inklusive Transkript.
 
 ## Voraussetzungen
 
-- Der Proxy läuft als Docker-Container und benötigt eine `config.py` mit API-Keys und Clients.
+- Der Proxy läuft als Docker-Container. Eine `config.py` musst du nicht vorbereiten: Fehlt sie, erzeugt der Container beim ersten Start automatisch eine Standardkonfiguration aus `config.example.py`.
 - Optional: eine laufende **Whisper-WebUI** auf Port `7860` (siehe [Projektlink](https://github.com/jhj0517/Whisper-WebUI)). Ohne sie funktioniert der Proxy über die CPU-Engines weiter, nur langsamer.
 - Beim ersten Start lädt der Proxy die lokalen Modelle im Hintergrund (zusammen ca. 660 MB). Mit `warmup_models.py` lässt sich das vorher anstoßen.
 - `ffmpeg` ist bereits im Image enthalten.
 
 ## Installation
 
-### 1. Ordner und Konfiguration anlegen
+### 1. Ordner anlegen
 
 ```bash
 cd ~/ei23-docker
 
-mkdir -p volumes/whisper-proxy/{recordings,client_logs,proxy_logs,models/hf,models/cactus}
-
-curl -fsSL https://raw.githubusercontent.com/ei23fxg/WhisperAPIProxy/master/config.example.py \
-  -o volumes/whisper-proxy/config.py
+mkdir -p volumes/whisper-proxy/{config,recordings,client_logs,proxy_logs,models/hf,models/cactus}
 ```
 
-!!!warning "config.py muss vor dem Start existieren"
-    Der Container bindet `./volumes/whisper-proxy/config.py` read-only ein. Fehlt die Datei, legt Docker an ihrer Stelle ein Verzeichnis an und der Container startet nicht.
+Die `config.py` wird beim ersten Start automatisch in `volumes/whisper-proxy/config/` erzeugt.
 
 ### 2. Template hinzufügen und starten
 
-Füge das Template in deine [docker-compose.yml](/start/docker-compose/) ein und starte den Container mit `ei23 dc` (oder `docker compose up -d`).
+Füge das Template in deine [docker-compose.yml](/start/docker-compose/) ein und starte den Container mit `ei23 dc` (oder `docker compose up -d`). Logs verfolgen mit `docker logs -f whisper-api-proxy`.
+
+!!!warning "Erzeugte Konfiguration anpassen"
+    Die automatisch erzeugte `config.py` enthält Demo-Clients und Platzhalter-Keys. Ändere sie vor dem produktiven Einsatz – mindestens die API-Keys in `api_clients`.
+
+### 3. Konfiguration anpassen
+
+```bash
+sudo nano ~/ei23-docker/volumes/whisper-proxy/config/config.py
+```
+
+Passe `whisper_webui_host`, die `api_clients` und optional den OpenAI-Key an (siehe [Konfiguration](#konfiguration)). Danach den Container neu starten:
+
+```bash
+cd ~/ei23-docker
+docker compose restart whisper-proxy
+```
+
+Alternativ kannst du `ei23 dc` ausführen, das startet alle Container neu.
 
 ## Template
 
@@ -59,8 +76,10 @@ Füge das Template in deine [docker-compose.yml](/start/docker-compose/) ein und
     environment:
       NEEDLE_TELEMETRY: "0"
       TZ: Europe/Berlin
+      # Directory mount: the container writes config.py itself on first start.
+      CONFIG_PATH: /app/config/config.py
     volumes:
-      - ./volumes/whisper-proxy/config.py:/app/config.py:ro
+      - ./volumes/whisper-proxy/config:/app/config
       - ./volumes/whisper-proxy/recordings:/app/recordings
       - ./volumes/whisper-proxy/client_logs:/app/client_logs
       - ./volumes/whisper-proxy/proxy_logs:/app/logs
@@ -70,7 +89,7 @@ Füge das Template in deine [docker-compose.yml](/start/docker-compose/) ein und
 
 ## Konfiguration
 
-Öffne `~/ei23-docker/volumes/whisper-proxy/config.py` und passe die wichtigsten Werte an. Den Rest der Datei – insbesondere `whisper_predict_config` – kannst du zunächst unverändert übernehmen.
+Öffne `~/ei23-docker/volumes/whisper-proxy/config/config.py` (wird beim ersten Start automatisch erzeugt) und passe die wichtigsten Werte an. Den Rest der Datei – insbesondere `whisper_predict_config` – kannst du zunächst unverändert übernehmen.
 
 ```python
 # Adresse der lokalen Whisper-WebUI
@@ -112,15 +131,9 @@ api_clients = {
 !!!note "Sprache"
     Das `language`-Feld der Home-Assistant-Integration wird vom Proxy nicht ausgewertet. Die Sprache stellst du in der Whisper-WebUI bzw. über `whistle_language` in der `config.py` ein. Parakeet erkennt die Sprache automatisch.
 
-## Erster Start
+## Modelle und Test
 
-```bash
-cd ~/ei23-docker
-ei23 dc
-docker logs -f whisper-api-proxy
-```
-
-Die Modelle lassen sich vorab laden, damit die erste Anfrage nicht warten muss:
+Die Modelle werden beim ersten Start im Hintergrund geladen. Du kannst sie vorab laden, damit die erste Anfrage nicht warten muss:
 
 ```bash
 docker exec whisper-api-proxy python warmup_models.py
@@ -217,18 +230,20 @@ Ab jetzt geht jede Sprachaufnahme aus Assist an den Proxy. Die Erkennung läuft 
 
 | Pfad | Inhalt |
 |------|--------|
+| `volumes/whisper-proxy/config/config.py` | Konfiguration mit API-Keys und Clients (wird beim ersten Start erzeugt) |
 | `volumes/whisper-proxy/recordings/` | Aufnahmen als `.opus` und Transkripte als `.txt` (wenn `save_recordings` aktiv) |
 | `volumes/whisper-proxy/client_logs/` | Usage-Statistik je Client |
 | `volumes/whisper-proxy/proxy_logs/error.log` | Fehler-Log des Proxys |
 | `volumes/whisper-proxy/models/hf/` | Parakeet-Modell (~640 MB) |
 | `volumes/whisper-proxy/models/cactus/` | Whistle-Modell (~17 MB) |
 
-Für ein Backup reichen `config.py`, `client_logs/` und optional die Aufnahmen. Die Modelle werden bei Bedarf erneut heruntergeladen.
+Für ein Backup reichen `config/config.py`, `client_logs/` und optional die Aufnahmen. Die Modelle werden bei Bedarf erneut heruntergeladen.
 
 ## Hinweise
 
 - Der Port `5431` ist auf allen Netzwerk-Schnittstellen erreichbar. Beschränke ihn im LAN per Firewall und exponiere ihn nicht ungeschützt ins Internet.
-- Der Container läuft als root; die von ihm erzeugten Dateien in `recordings/` und `client_logs/` gehören danach root. Falls du als normaler Benutzer darauf zugreifen willst: `sudo chown -R $USER:$USER volumes/whisper-proxy/recordings volumes/whisper-proxy/client_logs`.
+- Die automatisch erzeugte `config.py` enthält Demo-Clients und Platzhalter-Keys. Passe sie vor dem produktiven Einsatz an.
+- Der Container läuft als root; die von ihm erzeugten Dateien – auch `config/config.py` – gehören danach root. Bearbeite die Datei mit `sudo` (z. B. `sudo nano ~/ei23-docker/volumes/whisper-proxy/config/config.py`). Alternativ kannst du den Ordner mit `sudo chown -R $USER:$USER volumes/whisper-proxy/config` übernehmen; danach muss der Container ggf. neu gestartet werden.
 - `NEEDLE_TELEMETRY=0` deaktiviert die Telemetrie der Whistle-Engine.
 - Ohne GPU ist der Proxy für Diktat und Assist weiterhin gut nutzbar; die CPU-Engines übernehmen dann automatisch.
 - Der Proxy ist kein Ersatz für die Whisper-WebUI, sondern die einheitliche API davor. Die WebUI kann parallel unter `http://[IP]:7860` weiterlaufen.
@@ -237,10 +252,13 @@ Für ein Backup reichen `config.py`, `client_logs/` und optional die Aufnahmen. 
 
 | Problem | Lösung |
 |---------|--------|
-| `401 Invalid API Key` | Der API-Key in HA muss exakt einem Eintrag in `api_clients` entsprechen. |
+| `401 Invalid API Key` | Der API-Key in HA muss exakt einem Eintrag in `api_clients` entsprechen – nicht der Demo-Key aus der Vorlage. |
 | `500 Transcription failed` | Alle Engines sind fehlgeschlagen. Prüfe `docker logs whisper-api-proxy` und ob die Modelle geladen wurden. |
 | Verbindungsfehler beim Einrichten in HA | Läuft der Container? `curl http://[IP]:5431/health` testen, Firewall und Port prüfen. |
 | Erste Anfrage dauert lange | Die Modelle werden einmalig geladen (ca. 660 MB). Vorher `warmup_models.py` ausführen. |
+| `config.py` wird nicht erzeugt | Prüfe, ob `volumes/whisper-proxy/config/` existiert und beschreibbar ist. Im Container-Log steht der verwendete Pfad hinter `Config:`. |
+| Änderungen an der `config.py` wirken nicht | Container neu starten: `docker compose restart whisper-proxy`. |
+| Altes Verzeichnis `volumes/whisper-proxy/config.py` | Kann von einem früheren Datei-Mount übrig sein. Löschen – das Template nutzt jetzt `config/config.py`. |
 | Whisper-WebUI wird nicht genutzt | `whisper_webui_host` steht auf `localhost`. Im Container muss dort die LAN-IP des Servers stehen. |
 | Keine Aufnahmen | `save_recordings` für den Client aktivieren und Schreibrechte der Ordner prüfen. |
 | HA meldet `connection_error` | URL ohne Pfad verwenden (`http://[IP]:5431`) und den Key prüfen. Der Proxy hat kein `/v1/models`; die Integration akzeptiert das. |
