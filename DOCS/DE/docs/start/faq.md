@@ -123,7 +123,7 @@ Wenn Home Assistant nicht richtig startet weil beispielsweise die "automations.y
 
 ##  Wie installiere ich AddOns in Home Assistant?</strong>
 Zunächst muss zwischen Integrationen / Frontend-Addons und Drittanbieter Programm-Addons (wie NodeRED, InfluxDB, Grafana etc.) unterscheiden werden: 
-Integrationen / Frontend-Addons können wie auch in HassIO über den [Community Store (HACS)](https://hacs.xyz/) oder manuell in den `/home/pi/ei23-docker/volumes/homeassistant/config` installiert werden.
+Integrationen / Frontend-Addons können wie auch in HassIO über den [Marketplace](https://www.home-assistant.io/integrations/marketplace/) (früher HACS) oder manuell in den `/home/pi/ei23-docker/volumes/homeassistant/config` installiert werden.
 Wie bereits erwähnt: Das Skript ist aus der Notwendigkeit entstanden mehr Flexibilität und Anpassungsmöglichkeiten als das HassIO Betriebssystem zu bieten. HassIO nutzt für die Installation von Drittanbieter Programm-Addons den Home Assistant Supervisor. Diese Art von Addons werden auch in HassIO in der Regel als Docker Container installiert.
 Da das Skript in großen Teilen die von Funktion vom Home Assistant Supervisor übernimmt, ist dieser aus Redudanz- und Kompatiblitätsgrunden nicht enthalten, stattdessen installiert das Skript Home Assistant Core und als Supervisor dienen hier die Funktionen des Skriptes. Siehe auch [Programme Installieren](docker-compose.md)
 

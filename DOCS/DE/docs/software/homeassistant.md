@@ -55,20 +55,16 @@ Home Assistant verbindet sich mit vielen Geräten und Diensten:
 | **Spotify** | Musik-Steuerung |
 | **Weather** | Wetterdaten |
 
-## HACS (Home Assistant Community Store)
+## Community Store (Marketplace)
 
-HACS ermöglicht das Installieren von Community-Integrationen:
+Seit Home Assistant 2026.11 ist der frühere Community Store **HACS** fester Bestandteil von Home Assistant und heißt jetzt **Marketplace**. Eine separate Installation ist nicht mehr nötig – du findest ihn unter **Einstellungen → Marketplace**.
 
-### Installation
+Dort installierst und aktualisierst du Community-Integrationen, Dashboard-Karten und Themes. Ein bestehendes HACS wird beim Update automatisch übernommen: Integrationen, Karten und Updates bleiben unverändert erhalten.
 
-Das ei23-Skript installiert HACS automatisch. Manuelle Installation:
+!!!info "Eigenes Repository hinzufügen"
+    Integrationen, die nicht im Katalog des Marketplace stehen, fügst du über die drei Punkte oben rechts als **benutzerdefiniertes Repository** hinzu (Kategorie *Integration*) – Beispiel: [Whisper API Proxy](whisper-api-proxy.md).
 
-1. Lade HACS herunter: [hacs.xyz](https://hacs.xyz/)
-2. Kopiere den `hacs` Ordner in `/config/custom_components/`
-3. Starte Home Assistant neu
-4. Gehe zu **Einstellungen** → **Integrationen** → **HACS**
-
-### Beliebte HACS-Integrationen
+### Beliebte Community-Integrationen
 
 | Integration | Beschreibung |
 |-------------|--------------|
@@ -80,7 +76,7 @@ Das ei23-Skript installiert HACS automatisch. Manuelle Installation:
 
 ## Sprachsteuerung mit Assist
 
-Für lokale Sprachbefehle kombinierst du Home Assistant mit einem Speech-to-Text-Dienst. Der [Whisper API Proxy](whisper-api-proxy.md) stellt dafür eine OpenAI-kompatible API bereit, die sich über die HACS-Integration **OpenAI Whisper Cloud** als STT-Engine in die Assist-Pipeline einbinden lässt. Die Transkription läuft auf deinem Server; Cloud-Dienste sind optional.
+Für lokale Sprachbefehle kombinierst du Home Assistant mit einem Speech-to-Text-Dienst. Der [Whisper API Proxy](whisper-api-proxy.md) stellt dafür eine OpenAI-kompatible API bereit, die sich über die Community-Integration **OpenAI Whisper Cloud** (Marketplace, früher HACS) als STT-Engine in die Assist-Pipeline einbinden lässt. Die Transkription läuft auf deinem Server; Cloud-Dienste sind optional.
 
 Die vollständige Anleitung inklusive Einrichtung der Integration steht unter [Whisper API Proxy](whisper-api-proxy.md).
 
@@ -152,7 +148,7 @@ Der Standard-Dashboard kann über die Weboberfläche angepasst werden:
 
 ### Custom Dashboards
 
-Mit HACS und Mushroom/CButton Cards kannst du moderne UIs erstellen.
+Mit Community-Karten aus dem Marketplace (früher HACS), z. B. Mushroom oder Button Card, kannst du moderne UIs erstellen.
 
 ## Backups
 

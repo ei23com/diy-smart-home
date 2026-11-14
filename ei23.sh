@@ -138,16 +138,9 @@ install-ha-addons(){
         sudo rm -R "$haPath/custom_components/$4"
     fi
     sudo mkdir -p "$haPath/custom_components/$4"
-
-    if [ "$4" != "hacs" ]; then
-        # run this when not "hacs"
-        sudo unzip "$1.zip" "$3/custom_components/$4/*" -d "$haPath/custom_components/$4" >/dev/null 2>&1
-        sudo cp -r "$haPath/custom_components/$4/$3/custom_components/$4" "$haPath/custom_components/"
-        sudo rm -R "$haPath/custom_components/$4/$3"
-    else
-        # special cake for hacs -.-
-        sudo unzip "$1.zip" "*" -d "$haPath/custom_components/$4" >/dev/null 2>&1
-    fi
+    sudo unzip "$1.zip" "$3/custom_components/$4/*" -d "$haPath/custom_components/$4" >/dev/null 2>&1
+    sudo cp -r "$haPath/custom_components/$4/$3/custom_components/$4" "$haPath/custom_components/"
+    sudo rm -R "$haPath/custom_components/$4/$3"
     rm $1.zip
 }
 
@@ -155,7 +148,6 @@ custom-ha-addons(){
     if [ "$(docker ps -a | grep homeassistant)" ]; then
         # $1 name / $2 url / $3 topfolder / $4 addonfolder
         install-ha-addons "ha-node-red" "https://codeload.github.com/zachowj/hass-node-red/zip/refs/heads/main" "hass-node-red-main" "nodered"
-        install-ha-addons "hacs" "https://github.com/hacs/integration/releases/latest/download/hacs.zip" "integration-main" "hacs"
         install-ha-addons "ha-ical" "https://codeload.github.com/tybritten/ical-sensor-homeassistant/zip/refs/heads/master" "ical-sensor-homeassistant-master" "ical"
         source $HOME/ei23-docker/custom_ha_addons.sh # Add your own addons here!
         docker restart homeassistant

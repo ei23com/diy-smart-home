@@ -3,7 +3,7 @@
 [WhisperAPIProxy](https://github.com/ei23fxg/WhisperAPIProxy) ist ein OpenAI-kompatibler Proxy für Audio-Transkription. Er nimmt Anfragen wie die OpenAI Whisper API entgegen (`POST /v1/audio/transcriptions`) und nutzt zuerst eine lokale [Whisper-WebUI](https://github.com/jhj0517/Whisper-WebUI). Ist diese nicht erreichbar oder liefert kein Ergebnis, übernehmen lokale CPU-Engines; OpenAI wird nur als letzte Option und nur für freigegebene Clients verwendet.
 
 !!!tip "Perfekt für Home Assistant Assist"
-    Mit der HACS-Integration [ha-openai-whisper-stt-api](https://github.com/fabio-garavini/ha-openai-whisper-stt-api) bindest du den Proxy als Speech-to-Text-Engine in die Assist-Pipeline ein. Die Transkription läuft komplett auf deinem Server, Home Assistant muss nur das Audio weiterreichen.
+    Mit der Community-Integration [ha-openai-whisper-stt-api](https://github.com/fabio-garavini/ha-openai-whisper-stt-api) aus dem Marketplace (früher HACS) bindest du den Proxy als Speech-to-Text-Engine in die Assist-Pipeline ein. Die Transkription läuft komplett auf deinem Server, Home Assistant muss nur das Audio weiterreichen.
 
 ## Funktionsweise
 
@@ -172,13 +172,13 @@ Die Antwort sieht wie bei der OpenAI-API aus:
 Die Integration **OpenAI Whisper Cloud** von [fabio-garavini](https://github.com/fabio-garavini/ha-openai-whisper-stt-api) unterstützt neben OpenAI, GroqCloud und Mistral auch beliebige eigene OpenAI-kompatible Endpunkte – genau dafür ist der Whisper API Proxy gedacht.
 
 !!!note "Integration statt Add-on"
-    Die Erweiterung ist eine HACS-Integration und läuft direkt in Home Assistant. Sie funktioniert deshalb auch mit der Docker-Installation von ei23, die keine Supervisor-Add-ons verwendet.
+    Die Erweiterung ist eine Community-Integration (Marketplace, früher HACS) und läuft direkt in Home Assistant. Sie funktioniert deshalb auch mit der Docker-Installation von ei23, die keine Supervisor-Add-ons verwendet.
 
 ### 1. Integration installieren
 
-Am einfachsten über HACS:
+Am einfachsten über den **Marketplace** (früher HACS):
 
-1. **HACS** → oben rechts die drei Punkte → **Benutzerdefinierte Repositories**
+1. **Einstellungen** → **Marketplace** → oben rechts die drei Punkte → **Benutzerdefinierte Repositories**
 2. URL `https://github.com/fabio-garavini/ha-openai-whisper-stt-api` eintragen, Kategorie **Integration**
 3. Nach **OpenAI Whisper Cloud** suchen und installieren
 4. Home Assistant neu starten

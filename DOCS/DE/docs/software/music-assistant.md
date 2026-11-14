@@ -75,9 +75,8 @@ Music Assistant erkennt automatisch:
 
 ## Home Assistant Integration
 
-1. Installiere die **Music Assistant** Integration in HA
-2. Oder nutze das HACS Addon
-3. Alle Player und Quellen erscheinen in HA
+1. Installiere die **Music Assistant** Integration in Home Assistant – sie ist im Marketplace (früher HACS) verfügbar
+2. Alle Player und Quellen erscheinen in HA
 
 ### Beispiel-Automatisierung
 

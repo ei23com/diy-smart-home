@@ -55,20 +55,16 @@ Home Assistant connects with many devices and services:
 | **Spotify** | Music control |
 | **Weather** | Weather data |
 
-## HACS (Home Assistant Community Store)
+## Community Store (Marketplace)
 
-HACS allows installing community integrations:
+Since Home Assistant 2026.11, the former Community Store **HACS** is part of Home Assistant and is now called **Marketplace**. A separate installation is no longer needed – you find it under **Settings → Marketplace**.
 
-### Installation
+That is where you install and update community integrations, dashboard cards and themes. An existing HACS setup is migrated automatically: integrations, cards and updates stay exactly as they are.
 
-The ei23 script installs HACS automatically. Manual installation:
+!!!info "Adding a custom repository"
+    Integrations that are not in the Marketplace catalog are added via the three-dot menu in the upper right as a **custom repository** (category *Integration*) – for example the [Whisper API Proxy](whisper-api-proxy.md).
 
-1. Download HACS: [hacs.xyz](https://hacs.xyz/)
-2. Copy the `hacs` folder to `/config/custom_components/`
-3. Restart Home Assistant
-4. Go to **Settings** → **Integrations** → **HACS**
-
-### Popular HACS Integrations
+### Popular Community Integrations
 
 | Integration | Description |
 |-------------|-------------|
@@ -80,7 +76,7 @@ The ei23 script installs HACS automatically. Manual installation:
 
 ## Voice control with Assist
 
-For local voice commands, combine Home Assistant with a speech-to-text service. The [Whisper API Proxy](whisper-api-proxy.md) provides an OpenAI-compatible API that can be added to the Assist pipeline as an STT engine via the **OpenAI Whisper Cloud** HACS integration. Transcription runs on your server; cloud services are optional.
+For local voice commands, combine Home Assistant with a speech-to-text service. The [Whisper API Proxy](whisper-api-proxy.md) provides an OpenAI-compatible API that can be added to the Assist pipeline as an STT engine via the **OpenAI Whisper Cloud** community integration (Marketplace, formerly HACS). Transcription runs on your server; cloud services are optional.
 
 The complete guide, including integration setup, is available under [Whisper API Proxy](whisper-api-proxy.md).
 
@@ -152,7 +148,7 @@ The default dashboard can be customized via the web interface:
 
 ### Custom Dashboards
 
-With HACS and Mushroom/Button Cards, you can create modern UIs.
+With community cards from the Marketplace (formerly HACS), such as Mushroom or Button Card, you can create modern UIs.
 
 ## Backups
 

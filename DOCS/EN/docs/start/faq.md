@@ -123,7 +123,7 @@ If Home Assistant doesn't start properly because, for example, the "automations.
 
 ##  How do I install AddOns in Home Assistant?</strong>
 First, you must distinguish between Integrations / Frontend Addons and third-party Program Addons (like NodeRED, InfluxDB, Grafana, etc.):
-Integrations / Frontend Addons can be installed just like in HassIO via the [Community Store (HACS)](https://hacs.xyz/) or manually in `/home/pi/ei23-docker/volumes/homeassistant/config`.
+Integrations / Frontend Addons can be installed just like in HassIO via the [Marketplace](https://www.home-assistant.io/integrations/marketplace/) (formerly HACS) or manually in `/home/pi/ei23-docker/volumes/homeassistant/config`.
 As mentioned before: The script originated from the need to offer more flexibility and customization options than the HassIO operating system. HassIO uses the Home Assistant Supervisor for installing third-party Program Addons. This type of addons are also typically installed as Docker containers in HassIO.
 Since the script largely takes over the functions of the Home Assistant Supervisor, the supervisor is not included for reasons of redundancy and compatibility. Instead, the script installs Home Assistant Core, and the script's functions serve as the supervisor. See also [Install Programs](docker-compose.md)
 
